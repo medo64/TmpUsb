@@ -1,0 +1,11 @@
+syntax: glob
+
+Firmware/Binaries/*
+Firmware/Source/build/*
+Firmware/Source/disassembly/*
+Firmware/Source/dist/*
+Firmware/Source/funclist
+
+Hardware/Datasheets/*
+Hardware/Research/*
+Hardware/Releases/*
