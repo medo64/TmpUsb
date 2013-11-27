@@ -4,10 +4,10 @@ TmpUsb
 N   Part name                        RefDes   DigiKey                  Newark
 ------------------------------------------------------------------------------
 1x  BT CR2032                        BT1      BU2032SM-BT-GCT-ND       74M8369
-3x  C 100nF /10V X7R (0805)          C1-C3    399-1170-1-ND            68R4903
-3x  C 4.7uF /10V X7R (0805)          C4-C6    587-1442-1-ND            87R3994
+3x  C 100nF /16V X7R (0805)          C1-C3    399-1170-1-ND            68R4903
+3x  C 4.7uF /16V X5R (0805)          C4-C6    1276-1065-1-ND           06R4179
 1x  C 10uF /16V X5R (0805)           C7       1276-1096-1-ND           13T1208
-1x  D BAT54C (SOT23-3)               D1       BAT54C-FDICT-ND          04X5911
+1x  D BAT54C (SOT23-3)               D1       BAT54C-FDICT-ND          18M1740
 1x  DS LED (0805)                    DS1      475-1415-1-ND            93K6510
 1x  L Ferrite 40Ohm (0805)           L1       445-2201-1-ND            89R3121
 1x  P USB A, plug, horizontal        P1       WM17118-ND               01J8375
