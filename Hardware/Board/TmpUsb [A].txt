@@ -11,8 +11,8 @@ N   Part name                        RefDes   DigiKey                  Newark
 1x  DS LED (0805)                    DS1      475-1415-1-ND            93K6510
 1x  L Ferrite 40Ohm (0805)           L1       445-2201-1-ND            89R3121
 1x  P USB A, plug, horizontal        P1       WM17118-ND               01J8375
-1x  R 1K 0.125W (0805)               R1       RMCF0805FT1K00CT-ND      01P2109
-2x  R 10K 0.125W (0805)              R2 R3    RMCF0805JT10K0CT-ND      05M4535
+2x  R 1K 0.125W (0805)               R1 R2    RMCF0805FT1K00CT-ND      01P2109
+3x  R 10K 0.125W (0805)              R3-R5    RMCF0805JT10K0CT-ND      05M4535
 1x  U PIC18F26J50-I/SS (SSOP-28)     U1       PIC18F26J50-I/SS-ND      98M1806
 1x  VR MCP1700 (SOT-23)              VR1      MCP1700T3302ETTCT-ND     88H9817
 1x    CR2032 battery                          P189-ND                  13C1019
