@@ -1,10 +1,14 @@
 syntax: glob
 
 Firmware/Binaries/*
+Firmware/Source/*.err
+Firmware/Source/*.obj
 Firmware/Source/build/*
 Firmware/Source/disassembly/*
 Firmware/Source/dist/*
 Firmware/Source/funclist
+Firmware/Source/nbproject/private/*
+Firmware/Source/nbproject/Makefile-genesis.properties
 
 Hardware/Datasheets/*
 Hardware/Research/*
