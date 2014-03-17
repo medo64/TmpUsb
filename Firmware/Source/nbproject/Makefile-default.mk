@@ -90,7 +90,7 @@ ${OBJECTDIR}/Microchip/Files.o: Microchip/Files.c  nbproject/Makefile-${CND_CONF
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/Files.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/Files.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/Files.o   Microchip/Files.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/Files.o   Microchip/Files.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/Files.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/Files.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -98,7 +98,7 @@ ${OBJECTDIR}/Microchip/usb_device.o: Microchip/usb_device.c  nbproject/Makefile-
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/usb_device.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/usb_device.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_device.o   Microchip/usb_device.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_device.o   Microchip/usb_device.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/usb_device.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/usb_device.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -106,7 +106,7 @@ ${OBJECTDIR}/Microchip/usb_function_msd.o: Microchip/usb_function_msd.c  nbproje
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/usb_function_msd.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/usb_function_msd.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_function_msd.o   Microchip/usb_function_msd.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_function_msd.o   Microchip/usb_function_msd.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/usb_function_msd.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/usb_function_msd.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -114,7 +114,7 @@ ${OBJECTDIR}/Microchip/Internal\ Flash.o: Microchip/Internal\ Flash.c  nbproject
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/Internal\ Flash.o.d 
 	@${RM} "${OBJECTDIR}/Microchip/Internal Flash.o" 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo "${OBJECTDIR}/Microchip/Internal Flash.o"   "Microchip/Internal Flash.c" 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo "${OBJECTDIR}/Microchip/Internal Flash.o"   "Microchip/Internal Flash.c" 
 	@${DEP_GEN} -d "${OBJECTDIR}/Microchip/Internal Flash.o" 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/Internal Flash.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -122,7 +122,7 @@ ${OBJECTDIR}/Microchip/usb_descriptors.o: Microchip/usb_descriptors.c  nbproject
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_descriptors.o   Microchip/usb_descriptors.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_descriptors.o   Microchip/usb_descriptors.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/usb_descriptors.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/usb_descriptors.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -130,7 +130,7 @@ ${OBJECTDIR}/config.o: config.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/config.o.d 
 	@${RM} ${OBJECTDIR}/config.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/config.o   config.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/config.o   config.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/config.o 
 	@${FIXDEPS} "${OBJECTDIR}/config.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -138,7 +138,7 @@ ${OBJECTDIR}/app.o: app.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/app.o.d 
 	@${RM} ${OBJECTDIR}/app.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app.o   app.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app.o   app.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/app.o 
 	@${FIXDEPS} "${OBJECTDIR}/app.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -146,7 +146,7 @@ ${OBJECTDIR}/app_usb.o: app_usb.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/app_usb.o.d 
 	@${RM} ${OBJECTDIR}/app_usb.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app_usb.o   app_usb.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app_usb.o   app_usb.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/app_usb.o 
 	@${FIXDEPS} "${OBJECTDIR}/app_usb.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -155,7 +155,7 @@ ${OBJECTDIR}/Microchip/Files.o: Microchip/Files.c  nbproject/Makefile-${CND_CONF
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/Files.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/Files.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/Files.o   Microchip/Files.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/Files.o   Microchip/Files.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/Files.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/Files.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -163,7 +163,7 @@ ${OBJECTDIR}/Microchip/usb_device.o: Microchip/usb_device.c  nbproject/Makefile-
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/usb_device.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/usb_device.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_device.o   Microchip/usb_device.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_device.o   Microchip/usb_device.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/usb_device.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/usb_device.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -171,7 +171,7 @@ ${OBJECTDIR}/Microchip/usb_function_msd.o: Microchip/usb_function_msd.c  nbproje
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/usb_function_msd.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/usb_function_msd.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_function_msd.o   Microchip/usb_function_msd.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_function_msd.o   Microchip/usb_function_msd.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/usb_function_msd.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/usb_function_msd.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -179,7 +179,7 @@ ${OBJECTDIR}/Microchip/Internal\ Flash.o: Microchip/Internal\ Flash.c  nbproject
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/Internal\ Flash.o.d 
 	@${RM} "${OBJECTDIR}/Microchip/Internal Flash.o" 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo "${OBJECTDIR}/Microchip/Internal Flash.o"   "Microchip/Internal Flash.c" 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo "${OBJECTDIR}/Microchip/Internal Flash.o"   "Microchip/Internal Flash.c" 
 	@${DEP_GEN} -d "${OBJECTDIR}/Microchip/Internal Flash.o" 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/Internal Flash.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -187,7 +187,7 @@ ${OBJECTDIR}/Microchip/usb_descriptors.o: Microchip/usb_descriptors.c  nbproject
 	@${MKDIR} ${OBJECTDIR}/Microchip 
 	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.o.d 
 	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_descriptors.o   Microchip/usb_descriptors.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/Microchip/usb_descriptors.o   Microchip/usb_descriptors.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/Microchip/usb_descriptors.o 
 	@${FIXDEPS} "${OBJECTDIR}/Microchip/usb_descriptors.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -195,7 +195,7 @@ ${OBJECTDIR}/config.o: config.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/config.o.d 
 	@${RM} ${OBJECTDIR}/config.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/config.o   config.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/config.o   config.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/config.o 
 	@${FIXDEPS} "${OBJECTDIR}/config.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -203,7 +203,7 @@ ${OBJECTDIR}/app.o: app.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/app.o.d 
 	@${RM} ${OBJECTDIR}/app.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app.o   app.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app.o   app.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/app.o 
 	@${FIXDEPS} "${OBJECTDIR}/app.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
@@ -211,7 +211,7 @@ ${OBJECTDIR}/app_usb.o: app_usb.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/app_usb.o.d 
 	@${RM} ${OBJECTDIR}/app_usb.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app_usb.o   app_usb.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/app_usb.o   app_usb.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/app_usb.o 
 	@${FIXDEPS} "${OBJECTDIR}/app_usb.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
