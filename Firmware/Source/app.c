@@ -21,10 +21,10 @@ const ROM InquiryResponse inq_resp = {
 	0x00,		// bque=1 and cmdque=0,indicates simple queueing 00 is obsolete,
 			// but as in case of other device, we are just using 00
 	0x00,		// 00 obsolete, 0x80 for basic task queueing
-	{'M','i','c','r','o','c','h','p'
+	{'M','e','d','o','\'','s',' ',' '
     },
 	// this is the T10 assigned Vendor ID
-	{'M','a','s','s',' ','S','t','o','r','a','g','e',' ',' ',' ',' '
+	{'T','e','m','p','o','r','a','r','y',' ','D','i','s','k',' ',' '
     },
 	{'0','0','0','1'
     }

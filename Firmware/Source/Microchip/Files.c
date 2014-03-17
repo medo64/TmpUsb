@@ -195,7 +195,7 @@ MDD_INTERNAL_FLASH_NUM_FAT_SECTORS, 0x00,         //Sectors per FAT
 0x00,			//Physical drive number
 0x00,			//Reserved("current head")
 0x29,			//Signature
-0x32, 0x67, 0x94, 0xC4,		//ID(serial number)
+0x4D, 0x65, 0x64, 0x6F,		//ID(serial number)
 'N', 'O', ' ', 'N', 'A', 'M', 'E', ' ', ' ', ' ', ' ',	//Volume Label (11 bytes) - "NO NAME    "
 'F', 'A', 'T', '1', '2', ' ', ' ', ' ',	//FAT system "FAT12   "
 //Operating system boot code
@@ -256,26 +256,18 @@ ROM BYTE PARTITION_ATTRIBUTES(FATx_ADDRESS) FATx[MEDIA_SECTOR_SIZE*(MDD_INTERNAL
 ROM BYTE PARTITION_ATTRIBUTES(ROOTDIRECTORY0_ADDRESS) RootDirectory0[MEDIA_SECTOR_SIZE] =
 {
     //Root
-    'D','r','i','v','e',' ','N','a','m','e',' ',   //Drive Name (11 characters, padded with spaces)
+    'N','o','t',' ','A','r','m','e','d',' ',' ',   //Drive Name (11 characters, padded with spaces)
     0x08, //specify this entry as a volume label
     0x00, //Reserved
-    0x00, 0x00, 0x00, 0x00, 0x11, //Create time
-    0x00, 0x11,             //Last Access
+    0x00, 0x00, 0x00, 0x00, 0x00, //Create time
+    0x00, 0x00,             //Last Access
     0x00, 0x00,             //EA-index
-    0x00, 0x00, 0x00, 0x11, //Last modified time
+    0x00, 0x00, 0x00, 0x00, //Last modified time
     0x00, 0x00,             //First FAT cluster
     0x00, 0x00, 0x00, 0x00, //File Size (number of bytes)
 
-    'F','I','L','E',' ',' ',' ',' ',    //File name (exactly 8 characters)
-    'T','X','T',                        //File extension (exactly 3 characters)
-    0x20, //specify this entry as a volume label
-    0x00, //Reserved
-    0x06, 0x28, 0x78, 0xDE, 0x38, //Create time
-    0xDE, 0x38,             //Last Access
-    0x00, 0x00,             //EA-index
-    0x04, 0x77, 0xDE, 0x38, //Last modified
-    0x02, 0x00,             //First FAT cluster
-    0x04, 0x00, 0x00, 0x00, //File Size (number of bytes)
+    //No next entry
+    0x00
 };
 
 #if (MDD_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT>16)
@@ -302,10 +294,7 @@ ROM BYTE PARTITION_ATTRIBUTES(ROOTDIRECTORY0_ADDRESS) RootDirectory0[MEDIA_SECTO
 //contents "Data".  This is the contents of the FILE.TXT, based on our
 //RootDirectory0[] and FAT0[] settings above.
 #if (MDD_INTERNAL_FLASH_DRIVE_CAPACITY>0)
-ROM BYTE PARTITION_ATTRIBUTES(SLACK0_ADDRESS) slack0[MEDIA_SECTOR_SIZE] =
-{
-    'D','a','t','a'
-};
+ROM BYTE PARTITION_ATTRIBUTES(SLACK0_ADDRESS) slack0[MEDIA_SECTOR_SIZE] = {0};
 #endif
 
 //The rest of the MSD volume is unused/blank/not currently filled with any file(s).
