@@ -150,7 +150,7 @@ ROM BYTE MBR_ATTRIBUTES MasterBootRecord[MEDIA_SECTOR_SIZE] =
 //Table of Primary Partitions (16 bytes/entry x 4 entries)
 //Note: Multi-byte fields are in little endian format.
 //Partition Entry 1                                                                             //0x01BE
-0x80,                   //Status - 0x80 (bootable), 0x00 (not bootable), other (error)
+0x00,                   //Status - 0x80 (bootable), 0x00 (not bootable), other (error)
 0x01, 0x01, 0x00,       //Cylinder-head-sector address of first sector in partition
 0x01,                   //Partition type - 0x01 = FAT12 up to 2MB
 0x07, 0xFF, 0xE6,       //Cylinder-head-sector address of last sector in partition
@@ -368,7 +368,6 @@ ROM BYTE PARTITION_ATTRIBUTES(SLACK0_ADDRESS) slack0[MEDIA_SECTOR_SIZE] = {0};
         ROM BYTE PARTITION_ATTRIBUTES(SLACK7_ADDRESS) slack7[MEDIA_SECTOR_SIZE*(MDD_INTERNAL_FLASH_DRIVE_CAPACITY - 379u)] = {0};
     #endif
 #endif
-
 
 
 //------------------------------------------------------------------------------

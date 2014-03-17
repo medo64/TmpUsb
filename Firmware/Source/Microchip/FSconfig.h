@@ -235,7 +235,7 @@
     //by carefully choosing the FILES_ADDRESS and MDD_INTERNAL_FLASH_DRIVE_CAPACITY,
     //to make sure the MSD volume does extend into the erase page with the configuration
     //bits.
-    #define MDD_INTERNAL_FLASH_DRIVE_CAPACITY 14
+    #define MDD_INTERNAL_FLASH_DRIVE_CAPACITY 13
 
 
     //--------------------------------------------------------------------------
