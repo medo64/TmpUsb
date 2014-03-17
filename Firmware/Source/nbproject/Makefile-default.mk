@@ -71,8 +71,20 @@ LDLIBSOPTIONS=
 # fixDeps replaces a bunch of sed/cat/printf statements that slow down the build
 FIXDEPS=fixDeps
 
+# The following macros may be used in the pre and post step lines
+Device=PIC18F26J50
+ProjectDir="Q:\Projects\Electronics\TmpUsb\Firmware\Source"
+ConfName=default
+ImagePath="dist\default\${IMAGE_TYPE}\Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
+ImageDir="dist\default\${IMAGE_TYPE}"
+ImageName="Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
+
 .build-conf:  ${BUILD_SUBPROJECTS}
 	${MAKE} ${MAKE_OPTIONS} -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+	@echo "--------------------------------------"
+	@echo "User defined post-build step: [COPY ${ProjectDir}\dist\default\production\Source.production.hex ${ProjectDir}\..\Binaries\TmpUsb.hex]"
+	@COPY ${ProjectDir}\dist\default\production\Source.production.hex ${ProjectDir}\..\Binaries\TmpUsb.hex
+	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=18F26J50
 MP_PROCESSOR_OPTION_LD=18f26j50
