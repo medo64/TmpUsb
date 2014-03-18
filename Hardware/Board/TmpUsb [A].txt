@@ -1,0 +1,15 @@
+TmpUsb
+======
+
+N   Part name                        RefDes   DigiKey                  Newark
+------------------------------------------------------------------------------
+2x  C 100nF /16V X7R (0805)          C1 C2    399-1170-1-ND            68R4903
+2x  C 1uF /16V X5R (0805)            C3 C4    490-1691-1-ND            97K0638
+2x  C 10uF /16V X5R (0805)           C5 C6    1276-1096-1-ND           13T1208
+1x  DS LED Reverse                   DS1      475-2507-1-ND
+1x  L Ferrite 40Ohm (0805)           L1       445-2201-1-ND            89R3121
+1x  P USB A, plug, horizontal        P1       WM17118-ND               01J8375
+1x  R 1K 0.125W (0805)               R1       RMCF0805FT1K00CT-ND      01P2109
+2x  R 10K 0.125W (0805)              R2 R3    RMCF0805JT10K0CT-ND      05M4535
+1x  U PIC18F26J50-I/SS (SSOP-28)     U1       PIC18F26J50-I/SS-ND      98M1806
+1x  VR MCP1700 (SOT-23)              VR1      MCP1700T3302ETTCT-ND     88H9817
