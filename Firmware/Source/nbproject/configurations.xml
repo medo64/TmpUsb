@@ -28,6 +28,7 @@
       <itemPath>config.h</itemPath>
       <itemPath>app_usb.h</itemPath>
       <itemPath>io.h</itemPath>
+      <itemPath>fat12.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LibraryFiles"
                    displayName="Library Files"

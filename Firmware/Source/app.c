@@ -16,7 +16,6 @@ void main(void) {
         io_led_off();
     }
     
-    wait_1s();
     USBDeviceInit();	//usb_device.c.  Initializes USB module SFRs and firmware
 
     while(1) {
