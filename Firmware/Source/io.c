@@ -19,16 +19,16 @@ const ROM BYTE DiskDefaultRoot[MEDIA_SECTOR_SIZE] = FAT12_ROOT;
 
 
 void io_init() {
-    TRISBbits.TRISB5 = 0;
+    TRISAbits.TRISA0 = 0;
 }
 
 
 void io_led_on() {
-    LATBbits.LATB5 = 1;
+    LATAbits.LATA0 = 1;
 }
 
 void io_led_off() {
-    LATBbits.LATB5 = 0;
+    LATAbits.LATA0 = 0;
 }
 
 
@@ -74,10 +74,6 @@ unsigned char io_disk_isArmed() {
     }
 
     return 0;
-}
-
-unsigned char io_disk_isExpired() {
-    return 1;  //TODO: Check whether it should be set
 }
 
 void io_disk_erase() {

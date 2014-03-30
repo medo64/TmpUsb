@@ -43,9 +43,9 @@ void init(void) {
     //8 MHz oscillator
     OSCCONbits.IRCF = 0b111;
 
-    //all lines are outputs (except for RB7 and RC6)
-    TRISA = 0;
-    TRISB = 0b10000000;
+    //all lines are outputs (except for A3, B3, B7 and C6)
+    TRISA = 0b00001000;
+    TRISB = 0b10001000;
     TRISC = 0b01000000;
 
     //clear all outputs
@@ -54,8 +54,14 @@ void init(void) {
     LATC = 0;
 
     //Disable analog input
-    ANCON0 = 0xFF;
-    ANCON1 = 0xFF;
+    ANCON0 = 0b11110111; //AN3 is input
+    ANCON1 = 0b11111111;
+
+    ADCON1bits.ADFM = 1;     //Right justified
+    ADCON1bits.ACQT = 0b001; //20 Tad [2+ us]
+    ADCON1bits.ADCS = 0b110; //Fosc/64  [1-25 us]
+    ADCON0bits.VCFG = 0b00;  //Vref source: AVdd, AVss
+    ADCON0bits.ADON  = 1; // Turn on ADC
 
     //wait for PLL lock
     OSCTUNEbits.PLLEN = 1;

@@ -1,21 +1,30 @@
 #include <p18cxxx.h>
 #include "config.h"
 #include "io.h"
+#include "timing.h"
 
 #include "app_usb.h"
 #include "usb.h"
 
 
+#define MAX_CHARGE  142
+
+
 void main(void) {
+    unsigned int timingCharge;
+
     init();
+    timingCharge = timing_getCharge();
+    timing_charge();
     io_init();
+
     
-    if (io_disk_isArmed() && io_disk_isExpired()) { //Check if it needs to be deleted
+    if (io_disk_isArmed() && (timingCharge < MAX_CHARGE)) { //Check if it needs to be deleted
         io_led_on();
         io_disk_erase();
         io_led_off();
     }
-    
+
     USBDeviceInit();	//usb_device.c.  Initializes USB module SFRs and firmware
 
     while(1) {
