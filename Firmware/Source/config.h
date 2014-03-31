@@ -3,6 +3,6 @@
 
     void init(void);
     void wait_10ms(void);
-    void wait_1s(void);
+    void wait_100ms(void);
 
 #endif

@@ -23,6 +23,12 @@ void main(void) {
         io_led_on();
         io_disk_erase();
         io_led_off();
+    } else if (!io_disk_isValid()) {
+        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on();
+        io_disk_erase();
+        io_led_off();
     }
 
     USBDeviceInit();	//usb_device.c.  Initializes USB module SFRs and firmware

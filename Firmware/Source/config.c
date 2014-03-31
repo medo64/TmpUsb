@@ -72,6 +72,10 @@ void wait_10ms(void) {
     Delay10KTCYx(6); //@ 24 MHz
 }
 
+void wait_100ms(void) {
+    Delay10KTCYx(72); //@ 24 MHz
+}
+
 void wait_1s(void) {
     Delay10KTCYx(180);
     Delay10KTCYx(180);

@@ -69,6 +69,8 @@
 }
 
 
+#define FAT12_BOOT_SERIAL  0x4D, 0x65, 0x64, 0x6F
+
 #define FAT12_BOOT {                                                                                 \
     0xEB, 0x3C, 0x90,  /* Jump instruction */                                                        \
     'M', 'S', 'D', 'O', 'S', '5', '.', '0',  /* OEM Name "MSDOS5.0" */                               \
@@ -92,7 +94,7 @@
     0x00,  /* Physical drive number */                                                               \
     0x00,  /* Reserved("current head") */                                                            \
     0x29,  /* Signature */                                                                           \
-    0x4D, 0x65, 0x64, 0x6F, /* ID(serial number) */                                                  \
+    FAT12_BOOT_SERIAL, /* ID(serial number) */                                                       \
     'N', 'O', ' ', 'N', 'A', 'M', 'E', ' ', ' ', ' ', ' ',  /* Volume Label (11 bytes) */            \
     'F', 'A', 'T', '1', '2', ' ', ' ', ' ',  /* FAT system "FAT12" */                                \
                                                                                                      \

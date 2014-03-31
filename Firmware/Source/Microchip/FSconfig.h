@@ -266,7 +266,7 @@
 
 
     //name and extern definition for the master boot record
-    extern ROM BYTE MasterBootRecord[512];
+    extern ROM BYTE MasterBootRecord[MEDIA_SECTOR_SIZE];
     #define MASTER_BOOT_RECORD_ADDRESS &MasterBootRecord[0]
 
     //#define INTERNAL_FLASH_WRITE_PROTECT

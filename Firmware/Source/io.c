@@ -76,6 +76,27 @@ unsigned char io_disk_isArmed() {
     return 0;
 }
 
+
+unsigned char io_disk_isValid() {
+    unsigned int i;
+    ROM BYTE* mbr;
+    ROM BYTE* boot;
+
+    mbr = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS);
+    for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
+        if (mbr[i] != DiskDefaultMbr[i]) { return 0; }
+    }
+
+    boot = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE);
+    for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
+        if ((i >= 0x2B) && (i <= 0x35)) { continue; }
+        if (boot[i] != DiskDefaultBoot[i]) { return 0; }
+    }
+
+    return 1;
+}
+
+
 void io_disk_erase() {
     unsigned short long iBlock, iSector;
     unsigned char i, j;
