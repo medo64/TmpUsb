@@ -2,8 +2,8 @@
 #define	TIMING_H
 
 
-void timing_charge(void);
 unsigned int timing_getCharge(void);
+void timing_charge(void);
 
 
 #endif

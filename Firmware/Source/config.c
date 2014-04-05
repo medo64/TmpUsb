@@ -9,7 +9,7 @@
 #pragma config XINST  = OFF
 
 #pragma config CPUDIV = OSC2_PLL2
-#pragma config CP0    = OFF
+#pragma config CP0    = ON
 
 #pragma config OSC = INTOSCPLL
 #pragma config T1DIG = OFF
@@ -42,6 +42,7 @@ void init(void) {
 
     //8 MHz oscillator
     OSCCONbits.IRCF = 0b111;
+    while (!OSCCONbits.OSTS); //Oscillator Start-up Timer time-out has expired; primary oscillator is running
 
     //all lines are outputs (except for A3, B3, B7 and C6)
     TRISA = 0b00001000;
@@ -56,12 +57,6 @@ void init(void) {
     //Disable analog input
     ANCON0 = 0b11110111; //AN3 is input
     ANCON1 = 0b11111111;
-
-    ADCON1bits.ADFM = 1;     //Right justified
-    ADCON1bits.ACQT = 0b001; //20 Tad [2+ us]
-    ADCON1bits.ADCS = 0b110; //Fosc/64  [1-25 us]
-    ADCON0bits.VCFG = 0b00;  //Vref source: AVdd, AVss
-    ADCON0bits.ADON  = 1; // Turn on ADC
 
     //wait for PLL lock
     OSCTUNEbits.PLLEN = 1;
