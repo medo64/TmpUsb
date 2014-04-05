@@ -30,6 +30,8 @@
       <itemPath>io.h</itemPath>
       <itemPath>fat12.h</itemPath>
       <itemPath>timing.h</itemPath>
+      <itemPath>settings.c</itemPath>
+      <itemPath>settings.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LibraryFiles"
                    displayName="Library Files"

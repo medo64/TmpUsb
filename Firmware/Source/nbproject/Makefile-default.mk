@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Microchip/Files.c Microchip/usb_device.c Microchip/usb_function_msd.c "Microchip/Internal Flash.c" Microchip/usb_descriptors.c config.c app.c app_usb.c io.c timing.c
+SOURCEFILES_QUOTED_IF_SPACED=Microchip/Files.c Microchip/usb_device.c Microchip/usb_function_msd.c "Microchip/Internal Flash.c" Microchip/usb_descriptors.c config.c app.c app_usb.c io.c timing.c settings.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Microchip/Files.o ${OBJECTDIR}/Microchip/usb_device.o ${OBJECTDIR}/Microchip/usb_function_msd.o "${OBJECTDIR}/Microchip/Internal Flash.o" ${OBJECTDIR}/Microchip/usb_descriptors.o ${OBJECTDIR}/config.o ${OBJECTDIR}/app.o ${OBJECTDIR}/app_usb.o ${OBJECTDIR}/io.o ${OBJECTDIR}/timing.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Microchip/Files.o.d ${OBJECTDIR}/Microchip/usb_device.o.d ${OBJECTDIR}/Microchip/usb_function_msd.o.d "${OBJECTDIR}/Microchip/Internal Flash.o.d" ${OBJECTDIR}/Microchip/usb_descriptors.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/app.o.d ${OBJECTDIR}/app_usb.o.d ${OBJECTDIR}/io.o.d ${OBJECTDIR}/timing.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Microchip/Files.o ${OBJECTDIR}/Microchip/usb_device.o ${OBJECTDIR}/Microchip/usb_function_msd.o "${OBJECTDIR}/Microchip/Internal Flash.o" ${OBJECTDIR}/Microchip/usb_descriptors.o ${OBJECTDIR}/config.o ${OBJECTDIR}/app.o ${OBJECTDIR}/app_usb.o ${OBJECTDIR}/io.o ${OBJECTDIR}/timing.o ${OBJECTDIR}/settings.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Microchip/Files.o.d ${OBJECTDIR}/Microchip/usb_device.o.d ${OBJECTDIR}/Microchip/usb_function_msd.o.d "${OBJECTDIR}/Microchip/Internal Flash.o.d" ${OBJECTDIR}/Microchip/usb_descriptors.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/app.o.d ${OBJECTDIR}/app_usb.o.d ${OBJECTDIR}/io.o.d ${OBJECTDIR}/timing.o.d ${OBJECTDIR}/settings.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Microchip/Files.o ${OBJECTDIR}/Microchip/usb_device.o ${OBJECTDIR}/Microchip/usb_function_msd.o ${OBJECTDIR}/Microchip/Internal\ Flash.o ${OBJECTDIR}/Microchip/usb_descriptors.o ${OBJECTDIR}/config.o ${OBJECTDIR}/app.o ${OBJECTDIR}/app_usb.o ${OBJECTDIR}/io.o ${OBJECTDIR}/timing.o
+OBJECTFILES=${OBJECTDIR}/Microchip/Files.o ${OBJECTDIR}/Microchip/usb_device.o ${OBJECTDIR}/Microchip/usb_function_msd.o ${OBJECTDIR}/Microchip/Internal\ Flash.o ${OBJECTDIR}/Microchip/usb_descriptors.o ${OBJECTDIR}/config.o ${OBJECTDIR}/app.o ${OBJECTDIR}/app_usb.o ${OBJECTDIR}/io.o ${OBJECTDIR}/timing.o ${OBJECTDIR}/settings.o
 
 # Source Files
-SOURCEFILES=Microchip/Files.c Microchip/usb_device.c Microchip/usb_function_msd.c Microchip/Internal Flash.c Microchip/usb_descriptors.c config.c app.c app_usb.c io.c timing.c
+SOURCEFILES=Microchip/Files.c Microchip/usb_device.c Microchip/usb_function_msd.c Microchip/Internal Flash.c Microchip/usb_descriptors.c config.c app.c app_usb.c io.c timing.c settings.c
 
 
 CFLAGS=
@@ -178,6 +178,14 @@ ${OBJECTDIR}/timing.o: timing.c  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d ${OBJECTDIR}/timing.o 
 	@${FIXDEPS} "${OBJECTDIR}/timing.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
+${OBJECTDIR}/settings.o: settings.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/settings.o.d 
+	@${RM} ${OBJECTDIR}/settings.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/settings.o   settings.c 
+	@${DEP_GEN} -d ${OBJECTDIR}/settings.o 
+	@${FIXDEPS} "${OBJECTDIR}/settings.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
+	
 else
 ${OBJECTDIR}/Microchip/Files.o: Microchip/Files.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/Microchip 
@@ -258,6 +266,14 @@ ${OBJECTDIR}/timing.o: timing.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/timing.o   timing.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/timing.o 
 	@${FIXDEPS} "${OBJECTDIR}/timing.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
+	
+${OBJECTDIR}/settings.o: settings.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/settings.o.d 
+	@${RM} ${OBJECTDIR}/settings.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -I".." -I"../Include" -I"../" -I"Microchip" -I"." -ml -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/settings.o   settings.c 
+	@${DEP_GEN} -d ${OBJECTDIR}/settings.o 
+	@${FIXDEPS} "${OBJECTDIR}/settings.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
 endif
 

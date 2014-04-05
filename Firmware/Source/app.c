@@ -2,22 +2,26 @@
 #include "config.h"
 #include "fat12.h"
 #include "io.h"
+#include "settings.h"
 #include "timing.h"
 
 #include "app_usb.h"
 #include "usb.h"
 
 
-#define MAX_CHARGE  142
-
-
 void main(void) {
     unsigned int timingCharge;
+    unsigned char isArmed;
 
     init();
     timingCharge = timing_getCharge();
     timing_charge();
+
     io_init();
+    settings_init();
+
+
+    isArmed = (io_disk_isLabelArmed() || settings_getIsArmed());
 
     
     if (!io_disk_isValid()) {
@@ -29,7 +33,7 @@ void main(void) {
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
 
-    } else if (io_disk_isLabelArmed() && (timingCharge < MAX_CHARGE)) { //Check if it needs to be deleted
+    } else if (isArmed && (timingCharge < settings_getTimingChargeLimit())) { //Check if it needs to be deleted
         unsigned char label[] = { FAT12_ROOT_LABEL };
         io_disk_erase(label);
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();

@@ -6,6 +6,7 @@ void io_init(void);
 
 void io_led_on(void);
 void io_led_off(void);
+void io_led_toggle(void);
 
 unsigned char io_disk_isLabelArmed(void);
 unsigned char io_disk_isLabelCalibrate(void);

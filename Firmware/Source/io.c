@@ -31,6 +31,10 @@ void io_led_off() {
     LATAbits.LATA0 = 0;
 }
 
+void io_led_toggle() {
+    LATAbits.LATA0 = !LATAbits.LATA0;
+}
+
 
 unsigned char io_disk_isLabelArmed() {
     unsigned char i, hasLabel = 0;
