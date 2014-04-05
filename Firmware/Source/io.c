@@ -32,7 +32,7 @@ void io_led_off() {
 }
 
 
-unsigned char io_disk_isArmed() {
+unsigned char io_disk_isLabelArmed() {
     unsigned char i, hasLabel = 0;
     ROM BYTE* label;
 
@@ -76,6 +76,50 @@ unsigned char io_disk_isArmed() {
     return 0;
 }
 
+unsigned char io_disk_isLabelCalibrate() {
+    unsigned char i, hasLabel = 0;
+    ROM BYTE* label;
+
+    for (i = 0; i < MDD_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT; i++) {
+        label = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + 3*MEDIA_SECTOR_SIZE + i*32);
+        if (label[11] == 0x08) {
+            hasLabel = 1;
+            if (((label[0] == 'C') || (label[0] == 'c'))
+             && ((label[1] == 'A') || (label[1] == 'a'))
+             && ((label[2] == 'L') || (label[2] == 'l'))
+             && ((label[3] == 'I') || (label[3] == 'i'))
+             && ((label[4] == 'B') || (label[4] == 'b'))
+             && ((label[5] == 'R') || (label[5] == 'r'))
+             && ((label[6] == 'A') || (label[6] == 'a'))
+             && ((label[7] == 'T') || (label[7] == 't'))
+             && ((label[8] == 'E') || (label[8] == 'e'))
+             && ((label[9] == ' ') || (label[9] == 0))
+             && ((label[10] == ' ') || (label[10] == 0))) {
+                return 1;
+            }
+        }
+    }
+
+    if (!hasLabel) {
+        label = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE + 0x2B);
+        if (((label[0] == 'C') || (label[0] == 'c'))
+         && ((label[1] == 'A') || (label[1] == 'a'))
+         && ((label[2] == 'L') || (label[2] == 'l'))
+         && ((label[3] == 'I') || (label[3] == 'i'))
+         && ((label[4] == 'B') || (label[4] == 'b'))
+         && ((label[5] == 'R') || (label[5] == 'r'))
+         && ((label[6] == 'A') || (label[6] == 'a'))
+         && ((label[7] == 'T') || (label[7] == 't'))
+         && ((label[8] == 'E') || (label[8] == 'e'))
+         && ((label[9] == ' ') || (label[9] == 0))
+         && ((label[10] == ' ') || (label[10] == 0))) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 
 unsigned char io_disk_isValid() {
     unsigned int i;
@@ -97,9 +141,9 @@ unsigned char io_disk_isValid() {
 }
 
 
-void io_disk_erase() {
+void io_disk_erase(unsigned char* label) {
     unsigned short long iBlock, iSector;
-    unsigned char i, j;
+    unsigned char i, j, k;
     BYTE buffer[TABLE_SIZE] = {0};
 
     //Erase all
@@ -118,7 +162,15 @@ void io_disk_erase() {
             if (iSector == 0) {        memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultMbr[0]  + ((int)i * TABLE_SIZE)), TABLE_SIZE);
             } else if (iSector == 1) { memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultBoot[0] + ((int)i * TABLE_SIZE)), TABLE_SIZE);
             } else if (iSector == 2) { memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultFat[0]  + ((int)i * TABLE_SIZE)), TABLE_SIZE);
-            } else if (iSector == 3) { memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultRoot[0] + ((int)i * TABLE_SIZE)), TABLE_SIZE);
+            } else if (iSector == 3) {
+                memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultRoot[0] + ((int)i * TABLE_SIZE)), TABLE_SIZE);
+                if (i == 0) { //overwrite label
+                    memset((void *)&buffer[0], ' ', 11);
+                    for (k=0; k<11; k++) {
+                        if (label[k]=='\0') { break; }
+                        buffer[k] = label[k];
+                    }
+                }
             } else {
                 memset((void *)&buffer[0], '\0', TABLE_SIZE);
             }
