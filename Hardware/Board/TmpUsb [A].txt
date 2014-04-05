@@ -1,4 +1,4 @@
-TmpUsb
+TmpUsb   ~0.61 sqin
 ======
 
 N   Part name                        RefDes   DigiKey                  Newark
