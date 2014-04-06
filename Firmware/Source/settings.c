@@ -1,5 +1,6 @@
 #include <p18cxxx.h>
 #include <string.h>
+#include <GenericTypeDefs.h>
 
 #include "io.h"
 
@@ -76,11 +77,11 @@ void settings_setTimingChargeLimit(unsigned int value) {
 }
 
 
-unsigned char settings_getIsArmed() {
-    return SettingsBuffer[SETTING_INDEX_ISARMED];
+BOOL settings_getIsArmed() {
+    return SettingsBuffer[SETTING_INDEX_ISARMED] ? TRUE : FALSE;
 }
 
-void settings_setIsArmed(unsigned char value) {
-    SettingsBuffer[SETTING_INDEX_ISARMED] = value;
+void settings_setIsArmed(BOOL value) {
+    SettingsBuffer[SETTING_INDEX_ISARMED] = value ? 1 : 0;
     settings_write();
 }

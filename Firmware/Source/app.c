@@ -1,4 +1,6 @@
 #include <p18cxxx.h>
+#include <GenericTypeDefs.h>
+
 #include "config.h"
 #include "fat12.h"
 #include "io.h"
@@ -14,7 +16,7 @@
 
 void main(void) {
     unsigned int timingCharge;
-    unsigned char isArmed;
+    BOOL isArmed;
 
     timingCharge = timing_getCharge();
 

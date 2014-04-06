@@ -1,8 +1,8 @@
 #include <p18cxxx.h>
+#include <GenericTypeDefs.h>
 
 #include "fat12.h"
 #include "usb.h"
-
 
 #include "internal flash.h"
 
@@ -36,7 +36,7 @@ void io_led_toggle() {
 }
 
 
-unsigned char io_disk_hasLabel(const rom char* label) {
+BOOL io_disk_hasLabel(const rom char* label) {
     unsigned char i, hasDriveLabel = 0;
     ROM BYTE* driveLabel;
 
@@ -60,38 +60,38 @@ unsigned char io_disk_hasLabel(const rom char* label) {
                 || (((label[i] >= 0x41) && (label[i] <= 0x5A)) && ((label[i] + 0x20) == driveLabel[i]))
                 || (((label[i] >= 0x61) && (label[i] <= 0x7A)) && ((label[i] - 0x20) == driveLabel[i]))
                 )) {
-                return 0; //if one letter doesn't match, abort early
+                return FALSE; //if one letter doesn't match, abort early
             }
         }
     }
 
-    for (; i < 11; i++) {
+    for (; i < 11; i++) { //check rest of label to be empty
          if (!(driveLabel[i] == ' ') && !(driveLabel[i] == 0)) {
-             return 0;
+             return FALSE;
          }
     }
 
-    return 1;
+    return TRUE;
 }
 
 
-unsigned char io_disk_isValid() {
+BOOL io_disk_isValid() {
     unsigned int i;
     ROM BYTE* mbr;
     ROM BYTE* boot;
 
     mbr = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS);
     for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
-        if (mbr[i] != DiskDefaultMbr[i]) { return 0; }
+        if (mbr[i] != DiskDefaultMbr[i]) { return FALSE; }
     }
 
     boot = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE);
     for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
         if ((i >= 0x2B) && (i <= 0x35)) { continue; }
-        if (boot[i] != DiskDefaultBoot[i]) { return 0; }
+        if (boot[i] != DiskDefaultBoot[i]) { return FALSE; }
     }
 
-    return 1;
+    return TRUE;
 }
 
 
