@@ -36,92 +36,42 @@ void io_led_toggle() {
 }
 
 
-unsigned char io_disk_isLabelArmed() {
-    unsigned char i, hasLabel = 0;
-    ROM BYTE* label;
+unsigned char io_disk_hasLabel(const rom char* label) {
+    unsigned char i, hasDriveLabel = 0;
+    ROM BYTE* driveLabel;
 
     for (i = 0; i < MDD_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT; i++) {
-        label = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + 3*MEDIA_SECTOR_SIZE + i*32);
-        if (label[11] == 0x08) {
-            hasLabel = 1;
-            if (((label[0] == 'A') || (label[0] == 'a'))
-             && ((label[1] == 'R') || (label[1] == 'r'))
-             && ((label[2] == 'M') || (label[2] == 'm'))
-             && ((label[3] == 'E') || (label[3] == 'e'))
-             && ((label[4] == 'D') || (label[4] == 'd'))
-             && ((label[5] == ' ') || (label[5] == 0))
-             && ((label[6] == ' ') || (label[6] == 0))
-             && ((label[7] == ' ') || (label[7] == 0))
-             && ((label[8] == ' ') || (label[8] == 0))
-             && ((label[9] == ' ') || (label[9] == 0))
-             && ((label[10] == ' ') || (label[10] == 0))) {
-                return 1;
+        driveLabel = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + 3*MEDIA_SECTOR_SIZE + i*32);
+        if (driveLabel[11] == 0x08) {
+            hasDriveLabel = 1;
+            break;
+        }
+    }
+
+    if (!hasDriveLabel) {
+        driveLabel = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE + 0x2B);
+    }
+
+    for (i = 0; i < 11; i++) {
+        if (label[i] == '\0') {
+            break;
+        } else {
+            if (!( (label[i] == driveLabel[i])
+                || (((label[i] >= 0x41) && (label[i] <= 0x5A)) && ((label[i] + 0x20) == driveLabel[i]))
+                || (((label[i] >= 0x61) && (label[i] <= 0x7A)) && ((label[i] - 0x20) == driveLabel[i]))
+                )) {
+                return 0; //if one letter doesn't match, abort early
             }
         }
     }
 
-    if (!hasLabel) {
-        label = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE + 0x2B);
-        if (((label[0] == 'A') || (label[0] == 'a'))
-         && ((label[1] == 'R') || (label[1] == 'r'))
-         && ((label[2] == 'M') || (label[2] == 'm'))
-         && ((label[3] == 'E') || (label[3] == 'e'))
-         && ((label[4] == 'D') || (label[4] == 'd'))
-         && ((label[5] == ' ') || (label[5] == 0))
-         && ((label[6] == ' ') || (label[6] == 0))
-         && ((label[7] == ' ') || (label[7] == 0))
-         && ((label[8] == ' ') || (label[8] == 0))
-         && ((label[9] == ' ') || (label[9] == 0))
-         && ((label[10] == ' ') || (label[10] == 0))) {
-            return 1;
-        }
+    for (; i < 11; i++) {
+         if (!(driveLabel[i] == ' ') && !(driveLabel[i] == 0)) {
+             return 0;
+         }
     }
 
-    return 0;
-}
-
-unsigned char io_disk_isLabelCalibrate() {
-    unsigned char i, hasLabel = 0;
-    ROM BYTE* label;
-
-    for (i = 0; i < MDD_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT; i++) {
-        label = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + 3*MEDIA_SECTOR_SIZE + i*32);
-        if (label[11] == 0x08) {
-            hasLabel = 1;
-            if (((label[0] == 'C') || (label[0] == 'c'))
-             && ((label[1] == 'A') || (label[1] == 'a'))
-             && ((label[2] == 'L') || (label[2] == 'l'))
-             && ((label[3] == 'I') || (label[3] == 'i'))
-             && ((label[4] == 'B') || (label[4] == 'b'))
-             && ((label[5] == 'R') || (label[5] == 'r'))
-             && ((label[6] == 'A') || (label[6] == 'a'))
-             && ((label[7] == 'T') || (label[7] == 't'))
-             && ((label[8] == 'E') || (label[8] == 'e'))
-             && ((label[9] == ' ') || (label[9] == 0))
-             && ((label[10] == ' ') || (label[10] == 0))) {
-                return 1;
-            }
-        }
-    }
-
-    if (!hasLabel) {
-        label = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE + 0x2B);
-        if (((label[0] == 'C') || (label[0] == 'c'))
-         && ((label[1] == 'A') || (label[1] == 'a'))
-         && ((label[2] == 'L') || (label[2] == 'l'))
-         && ((label[3] == 'I') || (label[3] == 'i'))
-         && ((label[4] == 'B') || (label[4] == 'b'))
-         && ((label[5] == 'R') || (label[5] == 'r'))
-         && ((label[6] == 'A') || (label[6] == 'a'))
-         && ((label[7] == 'T') || (label[7] == 't'))
-         && ((label[8] == 'E') || (label[8] == 'e'))
-         && ((label[9] == ' ') || (label[9] == 0))
-         && ((label[10] == ' ') || (label[10] == 0))) {
-            return 1;
-        }
-    }
-
-    return 0;
+    return 1;
 }
 
 

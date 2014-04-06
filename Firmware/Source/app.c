@@ -26,7 +26,7 @@ void main(void) {
     timing_charge();
 
 
-    isArmed = (io_disk_isLabelArmed() || settings_getIsArmed());
+    isArmed = (io_disk_hasLabel(IO_DISK_LABEL_ARMED) || settings_getIsArmed());
 
     
     if (!io_disk_isValid()) {
@@ -53,7 +53,7 @@ void main(void) {
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
 
-    } else if (io_disk_isLabelCalibrate()) {
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_CALIBRATE)) {
 
         unsigned char label[12] = "Raw "; //11 + null char
         unsigned char offset = 4;
@@ -122,7 +122,7 @@ void main(void) {
     io_led_off();
 
 
-    isArmed = (io_disk_isLabelArmed() || settings_getIsArmed()); //just reset it from whatever previous steps did to drive
+    isArmed = (io_disk_hasLabel(IO_DISK_LABEL_ARMED) || settings_getIsArmed()); //just reset it from whatever previous steps did to drive
 
     if (!isArmed) {
         wait_10ms(); //just to blink a bit
@@ -142,7 +142,7 @@ void main(void) {
             ProcessIO();
 
             if ((indexer == 0) && !isArmed) {
-                if (io_disk_isLabelArmed()) {
+                if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
                     settings_setIsArmed(1);
                     io_led_off();
                     isArmed = 1;
