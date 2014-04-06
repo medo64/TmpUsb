@@ -9,6 +9,9 @@
 #include "usb.h"
 
 
+#define DEBUG  0
+
+
 void main(void) {
     unsigned int timingCharge;
     unsigned char isArmed;
@@ -30,6 +33,7 @@ void main(void) {
         
         unsigned char label[] = { FAT12_ROOT_LABEL };
         io_disk_erase(label);
+        settings_setIsArmed(0);
 
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
@@ -43,6 +47,7 @@ void main(void) {
 
         unsigned char label[] = { FAT12_ROOT_LABEL };
         io_disk_erase(label);
+        settings_setIsArmed(0);
 
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
@@ -75,9 +80,38 @@ void main(void) {
             label[offset + 1] = '\0';
         }
         io_disk_erase(label);
+        settings_setIsArmed(0);
 
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
     }
+
+#if DEBUG
+    {
+        unsigned char label[12] = "Debug "; //11 + null char
+        unsigned char offset = 6;
+
+        if (timingCharge >= 1000) {
+            label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 1000);
+            label[offset + 1] = 0x30 + (unsigned char)((timingCharge / 100) % 10);
+            label[offset + 2] = 0x30 + (unsigned char)((timingCharge / 10) % 10);
+            label[offset + 3] = 0x30 + (unsigned char)(timingCharge % 10);
+            label[offset + 4] = '\0';
+        } else if (timingCharge >= 100) {
+            label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 100);
+            label[offset + 1] = 0x30 + (unsigned char)((timingCharge / 10) % 10);
+            label[offset + 2] = 0x30 + (unsigned char)(timingCharge % 10);
+            label[offset + 3] = '\0';
+        } else if (timingCharge >= 10) {
+            label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 10);
+            label[offset + 1] = 0x30 + (unsigned char)(timingCharge % 10);
+            label[offset + 2] = '\0';
+        } else {
+            label[offset + 0] = 0x30 + (unsigned char)timingCharge;
+            label[offset + 1] = '\0';
+        }
+        io_disk_erase(label);
+    }
+#endif
 
 
     //wait for charge
@@ -88,10 +122,32 @@ void main(void) {
     io_led_off();
 
 
-    USBDeviceInit();	//usb_device.c.  Initializes USB module SFRs and firmware
+    isArmed = (io_disk_isLabelArmed() || settings_getIsArmed()); //just reset it from whatever previous steps did to drive
 
-    while(1) {
-        USBDeviceTasks(); //if using polling, must call this function periodically (such as once every 1.8ms or faster)
-        ProcessIO();        
+    if (!isArmed) {
+        wait_10ms(); //just to blink a bit
+        io_led_on();
+    }
+
+
+    {
+        unsigned char indexer = 0;
+
+        USBDeviceInit();	//usb_device.c.  Initializes USB module SFRs and firmware
+
+        while(1) {
+            indexer++;
+
+            USBDeviceTasks(); //if using polling, must call this function periodically (such as once every 1.8ms or faster)
+            ProcessIO();
+
+            if ((indexer == 0) && !isArmed) {
+                if (io_disk_isLabelArmed()) {
+                    settings_setIsArmed(1);
+                    io_led_off();
+                    isArmed = 1;
+                }
+            }
+        }
     }
 }
