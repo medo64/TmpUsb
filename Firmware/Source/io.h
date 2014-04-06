@@ -4,7 +4,9 @@
 #include <GenericTypeDefs.h>
 
 
+#define IO_DISK_LABEL_ARM        "Arm"
 #define IO_DISK_LABEL_ARMED      "Armed"
+#define IO_DISK_LABEL_RESET      "Reset"
 #define IO_DISK_LABEL_NOTARMED   "Not Armed"
 #define IO_DISK_LABEL_CALIBRATE  "Calibrate"
 

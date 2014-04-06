@@ -65,6 +65,13 @@ void settings_write(void) {
     io_led_toggle();
 }
 
+void settings_reset() {
+    SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH] = SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH;
+    SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW]  = SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW;
+    SettingsBuffer[SETTING_INDEX_ISARMED]                  = SETTING_DEFAULT_ISARMED;
+    settings_write();
+}
+
 
 unsigned int settings_getTimingChargeLimit() {
     return SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH] * 256 + SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW];

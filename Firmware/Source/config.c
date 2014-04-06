@@ -63,6 +63,7 @@ void init(void) {
     wait_10ms();
 }
 
+
 void wait_10ms(void) {
     Delay10KTCYx(6); //@ 24 MHz
 }
@@ -76,4 +77,9 @@ void wait_1s(void) {
     Delay10KTCYx(180);
     Delay10KTCYx(180);
     Delay10KTCYx(180);
+}
+
+
+void reset(void) {
+    Reset();
 }

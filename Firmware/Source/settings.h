@@ -5,6 +5,7 @@
 
 
 void settings_init(void);
+void settings_reset(void);
 
 unsigned int settings_getTimingChargeLimit(void);
 void settings_setTimingChargeLimit(unsigned int value);

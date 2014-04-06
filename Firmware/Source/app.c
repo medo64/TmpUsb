@@ -15,10 +15,14 @@
 
 
 void main(void) {
-    unsigned int timingCharge;
-    BOOL isArmed;
+    unsigned int timingCharge = timing_getCharge();
 
-    timingCharge = timing_getCharge();
+    if (settings_getIsArmed() && (timingCharge < settings_getTimingChargeLimit())) {
+        unsigned char label[] = { FAT12_ROOT_LABEL };
+        io_disk_erase(label);
+        settings_setIsArmed(0);
+        reset();
+    }
 
 
     init();
@@ -28,32 +32,29 @@ void main(void) {
     timing_charge();
 
 
-    isArmed = (io_disk_hasLabel(IO_DISK_LABEL_ARMED) || settings_getIsArmed());
-
-    
     if (!io_disk_isValid()) {
         
         unsigned char label[] = { FAT12_ROOT_LABEL };
         io_disk_erase(label);
-        settings_setIsArmed(0);
+        settings_setIsArmed(FALSE);
 
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
 
-    } else if (isArmed && (timingCharge < settings_getTimingChargeLimit())) { //Check if it needs to be deleted
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_RESET)) {
 
         unsigned char label[] = { FAT12_ROOT_LABEL };
         io_disk_erase(label);
-        settings_setIsArmed(0);
+        settings_reset();
 
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
+
+        settings_setIsArmed(TRUE);
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_CALIBRATE)) {
 
@@ -85,35 +86,37 @@ void main(void) {
         settings_setIsArmed(0);
 
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-    }
+        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
 
-#if DEBUG
-    {
-        unsigned char label[12] = "Debug "; //11 + null char
-        unsigned char offset = 6;
+    } else {
 
-        if (timingCharge >= 1000) {
-            label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 1000);
-            label[offset + 1] = 0x30 + (unsigned char)((timingCharge / 100) % 10);
-            label[offset + 2] = 0x30 + (unsigned char)((timingCharge / 10) % 10);
-            label[offset + 3] = 0x30 + (unsigned char)(timingCharge % 10);
-            label[offset + 4] = '\0';
-        } else if (timingCharge >= 100) {
-            label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 100);
-            label[offset + 1] = 0x30 + (unsigned char)((timingCharge / 10) % 10);
-            label[offset + 2] = 0x30 + (unsigned char)(timingCharge % 10);
-            label[offset + 3] = '\0';
-        } else if (timingCharge >= 10) {
-            label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 10);
-            label[offset + 1] = 0x30 + (unsigned char)(timingCharge % 10);
-            label[offset + 2] = '\0';
-        } else {
-            label[offset + 0] = 0x30 + (unsigned char)timingCharge;
-            label[offset + 1] = '\0';
-        }
-        io_disk_erase(label);
+        #if DEBUG
+            unsigned char label[12] = "Debug "; //11 + null char
+            unsigned char offset = 6;
+
+            if (timingCharge >= 1000) {
+                label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 1000);
+                label[offset + 1] = 0x30 + (unsigned char)((timingCharge / 100) % 10);
+                label[offset + 2] = 0x30 + (unsigned char)((timingCharge / 10) % 10);
+                label[offset + 3] = 0x30 + (unsigned char)(timingCharge % 10);
+                label[offset + 4] = '\0';
+            } else if (timingCharge >= 100) {
+                label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 100);
+                label[offset + 1] = 0x30 + (unsigned char)((timingCharge / 10) % 10);
+                label[offset + 2] = 0x30 + (unsigned char)(timingCharge % 10);
+                label[offset + 3] = '\0';
+            } else if (timingCharge >= 10) {
+                label[offset + 0] = 0x30 + (unsigned char)(timingCharge / 10);
+                label[offset + 1] = 0x30 + (unsigned char)(timingCharge % 10);
+                label[offset + 2] = '\0';
+            } else {
+                label[offset + 0] = 0x30 + (unsigned char)timingCharge;
+                label[offset + 1] = '\0';
+            }
+            io_disk_erase(label);
+        #endif
     }
-#endif
 
 
     //wait for charge
@@ -124,9 +127,7 @@ void main(void) {
     io_led_off();
 
 
-    isArmed = (io_disk_hasLabel(IO_DISK_LABEL_ARMED) || settings_getIsArmed()); //just reset it from whatever previous steps did to drive
-
-    if (!isArmed) {
+    if (!settings_getIsArmed()) {
         wait_10ms(); //just to blink a bit
         io_led_on();
     }
@@ -137,17 +138,16 @@ void main(void) {
 
         USBDeviceInit();	//usb_device.c.  Initializes USB module SFRs and firmware
 
-        while(1) {
+        while(TRUE) {
             indexer++;
 
             USBDeviceTasks(); //if using polling, must call this function periodically (such as once every 1.8ms or faster)
             ProcessIO();
 
-            if ((indexer == 0) && !isArmed) {
+            if ((indexer == 0) && !settings_getIsArmed()) {
                 if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
-                    settings_setIsArmed(1);
+                    settings_setIsArmed(TRUE);
                     io_led_off();
-                    isArmed = 1;
                 }
             }
         }
