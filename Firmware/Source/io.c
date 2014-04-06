@@ -87,7 +87,8 @@ BOOL io_disk_isValid() {
 
     boot = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE);
     for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
-        if ((i >= 0x2B) && (i <= 0x35)) { continue; }
+        if (i == 0x25) { continue; } //dirty flag
+        if ((i >= 0x2B) && (i <= 0x35)) { continue; } //label
         if (boot[i] != DiskDefaultBoot[i]) { return FALSE; }
     }
 
