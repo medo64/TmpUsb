@@ -17,6 +17,7 @@
 void main(void) {
     unsigned int timingCharge = timing_getCharge();
 
+    settings_init();
     if (settings_getIsArmed() && (timingCharge < settings_getTimingChargeLimit())) {
         unsigned char label[] = { FAT12_ROOT_LABEL };
         io_disk_erase(label);
