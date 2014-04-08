@@ -139,11 +139,11 @@
     0xFF,0x0F                                                                                        \
 }
 
-#define FAT12_ROOT_LABEL  'N','o','t',' ','A','r','m','e','d',' ',' '
+#define FAT12_ROOT_DEFAULT_LABEL  'N','o','t',' ','A','r','m','e','d',' ',' '
 
 #define FAT12_ROOT {                                                                                 \
     /* First entry */                                                                                \
-    FAT12_ROOT_LABEL,  /* Drive Name (11 chars, padded with spaces) */                               \
+    FAT12_ROOT_DEFAULT_LABEL,  /* Drive Name (11 chars, padded with spaces) */                       \
     0x08,  /* specify this entry as a volume label */                                                \
     0x00,  /* Reserved */                                                                            \
     0x00, 0x00, 0x00, 0x00, 0x00,  /* Create time */                                                 \

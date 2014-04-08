@@ -14,3 +14,5 @@ N   Part name                        RefDes   DigiKey                  Newark
 1x  R 100K 0.125W (0805)             R4       RMCF0805JT100KCT-ND      68R0231
 1x  U PIC18F26J50-I/SS (SSOP-28)     U1       PIC18F26J50-I/SS-ND      98M1806
 1x  VR MCP1700 (SOT-23)              VR1      MCP1700T3302ETTCT-ND     88H9817
+
+    1/2" heat-shrink tubing, 33mm
