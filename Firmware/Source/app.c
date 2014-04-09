@@ -55,6 +55,11 @@ void main(void) {
 
         settings_setIsArmed(TRUE);
 
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_1) || io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_2)) {
+
+        settings_setIsArmed(TRUE);
+        settings_setTimingChargeLimit(1024); //this will ensure it always gets erased since there is no ADC value higher than 1024
+        
     } else if (io_disk_hasLabel(IO_DISK_LABEL_CALIBRATE)) {
 
         unsigned char label[12] = "Raw "; //11 + null char

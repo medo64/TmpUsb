@@ -5,6 +5,8 @@
 
 
 #define IO_DISK_LABEL_ARM        "Arm"
+#define IO_DISK_LABEL_ARM_MAX_1  "ArmMax"
+#define IO_DISK_LABEL_ARM_MAX_2  "Arm Max"
 #define IO_DISK_LABEL_ARMED      "Armed"
 #define IO_DISK_LABEL_RESET      "Reset"
 #define IO_DISK_LABEL_NOTARMED   "Not Armed"
