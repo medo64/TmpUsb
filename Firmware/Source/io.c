@@ -36,6 +36,11 @@ void io_led_toggle() {
 }
 
 
+BOOL io_5v_isOn(void) {
+    return PORTCbits.RC6 ? TRUE : FALSE;
+}
+
+
 BOOL io_disk_hasLabel(const rom char* label) {
     unsigned char i, hasDriveLabel = 0;
     ROM BYTE* driveLabel;

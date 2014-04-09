@@ -19,10 +19,10 @@ void io_led_on(void);
 void io_led_off(void);
 void io_led_toggle(void);
 
-BOOL io_disk_hasLabel(const rom char* label);
+BOOL io_5v_isOn(void);
 
 BOOL io_disk_isValid(void);
-
+BOOL io_disk_hasLabel(const rom char* label);
 void io_disk_erase(unsigned char* label);
 
 

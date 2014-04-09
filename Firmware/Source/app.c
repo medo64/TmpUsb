@@ -126,6 +126,16 @@ void main(void) {
                     settings_setIsArmed(TRUE);
                     io_led_off();
                 }
+            } else if (!io_5v_isOn() && settings_getIsArmed()) {
+                unsigned char label[] = { FAT12_ROOT_DEFAULT_LABEL };
+                unsigned int oldChargeLimit = settings_getTimingChargeLimit();
+                settings_setTimingChargeLimit(1024); //ensure it gets deleted on next boot
+                io_disk_erase(label);
+                settings_setTimingChargeLimit(oldChargeLimit);
+                while (TRUE) {
+                    io_led_toggle();
+                    wait_100ms();
+                }
             }
         }
     }
