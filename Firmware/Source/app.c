@@ -105,7 +105,7 @@ void main(void) {
 
 
     if (!settings_getIsArmed()) {
-        wait_10ms(); //just to blink a bit
+        wait_100ms(); //just to blink a bit
         io_led_on();
     }
 
