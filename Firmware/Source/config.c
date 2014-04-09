@@ -64,8 +64,8 @@ void init(void) {
 }
 
 
-void wait_100ms(void) {
-    Delay10KTCYx(72); //@ 24 MHz
+void wait_short(void) {
+    Delay10KTCYx(64);
 }
 
 

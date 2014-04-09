@@ -3,7 +3,7 @@
 
     void init(void);
 
-    void wait_100ms(void);
+    void wait_short(void);
 
     void reset(void);
 

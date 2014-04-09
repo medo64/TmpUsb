@@ -35,11 +35,11 @@ void main(void) {
         io_disk_erase(label);
         settings_setIsArmed(FALSE);
 
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_RESET)) {
 
@@ -47,9 +47,9 @@ void main(void) {
         io_disk_erase(label);
         settings_reset();
 
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
 
@@ -89,9 +89,9 @@ void main(void) {
         }
         io_disk_erase(label);
 
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
-        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
 
     }
 
@@ -105,7 +105,7 @@ void main(void) {
 
 
     if (!settings_getIsArmed()) {
-        wait_100ms(); //just to blink a bit
+        wait_short(); //just to blink a bit
         io_led_on();
     }
 
@@ -134,7 +134,7 @@ void main(void) {
                 settings_setTimingChargeLimit(oldChargeLimit);
                 while (TRUE) {
                     io_led_toggle();
-                    wait_100ms();
+                    wait_short();
                 }
             }
         }
