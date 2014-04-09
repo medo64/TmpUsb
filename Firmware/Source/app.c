@@ -38,6 +38,8 @@ void main(void) {
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
         io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
+        io_led_on(); wait_100ms();  io_led_off(); wait_100ms();
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_RESET)) {
 
