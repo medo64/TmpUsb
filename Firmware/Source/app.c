@@ -98,7 +98,7 @@ void main(void) {
 
     //wait for charge
     io_led_on();
-    while (timingCharge < 1000) {
+    while (timingCharge < 1012) {
         timingCharge = timing_getCharge();
     }
     io_led_off();
