@@ -227,16 +227,15 @@ const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[1];}sd000={
     {0x0409} //0x0409 = Language ID code for US English
 };
 //Manufacturer string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd001={
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[12];}sd001={
 sizeof(sd001),USB_DESCRIPTOR_STRING,
-{'M','i','c','r','o','c','h','i','p',' ',
-'T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'
+{'J','o','s','i','p',' ','M','e','d','v','e','d'
 }};
 
 //Product string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[28];}sd002={
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd002={
 sizeof(sd002),USB_DESCRIPTOR_STRING,
-{'M','i','c','r','o','c','h','i','p',' ','M','a','s','s',' ','S','t','o','r','a','g','e',' ','D','r','i','v','e'
+{'T','m','p','U','s','b',' ','M','a','s','s',' ','S','t','o','r','a','g','e',' ','D','r','i','v','e'
 }};
 
 //Serial number string descriptor.  Note: This should be unique for each unit 
@@ -247,7 +246,7 @@ sizeof(sd002),USB_DESCRIPTOR_STRING,
 //of ASCII characters "0" through "9" and capital letters "A" through "F".
 const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[12];}sd003={
 sizeof(sd003),USB_DESCRIPTOR_STRING,
-{'1','2','3','4','5','6','7','8','9','0','9','9'}};
+{'1','9','7','9','0','1','2','8','1','8','1','5'}};
 
 
 //Array of configuration descriptors

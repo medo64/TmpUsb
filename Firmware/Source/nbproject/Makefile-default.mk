@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=app.c config.c io.c Microchip/Framework/usb/src/usb_device.c Microchip/Application/usb_descriptors.c Microchip/Application/app_device_msd.c Microchip/Framework/usb/src/usb_device_msd.c Microchip/Framework/driver/fileio/src/internal_flash.c Microchip/Application/files.c timing.c settings.c
+SOURCEFILES_QUOTED_IF_SPACED=Microchip/Application/usb_descriptors.c Microchip/Application/app_device_msd.c Microchip/Application/files.c Microchip/Framework/usb/src/usb_device.c Microchip/Framework/usb/src/usb_device_msd.c Microchip/Framework/driver/fileio/src/internal_flash.c app.c config.c io.c timing.c settings.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 ${OBJECTDIR}/Microchip/Application/files.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/app.p1.d ${OBJECTDIR}/config.p1.d ${OBJECTDIR}/io.p1.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d ${OBJECTDIR}/Microchip/Application/files.p1.d ${OBJECTDIR}/timing.p1.d ${OBJECTDIR}/settings.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 ${OBJECTDIR}/Microchip/Application/files.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 ${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d ${OBJECTDIR}/Microchip/Application/files.p1.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d ${OBJECTDIR}/app.p1.d ${OBJECTDIR}/config.p1.d ${OBJECTDIR}/io.p1.d ${OBJECTDIR}/timing.p1.d ${OBJECTDIR}/settings.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 ${OBJECTDIR}/Microchip/Application/files.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
+OBJECTFILES=${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 ${OBJECTDIR}/Microchip/Application/files.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 ${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
 
 # Source Files
-SOURCEFILES=app.c config.c io.c Microchip/Framework/usb/src/usb_device.c Microchip/Application/usb_descriptors.c Microchip/Application/app_device_msd.c Microchip/Framework/usb/src/usb_device_msd.c Microchip/Framework/driver/fileio/src/internal_flash.c Microchip/Application/files.c timing.c settings.c
+SOURCEFILES=Microchip/Application/usb_descriptors.c Microchip/Application/app_device_msd.c Microchip/Application/files.c Microchip/Framework/usb/src/usb_device.c Microchip/Framework/usb/src/usb_device_msd.c Microchip/Framework/driver/fileio/src/internal_flash.c app.c config.c io.c timing.c settings.c
 
 
 CFLAGS=
@@ -90,6 +90,54 @@ MP_PROCESSOR_OPTION=18F26J50
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/Microchip/Application/usb_descriptors.p1: Microchip/Application/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
+	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/usb_descriptors.p1  Microchip/Application/usb_descriptors.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Application/usb_descriptors.d ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Application/app_device_msd.p1: Microchip/Application/app_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
+	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/app_device_msd.p1  Microchip/Application/app_device_msd.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Application/app_device_msd.d ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Application/files.p1: Microchip/Application/files.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
+	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/files.p1  Microchip/Application/files.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Application/files.d ${OBJECTDIR}/Microchip/Application/files.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/files.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1: Microchip/Framework/usb/src/usb_device.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1  Microchip/Framework/usb/src/usb_device.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1: Microchip/Framework/usb/src/usb_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1  Microchip/Framework/usb/src/usb_device_msd.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1: Microchip/Framework/driver/fileio/src/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1  Microchip/Framework/driver/fileio/src/internal_flash.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.d ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 ${OBJECTDIR}/app.p1: app.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/app.p1.d 
@@ -114,54 +162,6 @@ ${OBJECTDIR}/io.p1: io.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/io.d ${OBJECTDIR}/io.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/io.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1: Microchip/Framework/usb/src/usb_device.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1  Microchip/Framework/usb/src/usb_device.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Application/usb_descriptors.p1: Microchip/Application/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
-	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/usb_descriptors.p1  Microchip/Application/usb_descriptors.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Application/usb_descriptors.d ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Application/app_device_msd.p1: Microchip/Application/app_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
-	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/app_device_msd.p1  Microchip/Application/app_device_msd.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Application/app_device_msd.d ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1: Microchip/Framework/usb/src/usb_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1  Microchip/Framework/usb/src/usb_device_msd.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1: Microchip/Framework/driver/fileio/src/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1  Microchip/Framework/driver/fileio/src/internal_flash.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.d ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Application/files.p1: Microchip/Application/files.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
-	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/files.p1  Microchip/Application/files.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Application/files.d ${OBJECTDIR}/Microchip/Application/files.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/files.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
 ${OBJECTDIR}/timing.p1: timing.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/timing.p1.d 
@@ -179,6 +179,54 @@ ${OBJECTDIR}/settings.p1: settings.c  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} ${OBJECTDIR}/settings.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 else
+${OBJECTDIR}/Microchip/Application/usb_descriptors.p1: Microchip/Application/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
+	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/usb_descriptors.p1  Microchip/Application/usb_descriptors.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Application/usb_descriptors.d ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Application/app_device_msd.p1: Microchip/Application/app_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
+	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/app_device_msd.p1  Microchip/Application/app_device_msd.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Application/app_device_msd.d ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Application/files.p1: Microchip/Application/files.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
+	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/files.p1  Microchip/Application/files.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Application/files.d ${OBJECTDIR}/Microchip/Application/files.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/files.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1: Microchip/Framework/usb/src/usb_device.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1  Microchip/Framework/usb/src/usb_device.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1: Microchip/Framework/usb/src/usb_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1  Microchip/Framework/usb/src/usb_device_msd.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1: Microchip/Framework/driver/fileio/src/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1  Microchip/Framework/driver/fileio/src/internal_flash.c 
+	@-${MV} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.d ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 ${OBJECTDIR}/app.p1: app.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
 	@${RM} ${OBJECTDIR}/app.p1.d 
@@ -202,54 +250,6 @@ ${OBJECTDIR}/io.p1: io.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/io.p1  io.c 
 	@-${MV} ${OBJECTDIR}/io.d ${OBJECTDIR}/io.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/io.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1: Microchip/Framework/usb/src/usb_device.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1  Microchip/Framework/usb/src/usb_device.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Application/usb_descriptors.p1: Microchip/Application/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
-	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/usb_descriptors.p1  Microchip/Application/usb_descriptors.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Application/usb_descriptors.d ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Application/app_device_msd.p1: Microchip/Application/app_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
-	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/app_device_msd.p1  Microchip/Application/app_device_msd.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Application/app_device_msd.d ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/app_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1: Microchip/Framework/usb/src/usb_device_msd.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/usb/src 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1  Microchip/Framework/usb/src/usb_device_msd.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.d ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/usb/src/usb_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1: Microchip/Framework/driver/fileio/src/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1  Microchip/Framework/driver/fileio/src/internal_flash.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.d ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Framework/driver/fileio/src/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/Application/files.p1: Microchip/Application/files.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR}/Microchip/Application 
-	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/Application/files.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,+speed,-space,-debug --addrqual=ignore --mode=free -P -N255 -I"Microchip/Framework" -I"Microchip/Framework/usb" -I"Microchip/Application" -I"Microchip/Custom" --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,+plib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%%f:%%l: error: (%%n) %%s" "--warnformat=%%f:%%l: warning: (%%n) %%s" "--msgformat=%%f:%%l: advisory: (%%n) %%s"    -o${OBJECTDIR}/Microchip/Application/files.p1  Microchip/Application/files.c 
-	@-${MV} ${OBJECTDIR}/Microchip/Application/files.d ${OBJECTDIR}/Microchip/Application/files.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/Application/files.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/timing.p1: timing.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
