@@ -1,22 +1,9 @@
 /********************************************************************
- FileName:     	usb_config.h
- Dependencies: 	Always: GenericTypeDefs.h, usb_device.h
-               	Situational: usb_function_hid.h, usb_function_cdc.h, usb_function_msd.h, etc.
- Processor:		PIC18 or PIC24 USB Microcontrollers
- Hardware:		The code is natively intended to be used on the following
- 				hardware platforms: PICDEM� FS USB Demo Board, 
- 				PIC18F87J50 FS USB Plug-In Module, or
- 				Explorer 16 + PIC24 USB PIM.  The firmware may be
- 				modified for use on other USB platforms by editing the
- 				HardwareProfile.h file.
- Complier:  	Microchip C18 (for PIC18) or C30 (for PIC24)
- Company:		Microchip Technology, Inc.
-
  Software License Agreement:
 
  The software supplied herewith by Microchip Technology Incorporated
- (the �Company�) for its PIC� Microcontroller is intended and
- supplied to you, the Company�s customer, for use solely and
+ (the "Company") for its PIC(R) Microcontroller is intended and
+ supplied to you, the Company's customer, for use solely and
  exclusively on Microchip PIC Microcontroller products. The
  software is owned by the Company and/or its supplier, and is
  protected under applicable copyright laws. All rights are reserved.
@@ -25,7 +12,7 @@
  civil liability for the breach of the terms and conditions of this
  license.
 
- THIS SOFTWARE IS PROVIDED IN AN �AS IS� CONDITION. NO WARRANTIES,
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
  WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
  TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
  PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
@@ -57,19 +44,19 @@
 								// that use EP0 IN or OUT for sending large amounts of
 								// application related data.
 									
-#define USB_MAX_NUM_INT     	1   // For tracking Alternate Setting
-#define USB_MAX_EP_NUMBER	    1
+#define USB_MAX_NUM_INT     	1   // Number of interface descriptors in the device (used for tracking Alternate Setting)
+#define USB_MAX_EP_NUMBER	    1   // Maximum endpoint number used in the device
 
 //Device descriptor - if these two definitions are not defined then
-//  a ROM USB_DEVICE_DESCRIPTOR variable by the exact name of device_dsc
+//  a const USB_DEVICE_DESCRIPTOR variable by the exact name of device_dsc
 //  must exist.
 #define USB_USER_DEVICE_DESCRIPTOR &device_dsc
-#define USB_USER_DEVICE_DESCRIPTOR_INCLUDE extern ROM USB_DEVICE_DESCRIPTOR device_dsc
+#define USB_USER_DEVICE_DESCRIPTOR_INCLUDE extern const USB_DEVICE_DESCRIPTOR device_dsc
 
 //Configuration descriptors - if these two definitions do not exist then
-//  a ROM BYTE *ROM variable named exactly USB_CD_Ptr[] must exist.
+//  a const uint8_t *const variable named exactly USB_CD_Ptr[] must exist.
 #define USB_USER_CONFIG_DESCRIPTOR USB_CD_Ptr
-#define USB_USER_CONFIG_DESCRIPTOR_INCLUDE extern ROM BYTE *ROM USB_CD_Ptr[]
+#define USB_USER_CONFIG_DESCRIPTOR_INCLUDE extern const uint8_t *const USB_CD_Ptr[]
 
 //Make sure only one of the below "#define USB_PING_PONG_MODE"
 //is uncommented.
@@ -78,8 +65,8 @@
 //#define USB_PING_PONG_MODE USB_PING_PONG__EP0_OUT_ONLY
 //#define USB_PING_PONG_MODE USB_PING_PONG__ALL_BUT_EP0		//NOTE: This mode is not supported in PIC18F4550 family rev A3 devices
 
-#define USB_POLLING
-//#define USB_INTERRUPT
+//#define USB_POLLING
+#define USB_INTERRUPT
 
 /* Parameter definitions are defined in usb_device.h */
 #define USB_PULLUP_OPTION USB_PULLUP_ENABLE
@@ -131,7 +118,7 @@
 //USB_ENABLE_STATUS_STAGE_TIMEOUTS feature is not enabled, then the USB_STATUS_STAGE_TIMEOUT
 //parameter is not relevant.
 
-#define USB_STATUS_STAGE_TIMEOUT     (BYTE)45   //Approximate timeout in milliseconds, except when
+#define USB_STATUS_STAGE_TIMEOUT     (uint8_t)45   //Approximate timeout in milliseconds, except when
                                                 //USB_POLLING mode is used, and USBDeviceTasks() is called at < 1kHz
                                                 //In this special case, the timeout becomes approximately:
 //Timeout(in milliseconds) = ((1000 * (USB_STATUS_STAGE_TIMEOUT - 1)) / (USBDeviceTasks() polling frequency in Hz))
@@ -139,7 +126,7 @@
 
 #define USB_SUPPORT_DEVICE
 
-#define USB_NUM_STRING_DESCRIPTORS 4    //Include the string descriptor 0 (lang ID codes) in this count
+#define USB_NUM_STRING_DESCRIPTORS 4    //Include the lang ID codes string 0 in this count
 
 //#define USB_INTERRUPT_LEGACY_CALLBACKS
 #define USB_ENABLE_ALL_HANDLERS
@@ -153,6 +140,7 @@
 //#define USB_ENABLE_EP0_DATA_HANDLER
 //#define USB_ENABLE_TRANSFER_COMPLETE_HANDLER
 
+
 /** DEVICE CLASS USAGE *********************************************/
 #define USB_USE_MSD
 
@@ -162,7 +150,7 @@
 #define MSD_INTF_ID             0x00
 #define MSD_IN_EP_SIZE          64u
 #define MSD_OUT_EP_SIZE         64u
-#define MAX_LUN                 0u       //Logical unit number count, starts from/includes '0' (ex: 0 == 1 LUN)
+#define MAX_LUN                 0u   //Includes 0 (ex: 0 = 1 LUN, 1 = 2 LUN, etc.)
 #define MSD_DATA_IN_EP          1u
 #define MSD_DATA_OUT_EP         1u
 #define MSD_BUFFER_ADDRESS      0x600

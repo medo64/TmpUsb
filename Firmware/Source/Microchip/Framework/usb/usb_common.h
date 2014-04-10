@@ -1,53 +1,10 @@
-/******************************************************************************
-
-  Common USB Library Definitions (Header File)
-
-Summary:
-    This file defines data types, constants, and macros that are common to
-    multiple layers of the Microchip USB Firmware Stack.
-
-Description:
-    This file defines data types, constants, and macros that are common to
-    multiple layers of the Microchip USB Firmware Stack.
-
-    This file is located in the "\<Install Directory\>\\Microchip\\Include\\USB"
-    directory.
-    
-    When including this file in a new project, this file can either be
-    referenced from the directory in which it was installed or copied
-    directly into the user application folder. If the first method is
-    chosen to keep the file located in the folder in which it is installed
-    then include paths need to be added so that the library and the
-    application both know where to reference each others files. If the
-    application folder is located in the same folder as the Microchip
-    folder (like the current demo folders), then the following include
-    paths need to be added to the application's project:
-    
-    .
-    ..\\..\\MicrochipInclude
-        
-    If a different directory structure is used, modify the paths as
-    required. An example using absolute paths instead of relative paths
-    would be the following:
-    
-    C:\\Microchip Solutions\\Microchip\\Include
-    
-    C:\\Microchip Solutions\\My Demo Application 
-*******************************************************************************/
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-
- FileName:        usb_common.h
- Dependencies:    See included files, below.
- Processor:       PIC18/PIC24/PIC32MX microcontrollers with USB module
- Compiler:        C18 v3.13+/C30 v2.01+/C32 v0.00.18+
- Company:         Microchip Technology, Inc.
-
 Software License Agreement
 
 The software supplied herewith by Microchip Technology Incorporated
-(the “Company”) for its PICmicro® Microcontroller is intended and
-supplied to you, the Company’s customer, for use solely and
+(the "Company") for its PICmicro(R) Microcontroller is intended and
+supplied to you, the Company's customer, for use solely and
 exclusively on Microchip PICmicro Microcontroller products. The
 software is owned by the Company and/or its supplier, and is
 protected under applicable copyright laws. All rights are reserved.
@@ -56,7 +13,7 @@ user to criminal sanctions under applicable laws, as well as to
 civil liability for the breach of the terms and conditions of this
 license.
 
-THIS SOFTWARE IS PROVIDED IN AN “AS IS” CONDITION. NO WARRANTIES,
+THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
 WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
 TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
@@ -67,23 +24,16 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 //DOM-IGNORE-END
 
 //DOM-IGNORE-BEGIN
-/********************************************************************
- Change History:
-  Rev    Description
-  ----   -----------
-  2.6    Moved many of the USB events
-  2.6a   Changed the limit of USB_EVENT from UINT_MAX to INT_MAX
-  2.7    No change
-********************************************************************/
-//DOM-IGNORE-END
-
-
-//DOM-IGNORE-BEGIN
 #ifndef _USB_COMMON_H_
 #define _USB_COMMON_H_
 //DOM-IGNORE-END
 
 #include <limits.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "system.h"
+#include "system_config.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -169,14 +119,14 @@ and properties of the data transfer.
 
 typedef union
 {
-    BYTE    bitmap;
+    uint8_t    bitmap;
     struct
     {
-        BYTE ep_num:    4;
-        BYTE zero_pkt:  1;
-        BYTE dts:       1;
-        BYTE force_dts: 1;
-        BYTE direction: 1;
+        uint8_t ep_num:    4;
+        uint8_t zero_pkt:  1;
+        uint8_t dts:       1;
+        uint8_t force_dts: 1;
+        uint8_t direction: 1;
     }field;
 
 } TRANSFER_FLAGS;
@@ -229,7 +179,7 @@ This macro can be used with the above bitmap constants to initialize a
 TRANSFER_FLAGS value.  It provides the correct data type to avoid compiler
 warnings.
 */
-#define XFLAGS(f) ((TRANSFER_FLAGS)((BYTE)(f)))             // Initialization Macro
+#define XFLAGS(f) ((TRANSFER_FLAGS)((uint8_t)(f)))             // Initialization Macro
 
 
 // *****************************************************************************
@@ -256,7 +206,7 @@ typedef enum
     // A stall has occured.  This event is not used by the Host stack.
     EVENT_STALL,                  
     
-    // VBus SRP Pulse, (VBus > 2.0v),  Data: BYTE Port Number (For future support)
+    // VBus SRP Pulse, (VBus > 2.0v),  Data: uint8_t Port Number (For future support)
     EVENT_VBUS_SES_REQUEST,     
     
     // The voltage on Vbus has dropped below 4.4V/4.7V.  The application is 
@@ -306,7 +256,7 @@ typedef enum
     EVENT_UNSPECIFIED_ERROR,     
              
     // USB cable has been detached.  The data associated with this event is the
-    // address of detached device, a single BYTE.
+    // address of detached device, a single uint8_t.
     EVENT_DETACH, 
      
     // A USB transfer has completed.  The data associated with this event is of
@@ -396,8 +346,8 @@ direction, and actual size of the transfer.
 typedef struct _transfer_event_data
 {
     TRANSFER_FLAGS  flags;          // Transfer flags (see above)
-    UINT32          size;           // Actual number of bytes transferred
-    BYTE            pid;            // Packet ID
+    uint32_t          size;           // Actual number of bytes transferred
+    uint8_t            pid;            // Packet ID
 
 } USB_TRANSFER_EVENT_DATA;
 
@@ -412,8 +362,8 @@ event has occured, indicating that a change in Vbus power is being requested.
 
 typedef struct _vbus_power_data
 {
-    BYTE            port;           // Physical port number
-    BYTE            current;        // Current in 2mA units
+    uint8_t            port;           // Physical port number
+    uint8_t            current;        // Current in 2mA units
 } USB_VBUS_POWER_EVENT_DATA;
 
 
@@ -425,11 +375,11 @@ select, in case multiple client drivers can support a particular device.
 */
 typedef struct _override_client_driver_data
 {        
-    WORD idVendor;              
-    WORD idProduct;             
-    BYTE bDeviceClass;          
-    BYTE bDeviceSubClass;       
-    BYTE bDeviceProtocol;       
+    uint16_t idVendor;
+    uint16_t idProduct;
+    uint8_t bDeviceClass;
+    uint8_t bDeviceSubClass;
+    uint8_t bDeviceProtocol;
 } USB_OVERRIDE_CLIENT_DRIVER_EVENT_DATA;
 
 
@@ -450,7 +400,7 @@ stalled (ie. bit 0 = EP0, bit 1 = EP1, etc.)
 
 /*******************************************************************************
     Function:
-        BOOL <Event-handling Function Name> ( USB_EVENT event,
+        bool <Event-handling Function Name> ( USB_EVENT event,
               void *data, unsigned int size )
 
     Description:
@@ -462,7 +412,7 @@ stalled (ie. bit 0 = EP0, bit 1 = EP1, etc.)
         or calls the layer above it to handle the event.  Events are
         identified by the "event" parameter and may have associated
         data.  If the higher layer was able to handle the event, it
-        should return TRUE.  If not, it should return FALSE.
+        should return true.  If not, it should return false.
         
     Preconditions:
         USBInitialize must have been called to initialize the USB SW
@@ -485,7 +435,7 @@ stalled (ie. bit 0 = EP0, bit 1 = EP1, etc.)
  
 *******************************************************************************/
 
-typedef BOOL (*USB_EVENT_HANDLER) ( USB_EVENT event, void *data, unsigned int size );
+typedef bool (*USB_EVENT_HANDLER) ( USB_EVENT event, void *data, unsigned int size );
 
 
 // *****************************************************************************
@@ -496,7 +446,7 @@ typedef BOOL (*USB_EVENT_HANDLER) ( USB_EVENT event, void *data, unsigned int si
 
 /****************************************************************************
     Function:
-        BOOL USBInitialize ( unsigned long flags )
+        bool USBInitialize ( unsigned long flags )
 
     Summary:
         This interface initializes the variables of the USB host stack.
@@ -511,8 +461,8 @@ typedef BOOL (*USB_EVENT_HANDLER) ( USB_EVENT event, void *data, unsigned int si
         flags - reserved
 
     Return Values:
-        TRUE  - Initialization successful
-        FALSE - Initialization failure
+        true  - Initialization successful
+        false - Initialization failure
 
     Remarks:
         This interface is implemented as a macro that can be defined by the
@@ -528,7 +478,7 @@ typedef BOOL (*USB_EVENT_HANDLER) ( USB_EVENT event, void *data, unsigned int si
             #else
                 #define USBInitialize(f) \
                         (USBDEVInitialize(f) && USBHostInit(f)) ? \
-                        TRUE : FALSE
+                        true : false
             #endif
         #else
             #define USBInitialize(f) USBDeviceInit()

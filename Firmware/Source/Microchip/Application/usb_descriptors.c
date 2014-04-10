@@ -44,7 +44,7 @@ needs to be the correct length for the data type of the entry.
 
 [Configuration Descriptors]
 The configuration descriptor was changed in v2.x from a structure
-to a BYTE array.  Given that the configuration is now a byte array
+to a uint8_t array.  Given that the configuration is now a byte array
 each byte of multi-byte fields must be listed individually.  This
 means that for fields like the total size of the configuration where
 the field is a 16-bit value "64,0," is the correct entry for a
@@ -60,7 +60,7 @@ _RWU tells the USB host that this device supports Remote Wakeup.
 
 [Endpoint Descriptors]
 Like the configuration descriptor, the endpoint descriptors were 
-changed in v2.x of the stack from a structure to a BYTE array.  As
+changed in v2.x of the stack from a structure to a uint8_t array.  As
 endpoint descriptors also has a field that are multi-byte entities,
 please be sure to specify both bytes of the field.  For example, for
 the endpoint size an endpoint that is 64 bytes needs to have the size
@@ -142,7 +142,7 @@ is a dummy place holder since configuration 0 is the un-configured
 state according to the definition in the USB specification.
 
 ********************************************************************/
-
+ 
 /*********************************************************************
  * Descriptor specific type definitions are defined in:
  * usb_device.h
@@ -150,13 +150,12 @@ state according to the definition in the USB specification.
  * Configuration options are defined in:
  * usb_config.h
  ********************************************************************/
-
 #ifndef __USB_DESCRIPTORS_C
 #define __USB_DESCRIPTORS_C
 
 /** INCLUDES *******************************************************/
-#include "usb.h"
-#include "usb_function_msd.h"
+#include "usb/usb.h"
+#include "usb/usb_device_msd.h"
 
 /** CONSTANTS ******************************************************/
 #if defined(__18CXX)
@@ -164,15 +163,15 @@ state according to the definition in the USB specification.
 #endif
 
 /* Device Descriptor */
-ROM USB_DEVICE_DESCRIPTOR device_dsc=
-{    
+const USB_DEVICE_DESCRIPTOR device_dsc=
+{
     0x12,    // Size of this descriptor in bytes
     USB_DESCRIPTOR_DEVICE,                // DEVICE descriptor type
-    0x0110,                 // USB Spec Release Number in BCD format
+    0x0200,                 // USB Spec Release Number in BCD format
     0x00,                   // Class Code
     0x00,                   // Subclass code
     0x00,                   // Protocol code
-    USB_EP0_BUFF_SIZE,          // Max packet size for EP0, see usbcfg.h
+    USB_EP0_BUFF_SIZE,          // Max packet size for EP0, see usb_config.h
     0x04D8,                 // Vendor ID
     0x0009,                // Product ID: mass storage device demo
     0x0001,                 // Device release number in BCD format
@@ -183,7 +182,7 @@ ROM USB_DEVICE_DESCRIPTOR device_dsc=
 };
 
 /* Configuration 1 Descriptor */
-ROM BYTE configDescriptor1[]={
+const uint8_t configDescriptor1[]={
     /* Configuration Descriptor */
     9,    // Size of this descriptor in bytes
     USB_DESCRIPTOR_CONFIGURATION,                // CONFIGURATION descriptor type
@@ -191,9 +190,9 @@ ROM BYTE configDescriptor1[]={
     1,                      // Number of interfaces in this cfg
     1,                      // Index value of this configuration
     0,                      // Configuration string index
-    _DEFAULT|_SELF,          // Attributes, see usbdefs_std_dsc.h
+    _DEFAULT | _SELF,               // Attributes, see usb_device.h
     50,                     // Max power consumption (2X mA)
-
+							
     /* Interface Descriptor */
     9,   // Size of this descriptor in bytes
     USB_DESCRIPTOR_INTERFACE,               // INTERFACE descriptor type
@@ -210,33 +209,32 @@ ROM BYTE configDescriptor1[]={
     USB_DESCRIPTOR_ENDPOINT,
     _EP01_IN,_BULK,
     MSD_IN_EP_SIZE,0x00,
-    0x00,
+    0x01,
     
     7,
     USB_DESCRIPTOR_ENDPOINT,
     _EP01_OUT,
     _BULK,
     MSD_OUT_EP_SIZE,0x00,
-    0x00
-};
-    
-//Language ID codes
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[1];}sd000={
-    sizeof(sd000),
-    USB_DESCRIPTOR_STRING,
-    {0x0409
-    }
+    0x01
 };
 
-//Manufacturer String
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[25];}sd001={
+
+//Language code(s) supported string descriptor
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[1];}sd000={
+    sizeof(sd000),
+    USB_DESCRIPTOR_STRING,
+    {0x0409} //0x0409 = Language ID code for US English
+};
+//Manufacturer string descriptor
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd001={
 sizeof(sd001),USB_DESCRIPTOR_STRING,
 {'M','i','c','r','o','c','h','i','p',' ',
 'T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'
 }};
 
-//Product String
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[28];}sd002={
+//Product string descriptor
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[28];}sd002={
 sizeof(sd002),USB_DESCRIPTOR_STRING,
 {'M','i','c','r','o','c','h','i','p',' ','M','a','s','s',' ','S','t','o','r','a','g','e',' ','D','r','i','v','e'
 }};
@@ -247,23 +245,24 @@ sizeof(sd002),USB_DESCRIPTOR_STRING,
 //all hosts support all character values in the serial number string.  The MSD 
 //Bulk Only Transport (BOT) specs v1.0 restrict the serial number to consist only
 //of ASCII characters "0" through "9" and capital letters "A" through "F".
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[12];}sd003={
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[12];}sd003={
 sizeof(sd003),USB_DESCRIPTOR_STRING,
-{'1','2','3','4','5','6','7','8','9','9','9','9'}};
+{'1','2','3','4','5','6','7','8','9','0','9','9'}};
+
 
 //Array of configuration descriptors
-ROM BYTE *ROM USB_CD_Ptr[]=
+const uint8_t *const USB_CD_Ptr[]=
 {
-    (ROM BYTE *ROM)&configDescriptor1
+    (const uint8_t *const)&configDescriptor1
 };
 
 //Array of string descriptors
-ROM BYTE *ROM USB_SD_Ptr[]=
+const uint8_t *const USB_SD_Ptr[]=
 {
-    (ROM BYTE *ROM)&sd000,
-    (ROM BYTE *ROM)&sd001,
-    (ROM BYTE *ROM)&sd002,
-    (ROM BYTE *ROM)&sd003
+    (const uint8_t *const)&sd000,
+    (const uint8_t *const)&sd001,
+    (const uint8_t *const)&sd002,
+    (const uint8_t *const)&sd003
 };
 
 /** EOF usb_descriptors.c ***************************************************/

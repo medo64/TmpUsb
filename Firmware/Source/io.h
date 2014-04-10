@@ -1,7 +1,7 @@
 #ifndef IO_H
 #define	IO_H
 
-#include <GenericTypeDefs.h>
+#include <stdbool.h>
 
 
 #define IO_DISK_LABEL_ARM        "Arm"
@@ -19,10 +19,10 @@ void io_led_on(void);
 void io_led_off(void);
 void io_led_toggle(void);
 
-BOOL io_5v_isOn(void);
+bool io_5v_isOn(void);
 
-BOOL io_disk_isValid(void);
-BOOL io_disk_hasLabel(const rom char* label);
+bool io_disk_isValid(void);
+bool io_disk_hasLabel(const char* label);
 void io_disk_erase(unsigned char* label);
 
 

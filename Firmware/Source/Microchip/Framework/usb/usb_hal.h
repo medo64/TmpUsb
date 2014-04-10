@@ -1,121 +1,136 @@
-/******************************************************************************
-
-    USB Hardware Abstraction Layer (HAL)  (Header File)
-
-Summary:
-    This file abstracts the hardware interface.
-
-Description:
-    This file abstracts the hardware interface.
-
-    This file is located in the "\<Install Directory\>\\Microchip\\Include\\USB"
-    directory.
-    
-    When including this file in a new project, this file can either be
-    referenced from the directory in which it was installed or copied
-    directly into the user application folder. If the first method is
-    chosen to keep the file located in the folder in which it is installed
-    then include paths need to be added so that the library and the
-    application both know where to reference each others files. If the
-    application folder is located in the same folder as the Microchip
-    folder (like the current demo folders), then the following include
-    paths need to be added to the application's project:
-    
-    .
-    ..\\..\\MicrochipInclude
-   
-    If a different directory structure is used, modify the paths as
-    required. An example using absolute paths instead of relative paths
-    would be the following:
-    
-    C:\\Microchip Solutions\\Microchip\\Include
-    
-    C:\\Microchip Solutions\\My Demo Application 
-*******************************************************************************/
 //DOM-IGNORE-BEGIN
-/******************************************************************************
+/*******************************************************************************
+Software License Agreement
 
- File Description:
+The software supplied herewith by Microchip Technology Incorporated
+(the "Company") for its PICmicro(R) Microcontroller is intended and
+supplied to you, the Company's customer, for use solely and
+exclusively on Microchip PICmicro Microcontroller products. The
+software is owned by the Company and/or its supplier, and is
+protected under applicable copyright laws. All rights are reserved.
+Any use in violation of the foregoing restrictions may subject the
+user to criminal sanctions under applicable laws, as well as to
+civil liability for the breach of the terms and conditions of this
+license.
 
- This file defines the interface to the USB hardware abstraction layer.
+THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
- Filename:        usb_hal.h
- Dependancies:    none
- Processor:       PIC18, PIC24, or PIC32 USB Microcontrollers
- Hardware:        The code is natively intended to be used on the following
-     				hardware platforms: PICDEM� FS USB Demo Board, 
-     				PIC18F87J50 FS USB Plug-In Module, or
-     				Explorer 16 + PIC24 USB PIM.  The firmware may be
-     				modified for use on other USB platforms by editing the
-     				HardwareProfile.h file.
- Compiler:        Microchip C18 (for PIC18) or C30 (for PIC24)
- Company:         Microchip Technology, Inc.
-
- Software License Agreement:
-
- The software supplied herewith by Microchip Technology Incorporated
- (the �Company�) for its PICmicro� Microcontroller is intended and
- supplied to you, the Company�s customer, for use solely and
- exclusively on Microchip PICmicro Microcontroller products. The
- software is owned by the Company and/or its supplier, and is
- protected under applicable copyright laws. All rights are reserved.
- Any use in violation of the foregoing restrictions may subject the
- user to criminal sanctions under applicable laws, as well as to
- civil liability for the breach of the terms and conditions of this
- license.
-
- THIS SOFTWARE IS PROVIDED IN AN �AS IS� CONDITION. NO WARRANTIES,
- WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
- TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
- IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
- CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
-
- *************************************************************************/
-
-/********************************************************************
- Change History:
-  Rev    Description
-  ----   -----------
-  2.6-   No Change
-  2.6a   
-
-  2.7    Minor changes changes to the structure of the conditional
-         compilation statement ordering.
-
-  2.7a   No Change
-********************************************************************/
+*******************************************************************************/
+//DOM-IGNORE-END
 
 #ifndef _USB_HAL_H_
 #define _USB_HAL_H_
-//DOM-IGNORE-END
 
-#if defined(__18CXX)
-    #include "usb_hal_pic18.h"
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+#include <stdint.h>
+
+#if defined(__18CXX) || defined(__XC8)
+    #if defined(_PIC14E)
+        #include "usb/usb_hal_pic16f1.h"
+    #else
+        #include "usb/usb_hal_pic18.h"
+    #endif
 #elif defined(__C30__) || defined __XC16__
 	#if defined(__dsPIC33E__) 
-	    #include "USB/usb_hal_dspic33E.h"
+            #include <usb/usb_hal_dspic33e.h>
 	#elif defined(__PIC24E__)
-		#include "USB/usb_hal_pic24e.h"
+            #include <usb/usb_hal_pic24e.h>
 	#else
-    #include "USB/usb_hal_pic24.h"
+            #include <usb/usb_hal_pic24f.h>
 	#endif
 #elif defined(__PIC32MX__)
-    #include "USB/usb_hal_pic32.h"
-#elif defined(_PIC14E)
-    #include "USB/usb_hal_pic16f1.h"
+    #include "usb/usb_hal_pic32.h"
 #else
     #error "Silicon Platform not defined"
 #endif
     
+#ifdef __cplusplus  // Provide C++ Compatability
+    extern "C" {
+#endif
 
-/**********************
- Interface Routines
- **********************/
+// *****************************************************************************
+// *****************************************************************************
+// Section: Constants
+// *****************************************************************************
+// *****************************************************************************
+/* USBHALControlUsbResistors flags */
+#define USB_HAL_PULL_UP_D_PLUS  0x80    // Pull D+ line high
+#define USB_HAL_PULL_UP_D_MINUS 0x40    // Pull D- line high
+#define USB_HAL_PULL_DN_D_PLUS  0x20    // Pull D+ line low
+#define USB_HAL_PULL_DN_D_MINUS 0x10    // Pull D- line low
+/*
+ The following are defined for convenience:
+ */
+#define USB_HAL_DEV_CONN_FULL_SPD       USB_HAL_PULL_UP_D_PLUS
+#define USB_HAL_DEV_CONN_LOW_SPD        USB_HAL_PULL_UP_D_MINUS
+#define USB_HAL_DEV_DISCONNECT          0
+
+/* USBHALControlBusPower Commands */
+#define USB_VBUS_DISCHARGE  0       // Dicharge Vbus via resistor
+#define USB_VBUS_CHARGE     1       // Charge Vbus via resistor
+#define USB_VBUS_POWER_ON   3       // Supply power to Vbus
+#define USB_VBUS_POWER_OFF  4       // Do not supply power to Vbus
+
+/*
+ USBHALGetLastError Error Bits.
+ */
+#define USBHAL_PID_ERR  0x00000001  // Packet ID Error
+#define USBHAL_CRC5     0x00000002  // (Host) Token CRC5 check failed
+#define USBHAL_HOST_EOF 0x00000002  // (Host) EOF not reached before next SOF
+#define USBHAL_CRC16    0x00000004  // Data packet CRC error
+#define USBHAL_DFN8     0x00000008  // Data field size not n*8 bits
+#define USBHAL_BTO_ERR  0x00000010  // Bus turn-around timeout
+#define USBHAL_DMA_ERR  0x00000020  // DMA error, unable to read/write memory
+#define USBHAL_BTS_ERR  0x00000080  // Bit-stuffing error
+#define USBHAL_XFER_ID  0x00000100  // Unable to identify transfer EP
+#define USBHAL_NO_EP    0x00000200  // Invalid endpoint number
+#define USBHAL_DMA_ERR2 0x00000400  // Error starting DMA transaction
+
+/* Flags for USBHALSetEpConfiguration */
+#if defined(__18CXX) || defined(__XC8)
+    #define USB_HAL_TRANSMIT    0x0400  // Enable EP for transmitting data
+    #define USB_HAL_RECEIVE     0x0200  // Enable EP for receiving data
+    #define USB_HAL_HANDSHAKE   0x1000  // Enable EP to give ACK/NACK (non isoch)
+
+    #define USB_HAL_NO_INC      0x0010  // Use for DMA to another device FIFO
+    #define USB_HAL_HW_KEEPS    0x0020  // Cause HW to keep EP
+#else
+    #define USB_HAL_TRANSMIT    0x0400  // Enable EP for transmitting data
+    #define USB_HAL_RECEIVE     0x0800  // Enable EP for receiving data
+    #define USB_HAL_HANDSHAKE   0x0100  // Enable EP to give ACK/NACK (non isoch)
+
+    /* Does not work, Fix this if needed. 3/1/07 - Bud
+    #define USB_HAL_NO_INC      0x0010  // Use for DMA to another device FIFO
+    #define USB_HAL_HW_KEEPS    0x0020  // Cause HW to keep EP
+    */
+    #define USB_HAL_ALLOW_HUB   0x8000  // (host only) Enable low-spd hub support
+    #define USB_HAL_NO_RETRY    0x4000  // (host only) disable auto-retry on NACK
+#endif
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 
 /*************************************************************************
     Function:
-        void USBHALSetBusAddress( BYTE addr )
+        void USBHALSetBusAddress( uint8_t addr )
         
     Description:
         This routine sets the address of the system on the USB
@@ -149,12 +164,12 @@ Description:
 
 #define USBHALSetBusAddress OTGCORE_SetDeviceAddr
 
-void USBHALSetBusAddress( BYTE addr );
+void USBHALSetBusAddress( uint8_t addr );
 
 
 /*************************************************************************
     Function:
-        void USBHALControlUsbResistors( BYTE flags );
+        void USBHALControlUsbResistors( uint8_t flags );
         
     Description:
         This routine enables or disables the USB pull-up or
@@ -169,7 +184,7 @@ void USBHALSetBusAddress( BYTE addr );
         which resistors to enable or disable (see below).
 
     Return Values:
-        TRUE if successful, FALSE if not.
+        true if successful, false if not.
    
     Side Effects:
         The resistors are enabled as requested.
@@ -184,25 +199,12 @@ void USBHALSetBusAddress( BYTE addr );
 /*
  This routine is implemented as a macro to a lower-level level routine.
  */
- #if defined(__18CXX)
-    void USBHALControlUsbResistors( BYTE flags );
+ #if defined(__18CXX) || defined(__XC8)
+    void USBHALControlUsbResistors( uint8_t flags );
  #else
     #define USBHALControlUsbResistors OTGCORE_ControlUsbResistors
-    void USBHALControlUsbResistors( BYTE flags );
+    void USBHALControlUsbResistors( uint8_t flags );
 #endif
-
-/* USBHALControlUsbResistors flags */
-#define USB_HAL_PULL_UP_D_PLUS  0x80    // Pull D+ line high
-#define USB_HAL_PULL_UP_D_MINUS 0x40    // Pull D- line high
-#define USB_HAL_PULL_DN_D_PLUS  0x20    // Pull D+ line low
-#define USB_HAL_PULL_DN_D_MINUS 0x10    // Pull D- line low
-/*
- The following are defined for convenience:
- */
-#define USB_HAL_DEV_CONN_FULL_SPD       USB_HAL_PULL_UP_D_PLUS
-#define USB_HAL_DEV_CONN_LOW_SPD        USB_HAL_PULL_UP_D_MINUS
-#define USB_HAL_DEV_DISCONNECT          0
-
 
 /*
  MCHP: Define a method to check for SE0 & a way to send a reset (SE0).
@@ -211,7 +213,7 @@ void USBHALSetBusAddress( BYTE addr );
 
 /*************************************************************************
     Function:
-       BOOL USBHALSessionIsValid( void )
+       bool USBHALSessionIsValid( void )
         
     Description:
         This routine determines if there is currently a valid
@@ -225,14 +227,14 @@ void USBHALSetBusAddress( BYTE addr );
         None
         
     Return Values:
-        TRUE if the session is currently valid, FALSE if not.
+        true if the session is currently valid, false if not.
         
     Remarks:
         Only used for host and OTG support.
 
  *************************************************************************/
 
-BOOL USBHALSessionIsValid( void );
+bool USBHALSessionIsValid( void );
 
 
 /*************************************************************************
@@ -251,25 +253,14 @@ BOOL USBHALSessionIsValid( void );
         cmd - Identifies desired command (see below).
         
     Return Values:
-        TRUE if successful, FALSE if not.
+        true if successful, false if not.
     
     Remarks:
         Only used for host and OTG support.
                   
  *************************************************************************/
 
-BOOL USBHALControlBusPower( BYTE cmd );
-
-/* USBHALControlBusPower Commands */
-#define USB_VBUS_DISCHARGE  0       // Dicharge Vbus via resistor
-#define USB_VBUS_CHARGE     1       // Charge Vbus via resistor
-#define USB_VBUS_POWER_ON   3       // Supply power to Vbus
-#define USB_VBUS_POWER_OFF  4       // Do not supply power to Vbus
-/*
- Note: All commands except USB_VBUS_POWER_ON imply that this device
- does not actively supply power to Vbus.
- */
-
+bool USBHALControlBusPower( uint8_t cmd );
 
 /*************************************************************************
     Function:
@@ -301,20 +292,7 @@ BOOL USBHALControlBusPower( BYTE cmd );
 
 unsigned long USBHALGetLastError( void );
 
-/*
- USBHALGetLastError Error Bits.
- */
-#define USBHAL_PID_ERR  0x00000001  // Packet ID Error
-#define USBHAL_CRC5     0x00000002  // (Host) Token CRC5 check failed
-#define USBHAL_HOST_EOF 0x00000002  // (Host) EOF not reached before next SOF
-#define USBHAL_CRC16    0x00000004  // Data packet CRC error
-#define USBHAL_DFN8     0x00000008  // Data field size not n*8 bits
-#define USBHAL_BTO_ERR  0x00000010  // Bus turn-around timeout
-#define USBHAL_DMA_ERR  0x00000020  // DMA error, unable to read/write memory
-#define USBHAL_BTS_ERR  0x00000080  // Bit-stuffing error
-#define USBHAL_XFER_ID  0x00000100  // Unable to identify transfer EP
-#define USBHAL_NO_EP    0x00000200  // Invalid endpoint number
-#define USBHAL_DMA_ERR2 0x00000400  // Error starting DMA transaction
+
 
 
 /*************************************************************************
@@ -350,7 +328,7 @@ void USBHALHandleBusEvent ( void );
 
 /*************************************************************************
     Function:
-        BOOL USBHALStallPipe( TRANSFER_FLAGS pipe )
+        bool USBHALStallPipe( TRANSFER_FLAGS pipe )
         
     Description:
         This routine stalls the given endpoint.
@@ -367,7 +345,7 @@ void USBHALHandleBusEvent ( void );
         Note: Only ep_num and direction fields are required.
         
     Return Values:
-        TRUE if able to stall endpoint, FALSE if not.
+        true if able to stall endpoint, false if not.
         
     Side Effects:
         The endpoint will stall if additional data transfer is
@@ -386,12 +364,12 @@ void USBHALHandleBusEvent ( void );
 
 #define USBHALStallPipe OTGCORE_StallPipe
 
-BOOL USBHALStallPipe( TRANSFER_FLAGS pipe );
+bool USBHALStallPipe( TRANSFER_FLAGS pipe );
 
 
 /******************************************************************************
     Function:
-        BOOL USBHALUnstallPipe( TRANSFER_FLAGS pipe )
+        bool USBHALUnstallPipe( TRANSFER_FLAGS pipe )
         
     Description:
         This routine clears the stall condition for the given pipe.
@@ -406,7 +384,7 @@ BOOL USBHALStallPipe( TRANSFER_FLAGS pipe );
                 pipe to unstall.
                 
     Return Values:
-        TRUE if able to stall the pipe, FALSE if not.
+        true if able to stall the pipe, false if not.
         
     Side Effects:
         The BSTALL and UOWN bits (and all other control bits) in
@@ -423,7 +401,7 @@ BOOL USBHALStallPipe( TRANSFER_FLAGS pipe );
 
 #define USBHALUnstallPipe OTGCORE_UnstallPipe
 
-BOOL USBHALUnstallPipe( TRANSFER_FLAGS pipe );
+bool USBHALUnstallPipe( TRANSFER_FLAGS pipe );
 
 
 /**************************************************************************
@@ -457,12 +435,12 @@ BOOL USBHALUnstallPipe( TRANSFER_FLAGS pipe );
 
 #define USBHALGetStalledEndpoints OTGCORE_GetStalledEndpoints
 
-UINT16 USBHALGetStalledEndpoints ( void );
+uint16_t USBHALGetStalledEndpoints ( void );
 
 
 /******************************************************************************
     Function:
-        BOOL USBHALFlushPipe( TRANSFER_FLAGS pipe )
+        bool USBHALFlushPipe( TRANSFER_FLAGS pipe )
         
     Description:
         This routine clears any pending transfers on the given
@@ -481,7 +459,7 @@ UINT16 USBHALGetStalledEndpoints ( void );
                 pipe to flush.
 
     Return Values:
-        TRUE if successful, FALSE if not.
+        true if successful, false if not.
 
     Side Effects:
         Transfer data for this pipe has been zero'd out.
@@ -494,7 +472,7 @@ UINT16 USBHALGetStalledEndpoints ( void );
         transfer has been terminated early by the host.
  *****************************************************************************/
 
-BOOL USBHALFlushPipe( TRANSFER_FLAGS pipe );
+bool USBHALFlushPipe( TRANSFER_FLAGS pipe );
 
 
 /**************************************************************************
@@ -534,11 +512,11 @@ BOOL USBHALFlushPipe( TRANSFER_FLAGS pipe );
 
         buffer      Address of the buffer to receive data.
 
-        size        Number of bytes of data to transfer.
+        size        Number of uint8_ts of data to transfer.
 
     Return Values:
-        TRUE if the HAL was able to successfully start the
-        data transfer, FALSE if not.
+        true if the HAL was able to successfully start the
+        data transfer, false if not.
         
     Side Effects:
         The HAL has prepared to transfer the data on the USB.
@@ -554,7 +532,7 @@ BOOL USBHALFlushPipe( TRANSFER_FLAGS pipe );
         
  *************************************************************************/
 
-BOOL USBHALTransferData ( TRANSFER_FLAGS    flags,
+bool USBHALTransferData ( TRANSFER_FLAGS    flags,
                           void             *buffer,
                           unsigned int      size      );
 
@@ -580,7 +558,7 @@ BOOL USBHALTransferData ( TRANSFER_FLAGS    flags,
         flags - Configuration flags (see below)
 
     Return Values:
-        TRUE if successful, FALSE if not.
+        true if successful, false if not.
         
     Side Effects:
         The endpoint has been configured as desired.
@@ -594,29 +572,7 @@ BOOL USBHALTransferData ( TRANSFER_FLAGS    flags,
         set all flags to 0.
  *************************************************************************/
 
-BOOL USBHALSetEpConfiguration ( BYTE ep_num, UINT16 max_pkt_size, UINT16 flags );
-
-/* Flags for USBHALSetEpConfiguration */
-#if defined(__18CXX)
-    #define USB_HAL_TRANSMIT    0x0400  // Enable EP for transmitting data
-    #define USB_HAL_RECEIVE     0x0200  // Enable EP for receiving data
-    #define USB_HAL_HANDSHAKE   0x1000  // Enable EP to give ACK/NACK (non isoch)
-
-    #define USB_HAL_NO_INC      0x0010  // Use for DMA to another device FIFO
-    #define USB_HAL_HW_KEEPS    0x0020  // Cause HW to keep EP
-#else
-    #define USB_HAL_TRANSMIT    0x0400  // Enable EP for transmitting data
-    #define USB_HAL_RECEIVE     0x0800  // Enable EP for receiving data
-    #define USB_HAL_HANDSHAKE   0x0100  // Enable EP to give ACK/NACK (non isoch)
-
-    /* Does not work, Fix this if needed. 3/1/07 - Bud
-    #define USB_HAL_NO_INC      0x0010  // Use for DMA to another device FIFO
-    #define USB_HAL_HW_KEEPS    0x0020  // Cause HW to keep EP
-    */
-    #define USB_HAL_ALLOW_HUB   0x8000  // (host only) Enable low-spd hub support
-    #define USB_HAL_NO_RETRY    0x4000  // (host only) disable auto-retry on NACK
-#endif
-
+bool USBHALSetEpConfiguration ( uint8_t ep_num, uint16_t max_pkt_size, uint16_t flags );
 
 /*************************************************************************
     Function:
@@ -634,7 +590,7 @@ BOOL USBHALSetEpConfiguration ( BYTE ep_num, UINT16 max_pkt_size, UINT16 flags )
         flags -  Initialization flags
         
     Return Values:
-        TRUE if successful, FALSE if not.
+        true if successful, false if not.
 
     Side Effects:
         The USB HAL SW stack was initialized.
@@ -644,7 +600,12 @@ BOOL USBHALSetEpConfiguration ( BYTE ep_num, UINT16 max_pkt_size, UINT16 flags )
         
  *************************************************************************/
 
-BOOL USBHALInitialize ( unsigned long flags );
+bool USBHALInitialize ( unsigned long flags );
+
+
+#ifdef __cplusplus  // Provide C++ Compatibility
+    }
+#endif
 
 #endif  // _USB_HAL_H_
 /*************************************************************************

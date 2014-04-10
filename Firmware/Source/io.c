@@ -1,21 +1,21 @@
 #include <p18cxxx.h>
-#include <GenericTypeDefs.h>
+#include <stdbool.h>
 
-#include "fat12.h"
-#include "usb.h"
+//#include "fat12.h"
+//#include "usb.h"
 
-#include "internal flash.h"
-
-
-#define BLOCK_SIZE         ERASE_BLOCK_SIZE
-#define TABLE_SIZE         WRITE_BLOCK_SIZE
-#define SECTORS_PER_BLOCK  (BLOCK_SIZE/MEDIA_SECTOR_SIZE)
+//#include "internal flash.h"
 
 
-const ROM BYTE DiskDefaultMbr[MEDIA_SECTOR_SIZE]  = FAT12_MBR;
-const ROM BYTE DiskDefaultBoot[MEDIA_SECTOR_SIZE] = FAT12_BOOT;
-const ROM BYTE DiskDefaultFat[MEDIA_SECTOR_SIZE]  = FAT12_FAT;
-const ROM BYTE DiskDefaultRoot[MEDIA_SECTOR_SIZE] = FAT12_ROOT;
+//#define BLOCK_SIZE         ERASE_BLOCK_SIZE
+//#define TABLE_SIZE         WRITE_BLOCK_SIZE
+//#define SECTORS_PER_BLOCK  (BLOCK_SIZE/MEDIA_SECTOR_SIZE)
+
+
+//const ROM BYTE DiskDefaultMbr[MEDIA_SECTOR_SIZE]  = FAT12_MBR;
+//const ROM BYTE DiskDefaultBoot[MEDIA_SECTOR_SIZE] = FAT12_BOOT;
+//const ROM BYTE DiskDefaultFat[MEDIA_SECTOR_SIZE]  = FAT12_FAT;
+//const ROM BYTE DiskDefaultRoot[MEDIA_SECTOR_SIZE] = FAT12_ROOT;
 
 
 void io_init() {
@@ -36,12 +36,12 @@ void io_led_toggle() {
 }
 
 
-BOOL io_5v_isOn(void) {
+bool io_5v_isOn(void) {
     return PORTCbits.RC6 ? TRUE : FALSE;
 }
 
 
-BOOL io_disk_hasLabel(const rom char* label) {
+/*BOOL io_disk_hasLabel(const rom char* label) {
     unsigned char i, hasDriveLabel = 0;
     ROM BYTE* driveLabel;
 
@@ -156,3 +156,4 @@ void io_disk_erase(unsigned char* label) {
 #if ((MDD_INTERNAL_FLASH_DRIVE_CAPACITY % 2) == 0)
     #error "Internal flash drive capacity must be an odd number." //to have all data aligned on 1K boundary
 #endif
+*/

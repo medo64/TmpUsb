@@ -1,126 +1,68 @@
-/******************************************************************************
+//DOM-IGNORE-BEGIN
+/*******************************************************************************
+Software License Agreement
 
-    USB Hardware Abstraction Layer (HAL)  (Header File)
+The software supplied herewith by Microchip Technology Incorporated
+(the "Company") for its PICmicro(R) Microcontroller is intended and
+supplied to you, the Company's customer, for use solely and
+exclusively on Microchip PICmicro Microcontroller products. The
+software is owned by the Company and/or its supplier, and is
+protected under applicable copyright laws. All rights are reserved.
+Any use in violation of the foregoing restrictions may subject the
+user to criminal sanctions under applicable laws, as well as to
+civil liability for the breach of the terms and conditions of this
+license.
 
-Summary:
-    This file abstracts the hardware interface.  The USB stack firmware can be
-    compiled to work on different USB microcontrollers, such as PIC18 and PIC24.
-    The USB related special function registers and bit names are generally very
-    similar between the device families, but small differences in naming exist.
-
-Description:
-    This file abstracts the hardware interface.  The USB stack firmware can be
-    compiled to work on different USB microcontrollers, such as PIC18 and PIC24.
-    The USB related special function registers and bit names are generally very
-    similar between the device families, but small differences in naming exist.
-    
-    In order to make the same set of firmware work accross the device families,
-    when modifying SFR contents, a slightly abstracted name is used, which is
-    then "mapped" to the appropriate real name in the usb_hal_picxx.h header.
-    
-    Make sure to include the correct version of the usb_hal_picxx.h file for 
-    the microcontroller family which will be used.
-
-    This file is located in the "\<Install Directory\>\\Microchip\\Include\\USB"
-    directory.
-    
-    When including this file in a new project, this file can either be
-    referenced from the directory in which it was installed or copied
-    directly into the user application folder. If the first method is
-    chosen to keep the file located in the folder in which it is installed
-    then include paths need to be added so that the library and the
-    application both know where to reference each others files. If the
-    application folder is located in the same folder as the Microchip
-    folder (like the current demo folders), then the following include
-    paths need to be added to the application's project:
-    
-    .
-
-    ..\\..\\MicrochipInclude
-        
-    If a different directory structure is used, modify the paths as
-    required. An example using absolute paths instead of relative paths
-    would be the following:
-    
-    C:\\Microchip Solutions\\Microchip\\Include
-    
-    C:\\Microchip Solutions\\My Demo Application 
+THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 *******************************************************************************/
-//DOM-IGNORE-BEGIN
-/******************************************************************************
-
- File Description:
-
- This file defines the interface to the USB hardware abstraction layer.
-
- * Filename:    usb_hal_pic18.h
- Dependencies:	See INCLUDES section
- Processor:		Use this header file when using this firmware with PIC18 USB 
- 				microcontrollers
- Hardware:		
- Complier:  	Microchip C18 (for PIC18)
- Company:		Microchip Technology, Inc.
-
- Software License Agreement:
-
- The software supplied herewith by Microchip Technology Incorporated
- (the “Company”) for its PIC® Microcontroller is intended and
- supplied to you, the Company’s customer, for use solely and
- exclusively on Microchip PIC Microcontroller products. The
- software is owned by the Company and/or its supplier, and is
- protected under applicable copyright laws. All rights are reserved.
- Any use in violation of the foregoing restrictions may subject the
- user to criminal sanctions under applicable laws, as well as to
- civil liability for the breach of the terms and conditions of this
- license.
-
- THIS SOFTWARE IS PROVIDED IN AN “AS IS” CONDITION. NO WARRANTIES,
- WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
- TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
- IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
- CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
-
- *************************************************************************/
-
-//DOM-IGNORE-BEGIN
-/********************************************************************
- Change History:
-  Rev    Description
-  ----   -----------
-  2.6    Changed the inplementation of the interrupt clearing macro
-         to be more efficient.  
-
-  2.6a   Added DisableNonZeroEndpoints() function
-
-  2.7    Added ConvertToPhysicalAddress() and ConvertToVirtualAddress()
-         macros.  Needed for compatiblity with PIC32.
-
-         Added USBDisableInterrupts() macro.  Fixes issue in dual role
-         example where a device in polling mode can still have interrupts
-         enabled from the host mode causing an incorrect vectoring to the
-         host interrupt controller while in device mode.
-
-  2.7a   No change
-
-  2.8    Added USTAT_FIELDS typedef and associated macros.
-********************************************************************/
 //DOM-IGNORE-END
 
-#ifndef USB_HAL_PIC18_H
-#define USB_HAL_PIC18_H
+#ifndef _USB_HAL_PIC18_H
+#define _USB_HAL_PIC18_H
 
-/*****************************************************************************/
-/****** include files ********************************************************/
-/*****************************************************************************/
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+/*  This section lists the other files that are included in this file.
+*/
+#if defined(__XC8)
+    #include <xc.h>
+    #include <stdint.h>
+#elif defined(__C18)
+    #include <p18cxxx.h>
+    #ifndef uint8_t
+        #define uint8_t unsigned char
+    #endif
+    #ifndef uint16_t
+        #define uint16_t unsigned int
+    #endif
+    #ifndef uint32_t
+        #define uint32_t unsigned long int
+    #endif
+#endif
 
-#include "Compiler.h"
-#include "usb_config.h"
+#include <string.h>
 
-/*****************************************************************************/
-/****** Constant definitions *************************************************/
-/*****************************************************************************/
+#include "system.h"
+#include "system_config.h"
+
+#ifdef __cplusplus  // Provide C++ Compatability
+    extern "C" {
+#endif
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Constants
+// *****************************************************************************
+// *****************************************************************************
 
 //----- USBEnableEndpoint() input defintions ----------------------------------
 #define USB_HANDSHAKE_ENABLED   0x10
@@ -250,21 +192,55 @@ Description:
 #define U1EP0bits UEP0bits
 
 //----- Defintions for BDT address --------------------------------------------
-#if defined(__18CXX)
-    #if defined(__18F14K50) || defined(__18F13K50) || defined(__18LF14K50) || defined(__18LF13K50)
-        #define USB_BDT_ADDRESS 0x200     //See Linker Script, BDT in bank 2 on these devices - usb2:0x200-0x2FF(256-byte)
-    #elif defined(__18F47J53) || defined(__18F46J53) || defined(__18F27J53) || defined(__18F26J53) || defined(__18LF47J53) || defined(__18LF46J53) || defined(__18LF27J53) || defined(__18LF26J53)
-        #define USB_BDT_ADDRESS 0xD00		//BDT in Bank 13 on these devices
-    #elif defined(__18F97J94) || defined(__18F87J94) || defined(__18F67J94) || defined(__18F96J94) || defined(__18F86J94) || defined(__18F66J94) || defined(__18F96J99) || defined(__18F95J94) || defined(__18F86J99) || defined(__18F85J94) || defined(__18F66J99) || defined(__18F65J94)
-        #define USB_BDT_ADDRESS 0x100		//BDT in Bank 1 on these devices
-    #else
-        #define USB_BDT_ADDRESS 0x400     //All other PIC18 devices place the BDT in usb4:0x400-0x4FF(256-byte)
-    #endif
+#if defined(__16F1454) || defined(__16F1455) || defined(__16F1459) || defined(__16LF1454) || defined(__16LF1455) || defined(__16LF1459)
+    #define USB_BDT_ADDRESS 0x020
+#elif defined(__18F14K50) || defined(__18F13K50) || defined(__18LF14K50) || defined(__18LF13K50)
+    #define USB_BDT_ADDRESS 0x200     //See Linker Script, BDT in bank 2 on these devices - usb2:0x200-0x2FF(256-byte)
+#elif defined(__18F24K50) || defined(__18F25K50) || defined(__18F45K50) || defined(__18LF24K50) || defined(__18LF25K50) || defined(__18LF45K50)
+    #define USB_BDT_ADDRESS 0x400     //See Linker Script, BDT in bank 4
+#elif defined(__18F47J53) || defined(__18F46J53) || defined(__18F27J53) || defined(__18F26J53) || defined(__18LF47J53) || defined(__18LF46J53) || defined(__18LF27J53) || defined(__18LF26J53)
+    #define USB_BDT_ADDRESS 0xD00		//BDT in Bank 13 on these devices
+#elif defined(__18F97J94) || defined(__18F87J94) || defined(__18F67J94) || defined(__18F96J94) || defined(__18F86J94) || defined(__18F66J94) || defined(__18F96J99) || defined(__18F95J94) || defined(__18F86J99) || defined(__18F85J94) || defined(__18F66J99) || defined(__18F65J94)
+    #define USB_BDT_ADDRESS 0x100		//BDT in Bank 1 on these devices
+#else
+    #define USB_BDT_ADDRESS 0x400     //All other PIC18 devices place the BDT in usb4:0x400-0x4FF(256-byte)
 #endif
 
-#define BDT_BASE_ADDR_TAG   __attribute__ ((aligned (512)))
-#define CTRL_TRF_SETUP_ADDR_TAG
-#define CTRL_TRF_DATA_ADDR_TAG
+#if (USB_PING_PONG_MODE == USB_PING_PONG__NO_PING_PONG)
+    #define BDT_NUM_ENTRIES      ((USB_MAX_EP_NUMBER + 1) * 2)
+#elif (USB_PING_PONG_MODE == USB_PING_PONG__EP0_OUT_ONLY)
+    #define BDT_NUM_ENTRIES      (((USB_MAX_EP_NUMBER + 1) * 2)+1)
+#elif (USB_PING_PONG_MODE == USB_PING_PONG__FULL_PING_PONG)
+    #define BDT_NUM_ENTRIES      ((USB_MAX_EP_NUMBER + 1) * 4)
+#elif (USB_PING_PONG_MODE == USB_PING_PONG__ALL_BUT_EP0)
+    #define BDT_NUM_ENTRIES      (((USB_MAX_EP_NUMBER + 1) * 4)-2)
+#else
+    #error "No ping pong mode defined."
+#endif
+
+#if defined(__XC8)
+    #define CTRL_TRF_SETUP_ADDRESS (USB_BDT_ADDRESS+(BDT_NUM_ENTRIES*4))
+    #define CTRL_TRF_DATA_ADDRESS (CTRL_TRF_SETUP_ADDRESS + USB_EP0_BUFF_SIZE)
+
+    #define BDT_BASE_ADDR_TAG   @USB_BDT_ADDRESS
+    #define CTRL_TRF_SETUP_ADDR_TAG @CTRL_TRF_SETUP_ADDRESS
+    #define CTRL_TRF_DATA_ADDR_TAG @CTRL_TRF_DATA_ADDRESS
+
+    #if defined(USB_USE_MSD)
+        //MSD application specific USB endpoint buffer placement macros (so they
+        //get linked to a USB module accessible portion of RAM)
+        #define MSD_CBW_ADDRESS (CTRL_TRF_DATA_ADDRESS + USB_EP0_BUFF_SIZE)
+        #define MSD_CSW_ADDRESS (MSD_CBW_ADDRESS + MSD_OUT_EP_SIZE)
+        #define MSD_CBW_ADDR_TAG    @MSD_CBW_ADDRESS
+        #define MSD_CSW_ADDR_TAG    @MSD_CSW_ADDRESS
+    #endif
+#else
+    #define BDT_BASE_ADDR_TAG   __attribute__ ((aligned (512)))
+    #define CTRL_TRF_SETUP_ADDR_TAG
+    #define CTRL_TRF_DATA_ADDR_TAG
+    #define MSD_CBW_ADDR_TAG
+    #define MSD_CSW_ADDR_TAG
+#endif
 
 //----- Depricated defintions - will be removed at some point of time----------
 //--------- Depricated in v2.2
@@ -275,14 +251,16 @@ Description:
 #define _PUEN       0x10            // Use internal pull-up resistor
 #define _OEMON      0x40            // Use SIE output indicator
 
-/*****************************************************************************/
-/****** Type definitions *****************************************************/
-/*****************************************************************************/
-
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
+        
 // Buffer Descriptor Status Register layout.
 typedef union _BD_STAT
 {
-    BYTE Val;
+    uint8_t Val;
     struct{
         //If the CPU owns the buffer then these are the values
         unsigned BC8:1;         //bit 8 of the byte count
@@ -317,18 +295,18 @@ typedef union __BDT
     struct
     {
         BD_STAT STAT;
-        BYTE CNT;
-        BYTE ADRL;                      //Buffer Address Low
-        BYTE ADRH;                      //Buffer Address High
+        uint8_t CNT;
+        uint8_t ADRL;                      //Buffer Address Low
+        uint8_t ADRH;                      //Buffer Address High
     };
     struct
     {
         unsigned :8;
         unsigned :8;
-        WORD     ADR;                      //Buffer Address
+        uint16_t     ADR;                      //Buffer Address
     };
-    DWORD Val;
-    BYTE v[4];
+    uint32_t Val;
+    uint8_t v[4];
 } BDT_ENTRY;
 
 // USTAT Register Layout
@@ -341,7 +319,7 @@ typedef union __USTAT
         unsigned char direction:1;
         unsigned char endpoint_number:4;
     };
-    BYTE Val;
+    uint8_t Val;
 } USTAT_FIELDS;
 
 //Macros for fetching parameters from a USTAT_FIELDS variable.
@@ -354,32 +332,34 @@ typedef union _POINTER
 {
     struct
     {
-        BYTE bLow;
-        BYTE bHigh;
+        uint8_t bLow;
+        uint8_t bHigh;
         //byte bUpper;
     };
-    WORD _word;                         // bLow & bHigh
+    uint16_t _word;                         // bLow & bHigh
     
     //pFunc _pFunc;                       // Usage: ptr.pFunc(); Init: ptr.pFunc = &<Function>;
 
-    BYTE* bRam;                         // Ram byte pointer: 2 bytes pointer pointing
+    uint8_t* bRam;                         // Ram byte pointer: 2 bytes pointer pointing
                                         // to 1 byte of data
-    WORD* wRam;                         // Ram word poitner: 2 bytes poitner pointing
+    uint16_t* wRam;                         // Ram word poitner: 2 bytes poitner pointing
                                         // to 2 bytes of data
 
-    ROM BYTE* bRom;                     // Size depends on compiler setting
-    ROM WORD* wRom;
+    const uint8_t* bRom;                     // Size depends on compiler setting
+    const uint16_t* wRom;
     //rom near byte* nbRom;               // Near = 2 bytes pointer
     //rom near word* nwRom;
     //rom far byte* fbRom;                // Far = 3 bytes pointer
     //rom far word* fwRom;
 } POINTER;
 
-/*****************************************************************************/
-/****** Function prototypes and macro functions ******************************/
-/*****************************************************************************/
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 
-#define ConvertToPhysicalAddress(a) ((WORD)(a))
+#define ConvertToPhysicalAddress(a) ((uint16_t)(a))
 #define ConvertToVirtualAddress(a)  ((void *)(a))
 
 
@@ -411,12 +391,42 @@ typedef union _POINTER
                                             U1CNFG1 = USB_PULLUP_OPTION | USB_TRANSCEIVER_OPTION | USB_SPEED_OPTION | USB_PING_PONG_MODE;\
                                             U1EIE = 0x9F;\
                                             UIE = 0x39 | USB_SOF_INTERRUPT | USB_ERROR_INTERRUPT;\
+                                        }
+
+//------------------------------------------------------------------------------
+//This section is for the PIC16F145x Family Microcontrollers
+//------------------------------------------------------------------------------
+#elif defined(__16F1454) || defined(__16F1455) || defined(__16F1459) || defined(__16LF1454) || defined(__16LF1455) || defined(__16LF1459)
+    #define USBClearUSBInterrupt() PIR2bits.USBIF = 0;
+    #if defined(USB_INTERRUPT)
+        #define USBMaskInterrupts() {PIE2bits.USBIE = 0;}
+        #define USBUnmaskInterrupts() {PIE2bits.USBIE = 1;}
+    #else
+        #define USBMaskInterrupts() 
+        #define USBUnmaskInterrupts() 
+    #endif
+    
+    #define USBInterruptFlag PIR2bits.USBIF
+    
+    //STALLIE, IDLEIE, TRNIE, and URSTIE are all enabled by default and are required
+    #if defined(USB_INTERRUPT)
+        #define USBEnableInterrupts() {PIE2bits.USBIE = 1;INTCONbits.PEIE = 1;INTCONbits.GIE = 1;}
+    #else
+        #define USBEnableInterrupts()
+    #endif
+    
+    #define USBDisableInterrupts() {PIE2bits.USBIE = 0;}
+    
+    #define SetConfigurationOptions()   {\
+                                            U1CNFG1 = USB_PULLUP_OPTION | USB_TRANSCEIVER_OPTION | USB_SPEED_OPTION | USB_PING_PONG_MODE;\
+                                            U1EIE = 0x9F;\
+                                            UIE = 0x39 | USB_SOF_INTERRUPT | USB_ERROR_INTERRUPT;\
                                         }  
 #else
 //------------------------------------------------------------------------------
 //This section is for all other PIC18 USB microcontrollers
 //------------------------------------------------------------------------------
-    #define USBClearUSBInterrupt() PIR2bits.USBIF = 0;
+    #define USBClearUSBInterrupt() {PIR2bits.USBIF = 0;}
     #if defined(USB_INTERRUPT)
         #define USBMaskInterrupts() {PIE2bits.USBIE = 0;}
         #define USBUnmaskInterrupts() {PIE2bits.USBIE = 1;}
@@ -509,14 +519,14 @@ typedef union _POINTER
 #define USBSetBDTAddress(addr)
 
 /********************************************************************
- * Function (macro): void USBClearInterruptFlag(register, BYTE if_and_flag_mask)
+ * Function (macro): void USBClearInterruptFlag(register, uint8_t if_and_flag_mask)
  *
  * PreCondition:    None
  *
  * Input:           
  *   register - the register mnemonic for the register holding the interrupt 
  				flag to be cleared
- *   BYTE if_and_flag_mask - an AND mask for the interrupt flag that will be 
+ *   uint8_t if_and_flag_mask - an AND mask for the interrupt flag that will be
  				cleared
  *
  * Output:          None
@@ -531,7 +541,7 @@ typedef union _POINTER
 
 /********************************************************************
     Function:
-        void USBClearInterruptRegister(WORD reg)
+        void USBClearInterruptRegister(uint16_t reg)
         
     Summary:
         Clears the specified interrupt register
@@ -540,7 +550,7 @@ typedef union _POINTER
         None
         
     Parameters:
-        WORD reg - the register name that needs to be cleared
+        uint16_t reg - the register name that needs to be cleared
         
     Return Values:
         None
@@ -549,7 +559,7 @@ typedef union _POINTER
         None
  
  *******************************************************************/
-#define USBClearInterruptRegister(reg) reg = 0;
+#define USBClearInterruptRegister(reg) {reg = 0;}
 
 /********************************************************************
     Function:
@@ -588,8 +598,7 @@ typedef union _POINTER
 /*****************************************************************************/
 
 #if !defined(USBDEVICE_C)
-    //extern USB_VOLATILE USB_DEVICE_STATE USBDeviceState;
-    extern USB_VOLATILE BYTE USBActiveConfiguration;
+    extern USB_VOLATILE uint8_t USBActiveConfiguration;
     extern USB_VOLATILE IN_PIPE inPipes[1];
     extern USB_VOLATILE OUT_PIPE outPipes[1];
 #endif
@@ -597,4 +606,10 @@ typedef union _POINTER
 extern volatile BDT_ENTRY* pBDTEntryOut[USB_MAX_EP_NUMBER+1];
 extern volatile BDT_ENTRY* pBDTEntryIn[USB_MAX_EP_NUMBER+1];
 
-#endif //#ifndef USB_HAL_PIC18_H
+#ifdef __cplusplus  // Provide C++ Compatibility
+    }
+#endif
+
+#endif //#ifndef _USB_HAL_PIC18_H
+
+
