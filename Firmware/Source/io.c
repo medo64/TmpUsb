@@ -1,21 +1,25 @@
 #include <p18cxxx.h>
 #include <stdbool.h>
+#include <string.h>
 
-//#include "fat12.h"
-//#include "usb.h"
+#include "fileio_config.h"
 
-//#include "internal flash.h"
-
-
-//#define BLOCK_SIZE         ERASE_BLOCK_SIZE
-//#define TABLE_SIZE         WRITE_BLOCK_SIZE
-//#define SECTORS_PER_BLOCK  (BLOCK_SIZE/MEDIA_SECTOR_SIZE)
+#include "fat12.h"
 
 
-//const ROM BYTE DiskDefaultMbr[MEDIA_SECTOR_SIZE]  = FAT12_MBR;
-//const ROM BYTE DiskDefaultBoot[MEDIA_SECTOR_SIZE] = FAT12_BOOT;
-//const ROM BYTE DiskDefaultFat[MEDIA_SECTOR_SIZE]  = FAT12_FAT;
-//const ROM BYTE DiskDefaultRoot[MEDIA_SECTOR_SIZE] = FAT12_ROOT;
+#define MEDIA_SECTOR_SIZE   FILEIO_CONFIG_MEDIA_SECTOR_SIZE
+#define MEDIA_ROOT_ENTRIES  DRV_FILEIO_CONFIG_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT
+#define MEDIA_CAPACITY      DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE
+
+#define BLOCK_ERASE_SIZE    DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE
+#define BLOCK_WRITE_SIZE    DRV_FILEIO_INTERNAL_FLASH_CONFIG_WRITE_BLOCK_SIZE
+#define SECTORS_PER_BLOCK   (BLOCK_ERASE_SIZE/MEDIA_SECTOR_SIZE)
+
+
+const uint8_t DiskDefaultMbr[MEDIA_SECTOR_SIZE]  = FAT12_MBR;
+const uint8_t DiskDefaultBoot[MEDIA_SECTOR_SIZE] = FAT12_BOOT;
+const uint8_t DiskDefaultFat[MEDIA_SECTOR_SIZE]  = FAT12_FAT;
+const uint8_t DiskDefaultRoot[MEDIA_SECTOR_SIZE] = FAT12_ROOT;
 
 
 void io_init() {
@@ -41,22 +45,23 @@ bool io_5v_isOn(void) {
 }
 
 
-/*BOOL io_disk_hasLabel(const rom char* label) {
-    unsigned char i, hasDriveLabel = 0;
-    ROM BYTE* driveLabel;
+bool io_disk_hasLabel(const uint8_t* label) {
+    bool hasDriveLabel = false;
+    const uint8_t* driveLabel;
 
-    for (i = 0; i < MDD_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT; i++) {
-        driveLabel = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + 3*MEDIA_SECTOR_SIZE + i*32);
+    for (uint8_t i = 0; i < MEDIA_ROOT_ENTRIES; i++) {
+        driveLabel = (const uint8_t*)(MASTER_BOOT_RECORD_ADDRESS + 3 * MEDIA_SECTOR_SIZE + i * 32);
         if (driveLabel[11] == 0x08) {
-            hasDriveLabel = 1;
+            hasDriveLabel = true;
             break;
         }
     }
 
     if (!hasDriveLabel) {
-        driveLabel = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE + 0x2B);
+        driveLabel = (const uint8_t*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE + 0x2B);
     }
 
+    uint8_t i;
     for (i = 0; i < 11; i++) {
         if (label[i] == '\0') {
             break;
@@ -65,50 +70,44 @@ bool io_5v_isOn(void) {
                 || (((label[i] >= 0x41) && (label[i] <= 0x5A)) && ((label[i] + 0x20) == driveLabel[i]))
                 || (((label[i] >= 0x61) && (label[i] <= 0x7A)) && ((label[i] - 0x20) == driveLabel[i]))
                 )) {
-                return FALSE; //if one letter doesn't match, abort early
+                return false; //if one letter doesn't match, abort early
             }
         }
     }
-
     for (; i < 11; i++) { //check rest of label to be empty
-         if (!(driveLabel[i] == ' ') && !(driveLabel[i] == 0)) {
-             return FALSE;
+         if ((driveLabel[i] != ' ') && (driveLabel[i] != 0)) {
+             return false;
          }
     }
 
-    return TRUE;
+    return true;
 }
 
 
-BOOL io_disk_isValid() {
-    unsigned int i;
-    ROM BYTE* mbr;
-    ROM BYTE* boot;
-
-    mbr = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS);
-    for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
-        if (mbr[i] != DiskDefaultMbr[i]) { return FALSE; }
+bool io_disk_isValid() {
+    const uint8_t* mbr = (const uint8_t*)(MASTER_BOOT_RECORD_ADDRESS);
+    for (uint16_t i = 0; i < MEDIA_SECTOR_SIZE; i++) {
+        if (mbr[i] != DiskDefaultMbr[i]) { return false; }
     }
 
-    boot = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE);
-    for (i = 0; i < MEDIA_SECTOR_SIZE; i++) {
+    const uint8_t* boot = (const uint8_t*)(MASTER_BOOT_RECORD_ADDRESS + MEDIA_SECTOR_SIZE);
+    for (uint16_t i = 0; i < MEDIA_SECTOR_SIZE; i++) {
         if (i == 0x25) { continue; } //dirty flag
         if ((i >= 0x2B) && (i <= 0x35)) { continue; } //label
-        if (boot[i] != DiskDefaultBoot[i]) { return FALSE; }
+        if (boot[i] != DiskDefaultBoot[i]) { return false; }
     }
 
-    return TRUE;
+    return true;
 }
 
 
-void io_disk_erase(unsigned char* label) {
-    unsigned short long iBlock, iSector;
-    unsigned char i, j, k;
-    BYTE buffer[TABLE_SIZE] = {0};
+void io_disk_erase(uint8_t* label) {
+    uint8_t buffer[BLOCK_WRITE_SIZE] = {0};
 
+    
     //Erase all
-    for (iBlock = 0; iBlock  < (MDD_INTERNAL_FLASH_DRIVE_CAPACITY + 1) / SECTORS_PER_BLOCK; iBlock++) {
-        TBLPTR = (unsigned short long)(MASTER_BOOT_RECORD_ADDRESS + iBlock * BLOCK_SIZE);
+    for (uint8_t iBlock = 0; iBlock  < MEDIA_CAPACITY / SECTORS_PER_BLOCK; iBlock++) {
+        TBLPTR = (uint32_t)(MASTER_BOOT_RECORD_ADDRESS + iBlock * BLOCK_ERASE_SIZE);
 
         //Erase the current block
         EECON1 = 0x14;      //FREE + WREN
@@ -117,28 +116,28 @@ void io_disk_erase(unsigned char* label) {
         EECON1bits.WR = 1;  //CPU stalls until flash erase/write is complete
     }
 
-    for (iSector = 0; iSector  < (MDD_INTERNAL_FLASH_DRIVE_CAPACITY + 1); iSector++) {
-        for (i=0; i<8; i++) {
-            if (iSector == 0) {        memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultMbr[0]  + ((int)i * TABLE_SIZE)), TABLE_SIZE);
-            } else if (iSector == 1) { memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultBoot[0] + ((int)i * TABLE_SIZE)), TABLE_SIZE);
-            } else if (iSector == 2) { memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultFat[0]  + ((int)i * TABLE_SIZE)), TABLE_SIZE);
+    for (uint8_t iSector = 0; iSector  < MEDIA_CAPACITY; iSector++) {
+        for (uint8_t i = 0; i < 8; i++) {
+            if (iSector == 0) {        memcpy((void*)buffer, (const void*)(DiskDefaultMbr  + (uint32_t)i * BLOCK_WRITE_SIZE), sizeof(buffer));
+            } else if (iSector == 1) { memcpy((void*)buffer, (const void*)(DiskDefaultBoot + (uint32_t)i * BLOCK_WRITE_SIZE), sizeof(buffer));
+            } else if (iSector == 2) { memcpy((void*)buffer, (const void*)(DiskDefaultFat  + (uint32_t)i * BLOCK_WRITE_SIZE), sizeof(buffer));
             } else if (iSector == 3) {
-                memcpypgm2ram((void *)&buffer[0], (ROM void*)(&DiskDefaultRoot[0] + ((int)i * TABLE_SIZE)), TABLE_SIZE);
+                memcpy((void*)buffer, (const void*)(DiskDefaultRoot + i * BLOCK_WRITE_SIZE), sizeof(buffer));
                 if (i == 0) { //overwrite label
                     memset((void *)&buffer[0], ' ', 11);
-                    for (k=0; k<11; k++) {
+                    for (uint8_t k = 0; k < 11; k++) {
                         if (label[k]=='\0') { break; }
                         buffer[k] = label[k];
                     }
                 }
             } else {
-                memset((void *)&buffer[0], '\0', TABLE_SIZE);
+                memset((void*)buffer, '\0', sizeof(buffer));
             }
 
-            TBLPTR = (unsigned short long)(MASTER_BOOT_RECORD_ADDRESS + iSector * MEDIA_SECTOR_SIZE + (int)i * TABLE_SIZE - TABLE_SIZE);
-            for (j=0; j<TABLE_SIZE; j++) {
+            TBLPTR = (uint32_t)(MASTER_BOOT_RECORD_ADDRESS + iSector * MEDIA_SECTOR_SIZE + i * BLOCK_WRITE_SIZE - BLOCK_WRITE_SIZE);
+            for (uint8_t j = 0; j < BLOCK_WRITE_SIZE; j++) {
                 TABLAT = buffer[j];
-                _asm TBLWTPOSTINC _endasm
+                asm("TBLWTPOSTINC");
             }
 
             EECON1 = 0x04;      //WREN
@@ -148,12 +147,5 @@ void io_disk_erase(unsigned char* label) {
         }
     }
 
-    EECON1bits.WREN = 0;    //Good practice to disable any further writes now.
+    EECON1bits.WREN = 0;    //Good practice to disable any further writes now.*/
 }
-
-
-
-#if ((MDD_INTERNAL_FLASH_DRIVE_CAPACITY % 2) == 0)
-    #error "Internal flash drive capacity must be an odd number." //to have all data aligned on 1K boundary
-#endif
-*/

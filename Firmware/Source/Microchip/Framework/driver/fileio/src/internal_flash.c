@@ -692,7 +692,7 @@ void EraseBlock(const uint8_t* dest)
 #if defined(__XC16__)
     #pragma message "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
 #else
-    #warning "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
+    //#warning "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
 #endif
 //Function: void UnlockAndActivate(uint8_t UnlockKey)
 //Description: Activates and initiates a flash memory self erase or program 

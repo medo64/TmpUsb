@@ -22,8 +22,8 @@ void io_led_toggle(void);
 bool io_5v_isOn(void);
 
 bool io_disk_isValid(void);
-bool io_disk_hasLabel(const char* label);
-void io_disk_erase(unsigned char* label);
+bool io_disk_hasLabel(const uint8_t* label);
+void io_disk_erase(uint8_t* label);
 
 
 #endif

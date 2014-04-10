@@ -3,7 +3,7 @@
 #include "config.h"
 
 
-unsigned int timing_getCharge() {
+unsigned short timing_getCharge() {
     OSCCONbits.IRCF = 0b100;
     while (!OSCCONbits.OSTS); //Oscillator Start-up Timer time-out has expired; primary oscillator is running
 

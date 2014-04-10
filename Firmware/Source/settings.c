@@ -1,6 +1,8 @@
 #include <p18cxxx.h>
+#include <stdbool.h>
 #include <string.h>
-#include <GenericTypeDefs.h>
+
+#include "system.h"
 
 #include "io.h"
 
@@ -14,45 +16,42 @@
 #define SETTING_DEFAULT_ISARMED                     0
 
 
-#define BLOCK_ERASE_SIZE                         1024
-#define BLOCK_BUFFER_SIZE                          64
+#define BLOCK_ERASE_SIZE  DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE
+#define BLOCK_WRITE_SIZE  DRV_FILEIO_INTERNAL_FLASH_CONFIG_WRITE_BLOCK_SIZE
 
-#pragma romdata ROM_CONFIGURATION=0xF000
-    rom unsigned char SettingsRomBlock[BLOCK_ERASE_SIZE] = { SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH, SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW, SETTING_DEFAULT_ISARMED, 0 };
-#pragma romdata
+const uint8_t SettingsRomBlock[BLOCK_ERASE_SIZE] @0xF000 = { SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH, SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW, SETTING_DEFAULT_ISARMED, 0 };
 
-unsigned char SettingsBuffer[BLOCK_BUFFER_SIZE];
+uint8_t SettingsBuffer[BLOCK_WRITE_SIZE];
 
 
 void settings_init() {
-    memcpypgm2ram((void*)SettingsBuffer, (rom void*)SettingsRomBlock, sizeof(SettingsBuffer));
+    memcpy((void*)SettingsBuffer, (const void*)SettingsRomBlock, sizeof(SettingsBuffer));
 }
 
 void settings_write(void) {
-    unsigned char i, j;
-    unsigned char buffer[BLOCK_BUFFER_SIZE] = { 0 };
+    uint8_t buffer[BLOCK_WRITE_SIZE] = { 0 };
 
     io_led_toggle();
 
     //Erase all
-    TBLPTR = (unsigned short long)(SettingsRomBlock);
+    TBLPTR = (uint32_t)(&SettingsRomBlock[0]);
     EECON1 = 0x14;      //FREE + WREN
     EECON2 = 0x55;
     EECON2 = 0xAA;
     EECON1bits.WR = 1;  //CPU stalls until flash erase/write is complete
 
     //write settings
-    for (i=0; i<BLOCK_ERASE_SIZE/BLOCK_BUFFER_SIZE; i++) {
-        if (i==0) {
+    for (uint8_t i=0; i<BLOCK_ERASE_SIZE/BLOCK_WRITE_SIZE; i++) {
+        if (i == 0) {
             memcpy((void*)buffer, (void*)SettingsBuffer, sizeof(SettingsBuffer));
         } else {
-            memset((void*)buffer, '\0', BLOCK_BUFFER_SIZE);
+            memset((void*)buffer, '\0', BLOCK_WRITE_SIZE);
         }
 
-        TBLPTR = (unsigned short long)(SettingsRomBlock + (int)i * BLOCK_BUFFER_SIZE - BLOCK_BUFFER_SIZE);
-        for (j=0; j<BLOCK_BUFFER_SIZE; j++) {
+        TBLPTR = (uint32_t)(&SettingsRomBlock[0] + i * BLOCK_WRITE_SIZE - BLOCK_WRITE_SIZE);
+        for (uint8_t j = 0; j < BLOCK_WRITE_SIZE; j++) {
             TABLAT = buffer[j];
-            _asm TBLWTPOSTINC _endasm
+            asm("TBLWTPOSTINC");
         }
 
         EECON1 = 0x04;      //WREN
@@ -73,22 +72,22 @@ void settings_reset() {
 }
 
 
-unsigned int settings_getTimingChargeLimit() {
+unsigned short settings_getTimingChargeLimit() {
     return SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH] * 256 + SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW];
 }
 
-void settings_setTimingChargeLimit(unsigned int value) {
-    SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH] = (unsigned char)(value / 256);
-    SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW]  = (unsigned char)(value & 0xFF);
+void settings_setTimingChargeLimit(unsigned short value) {
+    SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH] = (uint8_t)(value / 256);
+    SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW]  = (uint8_t)(value & 0xFF);
     settings_write();
 }
 
 
-BOOL settings_getIsArmed() {
-    return SettingsBuffer[SETTING_INDEX_ISARMED] ? TRUE : FALSE;
+bool settings_getIsArmed() {
+    return (SettingsBuffer[SETTING_INDEX_ISARMED] != 0) ? true : false;
 }
 
-void settings_setIsArmed(BOOL value) {
+void settings_setIsArmed(bool value) {
     SettingsBuffer[SETTING_INDEX_ISARMED] = value ? 1 : 0;
     settings_write();
 }

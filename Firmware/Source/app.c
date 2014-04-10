@@ -7,15 +7,109 @@
 
 
 #include "config.h"
-//#include "fat12.h"
+#include "fat12.h"
 #include "io.h"
-//#include "settings.h"
-//#include "timing.h"
+#include "settings.h"
+#include "timing.h"
 
 
 void main(void) {
+    unsigned short timingCharge = timing_getCharge();
+
+    settings_init();
+    if (settings_getIsArmed() && (timingCharge <= settings_getTimingChargeLimit())) {
+        uint8_t label[] = { FAT12_ROOT_DEFAULT_LABEL };
+        io_disk_erase(label);
+        settings_setIsArmed(false);
+        reset();
+    }
+
+    
     init();
     io_init();
+
+    timing_charge();
+
+
+    if (!io_disk_isValid()) {
+
+        uint8_t label[] = { FAT12_ROOT_DEFAULT_LABEL };
+        io_disk_erase(label);
+        settings_setIsArmed(FALSE);
+
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_RESET)) {
+
+        uint8_t label[] = { FAT12_ROOT_DEFAULT_LABEL };
+        io_disk_erase(label);
+        settings_reset();
+
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
+
+        settings_setIsArmed(TRUE);
+
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_1) || io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_2)) {
+
+        settings_setIsArmed(TRUE);
+        settings_setTimingChargeLimit(1024); //this will ensure it always gets erased since there is no ADC value higher than 1024
+
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_CALIBRATE)) {
+
+        uint8_t label[12] = "Raw "; //11 + null char
+        uint8_t offset = 4;
+
+        settings_reset();
+        settings_setTimingChargeLimit(timingCharge);
+
+        if (timingCharge >= 1000) {
+            label[offset + 0] = 0x30 + (uint8_t)(timingCharge / 1000);
+            label[offset + 1] = 0x30 + (uint8_t)((timingCharge / 100) % 10);
+            label[offset + 2] = 0x30 + (uint8_t)((timingCharge / 10) % 10);
+            label[offset + 3] = 0x30 + (uint8_t)(timingCharge % 10);
+            label[offset + 4] = '\0';
+        } else if (timingCharge >= 100) {
+            label[offset + 0] = 0x30 + (uint8_t)(timingCharge / 100);
+            label[offset + 1] = 0x30 + (uint8_t)((timingCharge / 10) % 10);
+            label[offset + 2] = 0x30 + (uint8_t)(timingCharge % 10);
+            label[offset + 3] = '\0';
+        } else if (timingCharge >= 10) {
+            label[offset + 0] = 0x30 + (uint8_t)(timingCharge / 10);
+            label[offset + 1] = 0x30 + (uint8_t)(timingCharge % 10);
+            label[offset + 2] = '\0';
+        } else {
+            label[offset + 0] = 0x30 + (uint8_t)timingCharge;
+            label[offset + 1] = '\0';
+        }
+        io_disk_erase(label);
+
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_on(); wait_short();  io_led_off(); wait_short();
+
+    }
+
+
+    //wait for charge
+    io_led_on();
+    while (timing_getCharge() < 1012);
+    io_led_off();
+
+
+    if (!settings_getIsArmed()) {
+        wait_short(); //just to blink a bit
+        io_led_on();
+    }
 
 
     #if defined(USB_INTERRUPT)
@@ -25,12 +119,33 @@ void main(void) {
     USBDeviceInit();
     USBDeviceAttach();
 
+    uint8_t indexer = 0;
     while (true) {
         SYSTEM_Tasks();
 
         #if defined(USB_POLLING)
             USBDeviceTasks();
         #endif
+
+
+        indexer++;
+        if ((indexer == 0) && !settings_getIsArmed()) {
+            if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
+                settings_setIsArmed(TRUE);
+                io_led_off();
+            }
+        } else if (!io_5v_isOn() && settings_getIsArmed()) {
+            unsigned char label[] = { FAT12_ROOT_DEFAULT_LABEL };
+            unsigned int oldChargeLimit = settings_getTimingChargeLimit();
+            settings_setTimingChargeLimit(1024); //ensure it gets deleted on next boot
+            io_disk_erase(label);
+            settings_setTimingChargeLimit(oldChargeLimit);
+            while (TRUE) {
+                io_led_toggle();
+                wait_short();
+            }
+        }
+
 
         if (USBGetDeviceState() < CONFIGURED_STATE) { continue; }
         if (USBIsDeviceSuspended() == true) { continue; }
@@ -40,8 +155,7 @@ void main(void) {
 }
 
 
-void interrupt SYS_InterruptHigh(void)
-{
+void interrupt SYS_InterruptHigh(void) {
     #if defined(USB_INTERRUPT)
         USBDeviceTasks();
     #endif

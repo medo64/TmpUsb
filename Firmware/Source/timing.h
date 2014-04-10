@@ -2,7 +2,7 @@
 #define	TIMING_H
 
 
-unsigned int timing_getCharge(void);
+unsigned short timing_getCharge(void);
 void timing_charge(void);
 
 
