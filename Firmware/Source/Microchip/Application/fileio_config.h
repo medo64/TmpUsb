@@ -100,7 +100,7 @@
 //by carefully choosing the DRV_FILEIO_INTERNAL_FLASH_CONFIG_FILES_ADDRESS and DRV_FILEIO_INTERNAL_FLASH_CONFIG_DRIVE_CAPACITY,
 //to make sure the MSD volume does extend into the erase page with the configuration
 //bits.
-#define DRV_FILEIO_INTERNAL_FLASH_CONFIG_DRIVE_CAPACITY 13          //Number of 512 byte sectors of useable drive volume
+#define DRV_FILEIO_INTERNAL_FLASH_CONFIG_DRIVE_CAPACITY 12          //Number of 512 byte sectors of useable drive volume
 
 
 //--------------------------------------------------------------------------
