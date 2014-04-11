@@ -169,3 +169,9 @@
 
 
 #endif
+
+
+
+#if ((DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE % 2) != 0)
+    #error Drive has to have an even number of sectors.
+#endif
