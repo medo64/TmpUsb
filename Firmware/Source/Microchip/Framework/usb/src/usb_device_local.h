@@ -32,60 +32,8 @@
     PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
     IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
     CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
-
-  Summary:
-    This file contains functions, macros, definitions, variables,
-    datatypes, etc. that are required for usage with the MCHPFSUSB device
-    stack. This file should be included in projects that use the device stack. 
-    
-    This file is located in the "\<Install Directory\>\\Microchip\\USB"
-    directory.
-
-  Description:
-    USB Device Stack File
-    
-    This file contains functions, macros, definitions, variables,
-    datatypes, etc. that are required for usage with the MCHPFSUSB device
-    stack. This file should be included in projects that use the device stack.
-    
-    This file is located in the "\<Install Directory\>\\Microchip\\USB"
-    directory.
-    
-    When including this file in a new project, this file can either be
-    referenced from the directory in which it was installed or copied
-    directly into the user application folder. If the first method is
-    chosen to keep the file located in the folder in which it is installed
-    then include paths need to be added so that the library and the
-    application both know where to reference each others files. If the
-    application folder is located in the same folder as the Microchip
-    folder (like the current demo folders), then the following include
-    paths need to be added to the application's project:
-    
-    .
-    ..\\..\\MicrochipInclude
-    
-    If a different directory structure is used, modify the paths as
-    required. An example using absolute paths instead of relative paths
-    would be the following:
-    
-    C:\\Microchip Solutions\\Microchip\\Include
-    
-    C:\\Microchip Solutions\\My Demo Application 
-
-********************************************************************
- File Description:
-
- Change History:
-  Rev    Description
-  ----   -----------
-  2.8    Initial revision.  Contents extracted from the previous usb_device.c 
-         file, so as to make the usb_device.c file less cluttered.
-         Fixed BD() and EP() macro computation error, when running in
-         USB_PING_PONG__EP0_OUT_ONLY mode.
-  2.9    No functional change.  Fixed spelling typo in the name of 
-         "USB_TRANSFER_COMPLETE_HANDLER()"
 ********************************************************************/
-#include "usb_config.h"
+#include "system_config.h"
 
 /* Short Packet States - Used by Control Transfer Read  - CTRL_TRF_TX */
 #define SHORT_PKT_NOT_USED  0
@@ -105,7 +53,7 @@ typedef union
         unsigned char ping_pong_state :1;
         unsigned char transfer_terminated :1;
     } bits;
-    BYTE Val;
+    uint8_t Val;
 } EP_STATUS;
 
 #if (USB_PING_PONG_MODE == USB_PING_PONG__NO_PING_PONG)

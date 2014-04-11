@@ -1,92 +1,34 @@
-/*********************************************************************
-  File Information:
-    FileName:        usb_function_msd.h
-    Dependencies:    See INCLUDES section below
-    Processor:       PIC18, PIC24, or PIC32
-    Compiler:        C18, C30, or C32
-    Company:         Microchip Technology, Inc.
+//DOM-IGNORE-BEGIN
+/*******************************************************************************
+Software License Agreement
 
-    Software License Agreement
+The software supplied herewith by Microchip Technology Incorporated
+(the "Company") for its PICmicro(R) Microcontroller is intended and
+supplied to you, the Company's customer, for use solely and
+exclusively on Microchip PICmicro Microcontroller products. The
+software is owned by the Company and/or its supplier, and is
+protected under applicable copyright laws. All rights are reserved.
+Any use in violation of the foregoing restrictions may subject the
+user to criminal sanctions under applicable laws, as well as to
+civil liability for the breach of the terms and conditions of this
+license.
 
-    The software supplied herewith by Microchip Technology Incorporated
-    (the �Company�) for its PICmicro� Microcontroller is intended and
-    supplied to you, the Company�s customer, for use solely and
-    exclusively on Microchip PICmicro Microcontroller products. The
-    software is owned by the Company and/or its supplier, and is
-    protected under applicable copyright laws. All rights are reserved.
-    Any use in violation of the foregoing restrictions may subject the
-    user to criminal sanctions under applicable laws, as well as to
-    civil liability for the breach of the terms and conditions of this
-    license.
+THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
-    THIS SOFTWARE IS PROVIDED IN AN �AS IS� CONDITION. NO WARRANTIES,
-    WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
-    TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-    PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
-    IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
-    CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+*******************************************************************************/
+//DOM-IGNORE-END
 
-  Summary:
-    This file contains functions, macros, definitions, variables,
-    datatypes, etc. that are required for use of the MSD function
-    driver. This file should be included in projects that use the MSD
-    \function driver.
-    
-    
-    
-    This file is located in the "\<Install Directory\>\\Microchip\\USB\\MSD
-    Device Driver" directory.
-
-  Description:
-    USB MSD Function Driver File
-    
-    This file contains functions, macros, definitions, variables,
-    datatypes, etc. that are required for use of the MSD function
-    driver. This file should be included in projects that use the MSD
-    \function driver.
-    
-    This file is located in the "\<Install Directory\>\\Microchip\\USB\\MSD
-    Device Driver" directory.
-    
-    When including this file in a new project, this file can either be
-    referenced from the directory in which it was installed or copied
-    directly into the user application folder. If the first method is
-    chosen to keep the file located in the folder in which it is installed
-    then include paths need to be added so that the library and the
-    application both know where to reference each others files. If the
-    application folder is located in the same folder as the Microchip
-    folder (like the current demo folders), then the following include
-    paths need to be added to the application's project:
-    
-    .
-    
-    ..\\..\\Microchip\\Include
-    
-    If a different directory structure is used, modify the paths as
-    required. An example using absolute paths instead of relative paths
-    would be the following:
-    
-    C:\\Microchip Solutions\\Microchip\\Include
-    
-    C:\\Microchip Solutions\\My Demo Application
-
- Change History:
-   Rev    Description
-   ----   ------------------------------------------
-   2.6    No Change
-   2.8    Added a couple of additional sense key definitions.
-   2.9    Added definitions for additional error case checks.
-   2.9d   Added definition for MSD_MODE_SENSE_10.
-
- ********************************************************************/
 #ifndef MSD_H
 #define MSD_H
 
 /** I N C L U D E S **********************************************************/
-#include "Compiler.h"
-#include "GenericTypeDefs.h"
-#include "FSDefs.h"
-//#include "SD Card/sdcard.h"
+#include <stdint.h>
+#include "fileio/fileio.h"
 
 /** D E F I N I T I O N S ****************************************************/
 
@@ -144,17 +86,17 @@
     #define MSD_COMMAND_STALL                   0xFB
     
     /* SCSI Transparent Command Set Sub-class code */
-    #define MSD_INQUIRY 						0x12
-    #define MSD_READ_FORMAT_CAPACITY 			0x23			 
-    #define MSD_READ_CAPACITY 					0x25
-    #define MSD_READ_10 						0x28
-    #define MSD_WRITE_10 						0x2a
-    #define MSD_REQUEST_SENSE 					0x03
-    #define MSD_MODE_SENSE  					0x1a
+    #define MSD_INQUIRY                     	0x12
+    #define MSD_READ_FORMAT_CAPACITY         	0x23
+    #define MSD_READ_CAPACITY                 	0x25
+    #define MSD_READ_10                     	0x28
+    #define MSD_WRITE_10                     	0x2a
+    #define MSD_REQUEST_SENSE                 	0x03
+    #define MSD_MODE_SENSE                  	0x1a
     #define MSD_PREVENT_ALLOW_MEDIUM_REMOVAL 	0x1e
-    #define MSD_TEST_UNIT_READY 				0x00
-    #define MSD_VERIFY 							0x2f
-    #define MSD_STOP_START 						0x1b
+    #define MSD_TEST_UNIT_READY             	0x00
+    #define MSD_VERIFY                         	0x2f
+    #define MSD_STOP_START                     	0x1b
     
     #define MSD_READ10_WAIT                     0x00
     #define MSD_READ10_BLOCK                    0x01
@@ -181,20 +123,20 @@
 #define MSD_MAX_CB_SIZE 0x10    //MSD BOT Command Block (CB) size is 16 bytes maximum (bytes 0x0F-0x1E in the CBW)
 #define MSD_CBWFLAGS_RESERVED_BITS_MASK    0x3F //Bits 5..0 of the bCBWFlags byte are reserved, and should be set = 0 by host in order for CBW to be considered meaningful
 
-#define MSD_VALID_CBW_SIGNATURE (DWORD)0x43425355
-#define MSD_VALID_CSW_SIGNATURE (DWORD)0x53425355
+#define MSD_VALID_CBW_SIGNATURE (uint32_t)0x43425355
+#define MSD_VALID_CSW_SIGNATURE (uint32_t)0x53425355
 
 //MSDErrorHandler() definitions, see section 6.7 of BOT specifications revision 1.0
 //Note: We re-use values for some of the cases.  This is because the error handling
 //behavior is the same for some of the different test case numbes.
 #define MSD_ERROR_CASE_NO_ERROR         0x00
-#define MSD_ERROR_CASE_2 	            0x01
-#define	MSD_ERROR_CASE_3 	            0x01
-#define MSD_ERROR_CASE_4 	            0x02
-#define	MSD_ERROR_CASE_5 	            0x02
-#define MSD_ERROR_CASE_7 	            0x03
-#define	MSD_ERROR_CASE_8 	            0x03
-#define MSD_ERROR_CASE_9 	            0x04
+#define MSD_ERROR_CASE_2                 0x01
+#define	MSD_ERROR_CASE_3                 0x01
+#define MSD_ERROR_CASE_4                 0x02
+#define	MSD_ERROR_CASE_5                 0x02
+#define MSD_ERROR_CASE_7                 0x03
+#define	MSD_ERROR_CASE_8                 0x03
+#define MSD_ERROR_CASE_9                 0x04
 #define MSD_ERROR_CASE_11               0x04
 #define	MSD_ERROR_CASE_10               0x05
 #define	MSD_ERROR_CASE_13               0x05
@@ -285,144 +227,183 @@
 /** S T R U C T U R E S ******************************************************/
 /********************** ******************************************************/
  
-typedef struct _USB_MSD_CBW 		//31 bytes total Command Block Wrapper
+typedef struct _USB_MSD_CBW         //31 bytes total Command Block Wrapper
 {
-    DWORD dCBWSignature;			// 55 53 42 43h
-    DWORD dCBWTag;					// sent by host, device echos this value in CSW (associated a CSW with a CBW)
-    DWORD dCBWDataTransferLength; 	// number of bytes of data host expects to transfer
-    BYTE bCBWFlags; 				// CBW flags, bit 7 = 0-data out from host to device, 
-    								//					= 1-device to host, rest bits 0
-    BYTE bCBWLUN;					// Most Significant 4bits are always zero, 0 in our case as only one logical unit
-    BYTE bCBWCBLength;				// Here most significant 3bits are zero
-	BYTE CBWCB[16];		            // Command block to be executed by the device
+    uint32_t dCBWSignature;            // 55 53 42 43h
+    uint32_t dCBWTag;                    // sent by host, device echos this value in CSW (associated a CSW with a CBW)
+    uint32_t dCBWDataTransferLength;     // number of bytes of data host expects to transfer
+    uint8_t bCBWFlags;                 // CBW flags, bit 7 = 0-data out from host to device,
+                                    //                    = 1-device to host, rest bits 0
+    uint8_t bCBWLUN;                    // Most Significant 4bits are always zero, 0 in our case as only one logical unit
+    uint8_t bCBWCBLength;                // Here most significant 3bits are zero
+	uint8_t CBWCB[16];                    // Command block to be executed by the device
 } USB_MSD_CBW;
 
-typedef struct { 					// Command Block for Read 10 (0x28)& Write 10 (0x2a)commands
-			BYTE Opcode;				
-			BYTE Flags;						// b7-b5 RDProtect, b4 DPO, b3 FUA, b2 Reserved, b1 FUA_NV, b0 Obsolete
-			DWORD_VAL LBA;						// 
-			BYTE GroupNumber;				// b4-b0 is Group Number rest are reserved
-			WORD_VAL TransferLength;
-			BYTE Control;
+typedef union
+{
+    uint8_t v[4];
+    uint16_t w[2];
+    uint32_t Val;
+} USB_MSD_LBA;
+
+typedef union
+{
+    uint8_t v[4];
+    uint16_t w[2];
+    uint32_t Val;
+} USB_MSD_BLK;
+
+typedef union
+{
+    uint8_t v[4];
+    uint16_t w[2];
+    uint32_t Val;
+} USB_MSD_SECTOR_SIZE;
+
+typedef union
+{
+    uint8_t v[4];
+    uint16_t w[2];
+    uint32_t Val;
+} USB_MSD_CAPACITY;
+
+typedef union
+{
+    uint8_t v[2];
+    struct __attribute__((__packed__))
+    {
+        uint8_t LB;
+        uint8_t HB;
+    }byte;
+    uint16_t Val;
+} USB_MSD_TRANSFER_LENGTH;
+
+typedef struct {                     // Command Block for Read 10 (0x28)& Write 10 (0x2a)commands
+    uint8_t Opcode;
+    uint8_t Flags;                        // b7-b5 RDProtect, b4 DPO, b3 FUA, b2 Reserved, b1 FUA_NV, b0 Obsolete
+    USB_MSD_LBA LBA;                        //
+    uint8_t GroupNumber;                // b4-b0 is Group Number rest are reserved
+    USB_MSD_TRANSFER_LENGTH TransferLength;
+    uint8_t Control;
 } ReadWriteCB;
-			
-typedef struct {					// Inquiry command format
-	BYTE Opcode;
-	BYTE EVPD;				// only b0 is enable vital product data
-	BYTE PageCode;
-	WORD AllocationLength;
-	BYTE Control;
+
+typedef struct {                    // Inquiry command format
+	uint8_t Opcode;
+	uint8_t EVPD;                // only b0 is enable vital product data
+	uint8_t PageCode;
+	uint16_t AllocationLength;
+	uint8_t Control;
 } InquiryCB;
 
-typedef struct {					// Read Capacity 10
-	BYTE Opcode;
-	BYTE Reserved1;
-	DWORD LBA;				// Logical Block Address
-	WORD Reserved2;
-	BYTE PMI;				// Partial medium Indicator b0 only
-	BYTE Control; 
+typedef struct {                    // Read Capacity 10
+	uint8_t Opcode;
+	uint8_t Reserved1;
+	uint32_t LBA;                // Logical Block Address
+	uint16_t Reserved2;
+	uint8_t PMI;                // Partial medium Indicator b0 only
+	uint8_t Control; 
 } ReadCapacityCB;
 
-typedef struct {					// Request Sense 0x03		
-	BYTE Opcode;
-	BYTE Desc;
-	WORD Reserved;
-	BYTE AllocationLength;
-	BYTE Control;
-} RequestSenseCB;	
+typedef struct {                    // Request Sense 0x03
+	uint8_t Opcode;
+	uint8_t Desc;
+	uint16_t Reserved;
+	uint8_t AllocationLength;
+	uint8_t Control;
+} RequestSenseCB;
 
-typedef struct {					// Mode Sense 0x1a
-	BYTE Opcode;
-	BYTE DBD;				// actually only b3 is used as disable block descriptor
-	BYTE PageCode;			// b7,b6 PC=Page Control, b5-b0 PageCode
-									// Page Control bits 00=> CurrentValue, 01=>Changeable Values,10=>Default Value, 11=>Saved Values
-	BYTE SubPageCode;
-	BYTE AllocationLength;
-	BYTE Control;		
+typedef struct {                    // Mode Sense 0x1a
+	uint8_t Opcode;
+	uint8_t DBD;                // actually only b3 is used as disable block descriptor
+	uint8_t PageCode;            // b7,b6 PC=Page Control, b5-b0 PageCode
+                                    // Page Control bits 00=> CurrentValue, 01=>Changeable Values,10=>Default Value, 11=>Saved Values
+	uint8_t SubPageCode;
+	uint8_t AllocationLength;
+	uint8_t Control;
 } ModeSenseCB;
 
-typedef struct {					// PREVENT_ALLOW_MEDIUM_REMOVAL 0x1e
-	BYTE Opcode;
-	BYTE Reserved[3];
-	BYTE Prevent;			// only b1-b0 is prevent, rest reserved
-	BYTE Control;
+typedef struct {                    // PREVENT_ALLOW_MEDIUM_REMOVAL 0x1e
+	uint8_t Opcode;
+	uint8_t Reserved[3];
+	uint8_t Prevent;            // only b1-b0 is prevent, rest reserved
+	uint8_t Control;
 } PreventAllowMediumRemovalCB;
 
-typedef struct {					// TEST_UNIT_READY 0x00
-	BYTE Opcode;
-	DWORD Reserved;
-	BYTE Control;			
+typedef struct {                    // TEST_UNIT_READY 0x00
+	uint8_t Opcode;
+	uint32_t Reserved;
+	uint8_t Control;
 } TestUnitReadyCB;
 
-typedef struct {					// VERIFY 10 Command 0x2f
-	BYTE Opcode;
-	BYTE VRProtect;			// b7-b5 VRProtect, b4 DPO, b3-b2,Reserved, b1 BYTCHK, b0 Obsolete
-	DWORD LBA;
-	BYTE GroupNumber;		// b4-b0 Group Number, rest reserved
-	WORD VerificationLength;	
-	BYTE Control;
+typedef struct {                    // VERIFY 10 Command 0x2f
+	uint8_t Opcode;
+	uint8_t VRProtect;            // b7-b5 VRProtect, b4 DPO, b3-b2,Reserved, b1 BYTCHK, b0 Obsolete
+	uint32_t LBA;
+	uint8_t GroupNumber;        // b4-b0 Group Number, rest reserved
+	uint16_t VerificationLength;
+	uint8_t Control;
 } VerifyCB;
-	
-typedef struct {					// STOP_START 0x1b
-	BYTE Opcode;
-	BYTE Immed;
-	WORD Reserved;
-	BYTE Start;				// b7-b4 PowerCondition, b3-b2reserved, b1 LOEJ, b0 Start
-	BYTE Control; 	
-} StopStartCB;	
+
+typedef struct {                    // STOP_START 0x1b
+	uint8_t Opcode;
+	uint8_t Immed;
+	uint16_t Reserved;
+	uint8_t Start;                // b7-b4 PowerCondition, b3-b2reserved, b1 LOEJ, b0 Start
+	uint8_t Control;
+} StopStartCB;
 
 
-typedef struct _USB_MSD_CSW			// Command Status Wrapper
+typedef struct _USB_MSD_CSW	        // Command Status Wrapper
 {
-	DWORD dCSWSignature;			// 55 53 42 53h Signature of a CSW packet
-	DWORD dCSWTag;					// echo the dCBWTag of the CBW packet
-	DWORD dCSWDataResidue;			// difference in data expected (dCBWDataTransferLength) and actual amount processed/sent
-	BYTE bCSWStatus;				// 00h Command Passed, 01h Command Failed, 02h Phase Error, rest obsolete/reserved
+	uint32_t dCSWSignature;            // 55 53 42 53h Signature of a CSW packet
+	uint32_t dCSWTag;                    // echo the dCBWTag of the CBW packet
+	uint32_t dCSWDataResidue;            // difference in data expected (dCBWDataTransferLength) and actual amount processed/sent
+	uint8_t bCSWStatus;                // 00h Command Passed, 01h Command Failed, 02h Phase Error, rest obsolete/reserved
 } USB_MSD_CSW;
 
 typedef struct 
 {
- 	BYTE Peripheral; 					// Peripheral_Qualifier:3; Peripheral_DevType:5;
-	BYTE Removble;						// removable medium bit7 = 0 means non removable, rest reserved
-	BYTE Version;						// version
-	BYTE Response_Data_Format;		// b7,b6 Obsolete, b5 Access control co-ordinator, b4 hierarchical addressing support 
-										// b3:0 response data format 2 indicates response is in format defined by spec
-	BYTE AdditionalLength;				// length in bytes of remaining in standard inquiry data
-	BYTE Sccstp; 						// b7 SCCS, b6 ACC, b5-b4 TGPS, b3 3PC, b2-b1 Reserved, b0 Protected 
-	BYTE bqueetc;						// b7 bque, b6- EncServ, b5-VS, b4-MultiP, b3-MChngr, b2-b1 Obsolete, b0-Addr16	
-    BYTE CmdQue;                        // b7-b6 Obsolete, b5-WBUS, b4-Sync, b3-Linked, b2 Obsolete,b1 Cmdque, b0-VS
-	char vendorID[8];	
+ 	uint8_t Peripheral;                     // Peripheral_Qualifier:3; Peripheral_DevType:5;
+	uint8_t Removble;                        // removable medium bit7 = 0 means non removable, rest reserved
+	uint8_t Version;                        // version
+	uint8_t Response_Data_Format;        // b7,b6 Obsolete, b5 Access control co-ordinator, b4 hierarchical addressing support
+                                        // b3:0 response data format 2 indicates response is in format defined by spec
+	uint8_t AdditionalLength;                // length in bytes of remaining in standard inquiry data
+	uint8_t Sccstp;                         // b7 SCCS, b6 ACC, b5-b4 TGPS, b3 3PC, b2-b1 Reserved, b0 Protected
+	uint8_t bqueetc;                        // b7 bque, b6- EncServ, b5-VS, b4-MultiP, b3-MChngr, b2-b1 Obsolete, b0-Addr16
+    uint8_t CmdQue;                        // b7-b6 Obsolete, b5-WBUS, b4-Sync, b3-Linked, b2 Obsolete,b1 Cmdque, b0-VS
+	char vendorID[8];
 	char productID[16];
 	char productRev[4];
 } InquiryResponse;      //36 bytes total
 
 typedef struct {
-	BYTE ModeDataLen;
-	BYTE MediumType;
+	uint8_t ModeDataLen;
+	uint8_t MediumType;
 	unsigned Resv:4;
-	unsigned DPOFUA:1;					// 0 indicates DPO and FUA bits not supported
+	unsigned DPOFUA:1;                    // 0 indicates DPO and FUA bits not supported
 	unsigned notused:2;
-	unsigned WP:1;						// 0 indicates not write protected		
-	BYTE BlockDscLen;					// Block Descriptor Length
+	unsigned WP:1;                        // 0 indicates not write protected
+	uint8_t BlockDscLen;                    // Block Descriptor Length
 } tModeParamHdr;
 
 /* Short LBA mode block descriptor (see Page 1009, SBC-2) */
 typedef struct {
-	BYTE NumBlocks[4];
-	BYTE Resv;							// reserved
-	BYTE BlockLen[3];
+	uint8_t NumBlocks[4];
+	uint8_t Resv;                            // reserved
+	uint8_t BlockLen[3];
 } tBlockDescriptor;
 
 /* Page_0 mode page format */
 typedef struct {
-	
-	unsigned PageCode:6;				// SPC-3 7.4.5
-	unsigned SPF:1;						// SubPageFormat=0 means Page_0 format
-	unsigned PS:1;						// Parameters Saveable
 
-	BYTE PageLength;					// if 2..n bytes of mode parameters PageLength = n-1
-	BYTE ModeParam[];					// mode parameters
-} tModePage;	
+	unsigned PageCode:6;                // SPC-3 7.4.5
+	unsigned SPF:1;                        // SubPageFormat=0 means Page_0 format
+	unsigned PS:1;                        // Parameters Saveable
+
+	uint8_t PageLength;                    // if 2..n bytes of mode parameters PageLength = n-1
+	uint8_t ModeParam[];                    // mode parameters
+} tModePage;
 
 typedef struct {
 	tModeParamHdr Header;
@@ -430,39 +411,45 @@ typedef struct {
 	tModePage modePage;
 } ModeSenseResponse;
 
+typedef union
+{
+    uint8_t v[4];
+    uint16_t w[2];
+    uint32_t Val;
+} USB_MSD_CMD_SPECIFIC_INFO;
 
 /* Fixed format if Desc bit of request sense cbw is 0 */
 typedef union __attribute__((packed)){
 	struct
     {
-        BYTE _byte[18];
+        uint8_t _byte[18];
     };
 	struct __attribute__((packed)){
-		unsigned ResponseCode:7;			// b6-b0 is Response Code Fixed or descriptor format
-		unsigned VALID:1;					// Set to 1 to indicate information field is a valid value
-	
-		BYTE Obsolete;
-	
-		unsigned SenseKey:4;				// Refer SPC-3 Section 4.5.6
-		unsigned Resv:1;					
-		unsigned ILI:1;						// Incorrect Length Indicator
-		unsigned EOM:1;						// End of Medium
-		unsigned FILEMARK:1; 				// for READ and SPACE commands
-	
-		BYTE InformationB0;					// device type or command specific (SPC-33.1.18)
-        BYTE InformationB1;					// device type or command specific (SPC-33.1.18)
-        BYTE InformationB2;					// device type or command specific (SPC-33.1.18)
-        BYTE InformationB3;					// device type or command specific (SPC-33.1.18)
-		BYTE AddSenseLen;					// number of additional sense bytes that follow <=244
-		DWORD_VAL CmdSpecificInfo;				// depends on command on which exception occured
-		BYTE ASC;							// additional sense code 
-		BYTE ASCQ;							// additional sense code qualifier Section 4.5.2.1 SPC-3
-		BYTE FRUC;							// Field Replaceable Unit Code 4.5.2.5 SPC-3
-	
-		BYTE SenseKeySpecific[3];			// msb is SKSV sense-key specific valied field set=> valid SKS
-											// 18-n additional sense bytes can be defined later
-											// 18 Bytes Request Sense Fixed Format
-	};
+    	unsigned ResponseCode:7;            // b6-b0 is Response Code Fixed or descriptor format
+    	unsigned VALID:1;                    // Set to 1 to indicate information field is a valid value
+
+    	uint8_t Obsolete;
+
+    	unsigned SenseKey:4;                // Refer SPC-3 Section 4.5.6
+    	unsigned Resv:1;
+    	unsigned ILI:1;                        // Incorrect Length Indicator
+    	unsigned EOM:1;                        // End of Medium
+    	unsigned FILEMARK:1;                 // for READ and SPACE commands
+
+    	uint8_t InformationB0;                    // device type or command specific (SPC-33.1.18)
+        uint8_t InformationB1;                    // device type or command specific (SPC-33.1.18)
+        uint8_t InformationB2;                    // device type or command specific (SPC-33.1.18)
+        uint8_t InformationB3;                    // device type or command specific (SPC-33.1.18)
+    	uint8_t AddSenseLen;                    // number of additional sense bytes that follow <=244
+    	USB_MSD_CMD_SPECIFIC_INFO CmdSpecificInfo;                // depends on command on which exception occured
+    	uint8_t ASC;                            // additional sense code
+    	uint8_t ASCQ;                            // additional sense code qualifier Section 4.5.2.1 SPC-3
+    	uint8_t FRUC;                            // Field Replaceable Unit Code 4.5.2.5 SPC-3
+
+    	uint8_t SenseKeySpecific[3];            // msb is SKSV sense-key specific valied field set=> valid SKS
+                                            // 18-n additional sense bytes can be defined later
+                                            // 18 Bytes Request Sense Fixed Format
+    };
 } RequestSenseResponse;
 
 /**************************************************************************
@@ -506,27 +493,29 @@ typedef union __attribute__((packed)){
   **************************************************************************/
 typedef struct
 {
-    //Function pointer to the MediaInitialize() function of the physical media 
+    // Function pointer to the MediaInitialize() function of the physical media
     //  being used. 
-    MEDIA_INFORMATION* (*MediaInitialize)();
-    //Function pointer to the ReadCapacity() function of the physical media 
+    FILEIO_MEDIA_INFORMATION* (*MediaInitialize)(void * config);
+    // Function pointer to the ReadCapacity() function of the physical media
     //  being used.
-    DWORD (*ReadCapacity)();
-    //Function pointer to the ReadSectorSize() function of the physical media 
+    uint32_t (*ReadCapacity)(void * config);
+    // Function pointer to the ReadSectorSize() function of the physical media
     //  being used.
-    WORD  (*ReadSectorSize)();
-    //Function pointer to the MediaDetect() function of the physical media 
+    uint16_t  (*ReadSectorSize)(void * config);
+    // Function pointer to the MediaDetect() function of the physical media
     //  being used.
-    BYTE  (*MediaDetect)();
-    //Function pointer to the SectorRead() function of the physical media being 
+    bool  (*MediaDetect)(void * config);
+    // Function pointer to the SectorRead() function of the physical media being
     //  used.
-    BYTE  (*SectorRead)(DWORD sector_addr, BYTE* buffer);
-    //Function pointer to the WriteProtectState() function of the physical 
+    uint8_t  (*SectorRead)(void * config, uint32_t sector_addr, uint8_t* buffer);
+    // Function pointer to the WriteProtectState() function of the physical
     //  media being used.
-    BYTE  (*WriteProtectState)();
-    //Function pointer to the SectorWrite() function of the physical media 
+    uint8_t  (*WriteProtectState)(void * config);
+    // Function pointer to the SectorWrite() function of the physical media
     //  being used.
-    BYTE  (*SectorWrite)(DWORD sector_addr, BYTE* buffer, BYTE allowWriteToZero);
+    uint8_t  (*SectorWrite)(void * config, uint32_t sector_addr, uint8_t* buffer, uint8_t allowWriteToZero);
+    // Pointer to a media-specific parameter structure
+    void * mediaParameters;
 } LUN_FUNCTIONS;
 
 /** Section: Externs *********************************************************/
@@ -535,32 +524,32 @@ extern USB_HANDLE USBMSDInHandle;
 extern volatile USB_MSD_CBW msd_cbw;
 extern volatile USB_MSD_CSW msd_csw;
 extern volatile char msd_buffer[512];
-extern BOOL SoftDetach[MAX_LUN + 1];
+extern bool SoftDetach[MAX_LUN + 1];
 extern volatile CTRL_TRF_SETUP SetupPkt;
-extern volatile BYTE CtrlTrfData[USB_EP0_BUFF_SIZE];
-extern BOOL MSDCBWValid;
-extern BYTE MSD_State;
+extern volatile uint8_t CtrlTrfData[USB_EP0_BUFF_SIZE];
+extern bool MSDCBWValid;
+extern uint8_t MSD_State;
 
 /** Section: Public Prototypes ***********************************************/
 void USBCheckMSDRequest(void);
-BYTE MSDTasks(void);
+uint8_t MSDTasks(void);
 void USBMSDInit(void);
 
 
 /**************************************************************************
-    Function: BOOL MSDWasLastCBWValid(void)
+    Function: bool MSDWasLastCBWValid(void)
     
     Summary:
         Returns the BOOLean status of the most recently received command block 
         wrapper (CBW).  If the last CBW passed the MSD "is valid" tests, then
-        this function will return TRUE.  If the last received CBW was
-        not valid, then the return value will be FALSE.
+        this function will return true.  If the last received CBW was
+        not valid, then the return value will be false.
     
     Description:
         Returns the BOOLean status of the most recently received command block 
         wrapper (CBW).  If the last CBW passed the "is valid" tests, then
-        this function will return TRUE.  If the last received CBW was
-        not valid, then the return value will be FALSE.  This function would
+        this function will return true.  If the last received CBW was
+        not valid, then the return value will be false.  This function would
         typically be used following a host initiated clear endpoint halt 
         operation on an MSD bulk IN or OUT endpoint.  In this case, the firmware
         needs to check if the last received CBW was valid, in order to know
@@ -576,8 +565,8 @@ void USBMSDInit(void);
         None
     
     Return Values:
-        BOOL:  TRUE - if last received CBW was valid
-               FALSE - if the last received CBW was not valid
+        bool:  true - if last received CBW was valid
+               false - if the last received CBW was not valid
 
     Remarks:
         None
@@ -589,7 +578,7 @@ void USBMSDInit(void);
 
 /**************************************************************************
     Function:
-    void LUNSoftDetach(BYTE LUN)
+    void LUNSoftDetach(uint8_t LUN)
     
     Summary:
     
@@ -606,11 +595,11 @@ void USBMSDInit(void);
         on the same LUN must be performed before the device will re-attach
                     
   **************************************************************************/
-#define LUNSoftDetach(LUN) SoftDetach[LUN]=TRUE;
+#define LUNSoftDetach(LUN) SoftDetach[LUN]=true;
 
 /**************************************************************************
     Function:
-    void LUNSoftAttach(BYTE LUN)
+    void LUNSoftAttach(uint8_t LUN)
     
     Summary:
     
@@ -627,7 +616,7 @@ void USBMSDInit(void);
         on the same LUN must be performed before the device will re-attach
                     
   **************************************************************************/
-#define LUNSoftAttach(LUN) SoftDetach[LUN]=FALSE;
+#define LUNSoftAttach(LUN) SoftDetach[LUN]=false;
 
 
 

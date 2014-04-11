@@ -37,12 +37,16 @@
 
 
 void init(void) {
-     //disable interrupts
+    //disable interrupts
     INTCONbits.GIE = 0;
 
     //8 MHz oscillator
     OSCCONbits.IRCF = 0b111;
     while (!OSCCONbits.OSTS); //Oscillator Start-up Timer time-out has expired; primary oscillator is running
+
+    //wait for PLL lock
+    OSCTUNEbits.PLLEN = 1;
+    Delay10KTCYx(6);
 
     //all lines are outputs (except for A3, B3, B7 and C6)
     TRISA = 0b00001000;
@@ -57,10 +61,6 @@ void init(void) {
     //Disable analog input
     ANCON0 = 0b11110111; //AN3 is input
     ANCON1 = 0b11111111;
-
-    //wait for PLL lock
-    OSCTUNEbits.PLLEN = 1;
-    Delay10KTCYx(6);
 }
 
 

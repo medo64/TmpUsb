@@ -7,11 +7,11 @@
 void settings_init(void);
 void settings_reset(void);
 
-unsigned int settings_getTimingChargeLimit(void);
-void settings_setTimingChargeLimit(unsigned int value);
+unsigned short settings_getTimingChargeLimit(void);
+void settings_setTimingChargeLimit(unsigned short value);
 
-BOOL settings_getIsArmed(void);
-void settings_setIsArmed(BOOL value);
+bool settings_getIsArmed(void);
+void settings_setIsArmed(bool value);
 
 
 #endif

@@ -5,16 +5,16 @@
  *****************************************************************************
   FileName:        Internal Flash.c
   Dependencies:    See includes section.
-  Processor:       PIC18/PIC24/dsPIC33/PIC32 microcontrollers
-  Compiler:        MPLAB(R) C18/C30/C32 compilers are supported by this code
+  Processor:       PIC18/PIC24/dsPIC33 microcontrollers
+  Compiler:        Microchip XC8, XC16
   Company:         Microchip Technology, Inc.
  
   Software License Agreement
  
   The software supplied herewith by Microchip Technology Incorporated
-  (the �Company�) for its PICmicro� Microcontroller is intended and
-  supplied to you, the Company�s customer, for use solely and
-  exclusively on Microchip PICmicro Microcontroller products. The
+  (the "Company") for its PIC(R) Microcontroller is intended and
+  supplied to you, the Company's customer, for use solely and
+  exclusively on Microchip PIC Microcontroller products. The
   software is owned by the Company and/or its supplier, and is
   protected under applicable copyright laws. All rights are reserved.
   Any use in violation of the foregoing restrictions may subject the
@@ -22,82 +22,50 @@
   civil liability for the breach of the terms and conditions of this
   license.
  
-  THIS SOFTWARE IS PROVIDED IN AN �AS IS� CONDITION. NO WARRANTIES,
+  THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
   WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
   TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
   PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
   IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
   CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
- 
-*****************************************************************************/
-//DOM-IGNORE-BEGIN
-/********************************************************************
- Change History:
-  Rev    Description
-  -----  -----------
-  1.2.5  Fixed bug where sector address was calculated incorrectly
-  1.2.7  Re-implemented sector read/write functions for PIC24
-         devices.  This removes the 32kB PSV size restriction.
-         Also added some additional error checking.
-  1.3.0  Expanded flash memory pointer size on PIC18 to 24-bits.  This
-         allows the MSD volume to exceed 64kB on large flash memory devices.
-  1.3.6   Modified "FSConfig.h" to "FSconfig.h" in '#include' directive.
-  1.3.8   Modified "MDD_IntFlash_SectorRead" to write the correct word data
-          in 'buffer' pointer
-  1.4.4   Variable "file_buffer" attributed as (far,aligned).
 ********************************************************************/
 //DOM-IGNORE-END
 
-#include "Compiler.h"
-#include "FSIO.h"
-#include "FSDefs.h"
 #include "string.h"
-#include "Internal Flash.h"
-#include "HardwareProfile.h"
-#include "FSconfig.h"
+#include <fileio_config.h>
+#include <fileio/fileio.h>
+#include <driver/fileio/internal_flash.h>
 
-/*************************************************************************/
-/*  Note:  This file is included as a template of a C file for           */
-/*         a new physical layer. It is designed to go with               */
-/*         "TEMPLATEFILE.h"                                              */
-/*************************************************************************/
+#include <stdint.h>
+#include <stdbool.h>
 
 /******************************************************************************
  * Global Variables
  *****************************************************************************/
 
-#ifdef USE_PIC18
-	#pragma udata
-	#pragma code
-#endif
-
-static MEDIA_INFORMATION mediaInformation;
+static FILEIO_MEDIA_INFORMATION mediaInformation;
 
 /******************************************************************************
  * Prototypes
  *****************************************************************************/
-void EraseBlock(ROM BYTE* dest);
+void EraseBlock(const uint8_t* dest);
 void WriteRow(void);
 void WriteByte(unsigned char);
-BYTE DISKmount( DISK *dsk);
-BYTE LoadMBR(DISK *dsk);
-BYTE LoadBootSector(DISK *dsk);
-extern void Delayms(BYTE milliseconds);
-MEDIA_INFORMATION * MediaInitialize(void);
-void UnlockAndActivate(BYTE);
+FILEIO_MEDIA_INFORMATION * MediaInitialize(void);
+void UnlockAndActivate(uint8_t);
 
-//Arbitray, but "uncommon" value.  Used by UnlockAndActivateWR() to enhance robustness.
-#define NVM_UNLOCK_KEY  (BYTE)0xB5   
+//Arbitrary, but "uncommon" value.  Used by UnlockAndActivateWR() to enhance robustness.
+#define NVM_UNLOCK_KEY  (uint8_t)0xB5
 
 /******************************************************************************
- * Function:        BYTE MediaDetect(void)
+ * Function:        uint8_t MediaDetect(void* config)
  *
  * PreCondition:    InitIO() function has been executed.
  *
  * Input:           void
  *
- * Output:          TRUE   - Card detected
- *                  FALSE   - No card detected
+ * Output:          true   - Card detected
+ *                  false   - No card detected
  *
  * Side Effects:    None
  *
@@ -105,19 +73,19 @@ void UnlockAndActivate(BYTE);
  *
  * Note:            None
  *****************************************************************************/
-BYTE MDD_IntFlash_MediaDetect()
+uint8_t FILEIO_InternalFlash_MediaDetect(void* config)
 {
-	return TRUE;
+    return true;
 }//end MediaDetect
 
 /******************************************************************************
- * Function:        WORD ReadSectorSize(void)
+ * Function:        uint16_t SectorSizeRead(void)
  *
  * PreCondition:    MediaInitialize() is complete
  *
  * Input:           void
  *
- * Output:          WORD - size of the sectors for this physical media.
+ * Output:          uint16_t - size of the sectors for this physical media.
  *
  * Side Effects:    None
  *
@@ -125,19 +93,19 @@ BYTE MDD_IntFlash_MediaDetect()
  *
  * Note:            None
  *****************************************************************************/
-WORD MDD_IntFlash_ReadSectorSize(void)
+uint16_t FILEIO_InternalFlash_SectorSizeRead(void* config)
 {
-    return MEDIA_SECTOR_SIZE;
+    return FILEIO_CONFIG_MEDIA_SECTOR_SIZE;
 }
 
 /******************************************************************************
- * Function:        DWORD ReadCapacity(void)
+ * Function:        uint32_t ReadCapacity(void)
  *
  * PreCondition:    MediaInitialize() is complete
  *
  * Input:           void
  *
- * Output:          DWORD - size of the "disk" - 1 (in terms of sector count).  
+ * Output:          uint32_t - size of the "disk" - 1 (in terms of sector count).
  *                  Ex: In other words, this function returns the last valid 
  *                  LBA address that may be read/written to.
  *
@@ -147,7 +115,7 @@ WORD MDD_IntFlash_ReadSectorSize(void)
  *
  * Note:            None
  *****************************************************************************/
-DWORD MDD_IntFlash_ReadCapacity(void)
+uint32_t FILEIO_InternalFlash_CapacityRead(void* config)
 {
     //The SCSI READ_CAPACITY command wants to know the last valid LBA address 
     //that the host is allowed to read or write to.  Since LBA addresses start
@@ -155,20 +123,20 @@ DWORD MDD_IntFlash_ReadCapacity(void)
     //host is allowed to read and write the LBA == 0x00000000, which would be 
     //1 sector worth of capacity.
     //Therefore, the last valid LBA that the host may access is 
-    //MDD_INTERNAL_FLASH_TOTAL_DISK_SIZE - 1.
+    //DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE - 1.
         
-    return (MDD_INTERNAL_FLASH_TOTAL_DISK_SIZE - 1); 
+    return ((uint32_t)DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE - 1);
 }
 
 /******************************************************************************
- * Function:        BYTE InitIO(void)
+ * Function:        uint8_t InitIO(void)
  *
  * PreCondition:    None
  *
  * Input:           void
  *
- * Output:          TRUE   - Card initialized
- *                  FALSE   - Card not initialized
+ * Output:          true   - Card initialized
+ *                  false   - Card not initialized
  *
  * Side Effects:    None
  *
@@ -176,13 +144,13 @@ DWORD MDD_IntFlash_ReadCapacity(void)
  *
  * Note:            None
  *****************************************************************************/
-BYTE MDD_IntFlash_InitIO (void)
+uint8_t FILEIO_InternalFlash_InitIO (void* config)
 {
-    return  TRUE;
+    return  true;
 }
 
 /******************************************************************************
- * Function:        BYTE MediaInitialize(void)
+ * Function:        uint8_t MediaInitialize(void)
  *
  * PreCondition:    None
  *
@@ -194,18 +162,18 @@ BYTE MDD_IntFlash_InitIO (void)
  *
  * Note:            None
  *****************************************************************************/
-MEDIA_INFORMATION * MDD_IntFlash_MediaInitialize(void)
+FILEIO_MEDIA_INFORMATION * FILEIO_InternalFlash_MediaInitialize(void* config)
 {
-    mediaInformation.validityFlags.bits.sectorSize = TRUE;
-    mediaInformation.sectorSize = MEDIA_SECTOR_SIZE;
+    mediaInformation.validityFlags.bits.sectorSize = true;
+    mediaInformation.sectorSize = FILEIO_CONFIG_MEDIA_SECTOR_SIZE;
     
-	mediaInformation.errorCode = MEDIA_NO_ERROR;
-	return &mediaInformation;
+    mediaInformation.errorCode = MEDIA_NO_ERROR;
+    return &mediaInformation;
 }//end MediaInitialize
 
 
 /******************************************************************************
- * Function:        BYTE SectorRead(DWORD sector_addr, BYTE *buffer)
+ * Function:        uint8_t SectorRead(uint32_t sector_addr, uint8_t *buffer)
  *
  * PreCondition:    None
  *
@@ -215,7 +183,7 @@ MEDIA_INFORMATION * MDD_IntFlash_MediaInitialize(void)
  *                                'Block' is dependent on whether internal or
  *                                external memory is used
  *
- * Output:          Returns TRUE if read successful, false otherwise
+ * Output:          Returns true if read successful, false otherwise
  *
  * Side Effects:    None
  *
@@ -230,20 +198,20 @@ MEDIA_INFORMATION * MDD_IntFlash_MediaInitialize(void)
  *****************************************************************************/
 //The flash memory is organized differently on the different microcontroller
 //families.  Therefore, multiple versions of this function are implemented.
-#if defined(__C30__)    //PIC24 or dsPIC33 device (WORD organized flash memory)
-BYTE MDD_IntFlash_SectorRead(DWORD sector_addr, BYTE* buffer)
+#if defined(__C30__)    //PIC24 or dsPIC33 device (uint16_t organized flash memory)
+uint8_t FILEIO_InternalFlash_SectorRead(void* config, uint32_t sector_addr, uint8_t* buffer)
 {
-    WORD i;
-    DWORD flashAddress;
-    BYTE TBLPAGSave;
-    WORD_VAL temp;
+    uint16_t i;
+    uint32_t flashAddress;
+    uint8_t TBLPAGSave;
+    uint16_t temp;
     
     //Error check.  Make sure the host is trying to read from a legitimate
     //address, which corresponds to the MSD volume (and not some other program
     //memory region beyond the end of the MSD volume).
-    if(sector_addr >= MDD_INTERNAL_FLASH_TOTAL_DISK_SIZE)
+    if(sector_addr >= DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE)
     {
-        return FALSE;
+        return false;
     }    
     
     //Save TBLPAG register
@@ -252,52 +220,52 @@ BYTE MDD_IntFlash_SectorRead(DWORD sector_addr, BYTE* buffer)
     //Compute the 24 bit starting address.  Note: this is a word address, but we
     //only store data in and read from the lower word (even LSB).
     //Starting address will always be even, since MasterBootRecord[] uses aligned attribute in declaration.
-    flashAddress = (DWORD)FILES_ADDRESS + (DWORD)(sector_addr*(WORD)MEDIA_SECTOR_SIZE);  
+    flashAddress = (uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_FILES_ADDRESS + (uint32_t)(sector_addr*(uint16_t)FILEIO_CONFIG_MEDIA_SECTOR_SIZE);
     
     //Read a sector worth of data from the flash, and copy to the user specified "buffer".
-    for(i = 0; i < (MEDIA_SECTOR_SIZE / 2u); i++)
+    for(i = 0; i < (FILEIO_CONFIG_MEDIA_SECTOR_SIZE / 2u); i++)
     {
-        TBLPAG = (BYTE)(flashAddress >> 16);   //Load TBLPAG pointer (upper 8 bits of total address.  A sector could get split at 
+        TBLPAG = (uint8_t)(flashAddress >> 16);   //Load TBLPAG pointer (upper 8 bits of total address.  A sector could get split at
                                         //a 16-bit address boundary, and therefore could exist on two TBLPAG pages.
                                         //Therefore, need to reload TBLPAG every iteration of the for() loop
-        temp.Val = __builtin_tblrdl((WORD)flashAddress);
-        *buffer++ = temp.v[0];
-        *buffer++ = temp.v[1];
-        flashAddress += 2u;             //Increment address by 2.  No MSD data stored in the upper WORD (which only has one implemented byte anyway).
+        temp = __builtin_tblrdl((uint16_t)flashAddress);
+        memcpy(buffer, &temp, 2);
+        buffer+=2;
+        flashAddress += 2u;             //Increment address by 2.  No MSD data stored in the upper uint16_t (which only has one implemented byte anyway).
         
     }   
     
     //Restore TBLPAG register to original value
     TBLPAG = TBLPAGSave;
     
-    return TRUE;
+    return true;
 }    
-#else   //else must be PIC18 or PIC32 device (BYTE organized flash memory)
-BYTE MDD_IntFlash_SectorRead(DWORD sector_addr, BYTE* buffer)
+#else   //else must be PIC18 or PIC32 device (uint8_t organized flash memory)
+uint8_t FILEIO_InternalFlash_SectorRead(void* config, uint32_t sector_addr, uint8_t* buffer)
 {
     //Error check.  Make sure the host is trying to read from a legitimate
     //address, which corresponds to the MSD volume (and not some other program
     //memory region beyond the end of the MSD volume).
-    if(sector_addr >= MDD_INTERNAL_FLASH_TOTAL_DISK_SIZE)
+    if(sector_addr >= DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE)
     {
-        return FALSE;
+        return false;
     }   
     
     //Read a sector worth of data, and copy it to the specified RAM "buffer".
-    memcpypgm2ram
+    memcpy
     (
         (void*)buffer,
-        (ROM void*)(MASTER_BOOT_RECORD_ADDRESS + (sector_addr * MEDIA_SECTOR_SIZE)),
-        MEDIA_SECTOR_SIZE
+        (const void*)(MASTER_BOOT_RECORD_ADDRESS + (sector_addr * FILEIO_CONFIG_MEDIA_SECTOR_SIZE)),
+        FILEIO_CONFIG_MEDIA_SECTOR_SIZE
     );
 
-	return TRUE;
+	return true;
 }//end SectorRead
 #endif
 
 
 /******************************************************************************
- * Function:        BYTE SectorWrite(DWORD sector_addr, BYTE *buffer, BYTE allowWriteToZero)
+ * Function:        uint8_t SectorWrite(uint32_t sector_addr, uint8_t *buffer, uint8_t allowWriteToZero)
  *
  * PreCondition:    None
  *
@@ -305,7 +273,7 @@ BYTE MDD_IntFlash_SectorRead(DWORD sector_addr, BYTE* buffer)
  *                  buffer      - Buffer where data will be read
  *                  allowWriteToZero - If true, writes to the MBR will be valid
  *
- * Output:          Returns TRUE if write successful, FALSE otherwise
+ * Output:          Returns true if write successful, false otherwise
  *
  * Side Effects:    None
  *
@@ -318,16 +286,19 @@ BYTE MDD_IntFlash_SectorRead(DWORD sector_addr, BYTE* buffer)
  *                  be converted to byte address. This is accomplished by
  *                  shifting the address left 9 times.
  *****************************************************************************/
-#if defined(__18CXX)
-#pragma udata myFileBuffer
-#endif
-#if defined (__dsPIC33E__) || defined (__PIC24E__)
-volatile unsigned int file_buffer[ERASE_BLOCK_SIZE] __attribute__((far));
+#if defined(__XC8) || defined(__18CXX)
+    #if defined(__18CXX)
+        #pragma udata myFileBuffer
+    #endif
+    volatile unsigned char file_buffer[DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE];
+#elif defined (__dsPIC33E__) || defined (__PIC24E__)
+    volatile unsigned int file_buffer[DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE] __attribute__((far));
 #else
-volatile unsigned char file_buffer[ERASE_BLOCK_SIZE] __attribute__((far,aligned));
+    volatile unsigned char file_buffer[DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE] __attribute__((far,aligned));
 #endif
+
 #if defined(__18CXX)
-#pragma udata
+    #pragma udata
 #endif
 
 #define INTERNAL_FLASH_PROGRAM_WORD        0x4003
@@ -336,31 +307,33 @@ volatile unsigned char file_buffer[ERASE_BLOCK_SIZE] __attribute__((far,aligned)
 
 
 #if defined(__C32__)
-    #define PTR_SIZE DWORD
+    #define PTR_SIZE uint32_t
+#elif defined(__XC8)
+    #define PTR_SIZE uint32_t
 #elif defined(__18CXX)
     #define PTR_SIZE UINT24
 #else
-    #define PTR_SIZE WORD
+    #define PTR_SIZE uint16_t
 #endif
-ROM BYTE *FileAddress = 0;
+const uint8_t *FileAddress = 0;
 
 
 #if defined(__C30__)
-BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteToZero)
+uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uint8_t* buffer, uint8_t allowWriteToZero)
 {
-#if !defined(INTERNAL_FLASH_WRITE_PROTECT)
-    WORD i;
-    BYTE j;
-    WORD offset;
-    DWORD flashAddress;
-    WORD TBLPAGSave;
+#if !defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
+    uint16_t i;
+    uint8_t j;
+    uint16_t offset;
+    uint32_t flashAddress;
+    uint16_t TBLPAGSave;
 
 
     //First, error check the resulting address, to make sure the MSD host isn't trying 
     //to erase/program illegal LBAs that are not part of the designated MSD volume space.
-    if(sector_addr >= MDD_INTERNAL_FLASH_TOTAL_DISK_SIZE)
+    if(sector_addr >= DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE)
     {
-        return FALSE;
+        return false;
     }  
 
     TBLPAGSave = TBLPAG;
@@ -373,36 +346,36 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
     // AND mask 0xFFFFF800 is to clear the lower bits, 
     // so we go back to the start of the erase page.
     
-    flashAddress = ((DWORD)FILES_ADDRESS + (DWORD)(sector_addr*MEDIA_SECTOR_SIZE)) 
-                & (DWORD)0xFFFFF800;  
+    flashAddress = ((uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_FILES_ADDRESS + (uint32_t)(sector_addr*FILEIO_CONFIG_MEDIA_SECTOR_SIZE))
+                & (uint32_t)0xFFFFF800;
     
     //Now save all of the contents of the erase page.
-    TBLPAG = (BYTE)(flashAddress >> 16);
-    for(i = 0; i < ERASE_BLOCK_SIZE;i++)
+    TBLPAG = (uint8_t)(flashAddress >> 16);
+    for(i = 0; i < DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE;i++)
     {
-        file_buffer[i] = __builtin_tblrdl((WORD)flashAddress + (2 * i));
+        file_buffer[i] = __builtin_tblrdl((uint16_t)flashAddress + (2 * i));
     }    
 
     // Now we want to overwrite the file_buffer[] contents 
     // for the sector that we are trying to write to.
     // The lower 2 bits of the helps to determine this.
    
-    offset = 0x200 * (BYTE)(sector_addr & 0x3);   
+    offset = 0x200 * (uint8_t)(sector_addr & 0x3);
 
     //Overwrite the file_buffer[] RAM contents for the sector that we are trying to write to.
-    for(i = 0; i < MEDIA_SECTOR_SIZE; i++)
+    for(i = 0; i < FILEIO_CONFIG_MEDIA_SECTOR_SIZE; i++)
     {
         *((unsigned char *)file_buffer + offset + i) = *buffer++;
     }
 #else
 
      //First, save the contents of the entire erase page.  To do this, we need to get a pointer to the start of the erase page.
-    flashAddress = ((DWORD)FILES_ADDRESS + (DWORD)(sector_addr*MEDIA_SECTOR_SIZE)) & (DWORD)0xFFFFFC00;  //AND mask 0xFFFFFC00 is to clear the lower bits, so we go back to the start of the erase page.
+    flashAddress = ((uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_FILES_ADDRESS + (uint32_t)(sector_addr*FILEIO_CONFIG_MEDIA_SECTOR_SIZE)) & (uint32_t)0xFFFFFC00;  //AND mask 0xFFFFFC00 is to clear the lower bits, so we go back to the start of the erase page.
     //Now save all of the contents of the erase page.
-    for(i = 0; i < ERASE_BLOCK_SIZE;)
+    for(i = 0; i < DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE;)
     {
-        TBLPAG = (BYTE)(flashAddress >> 16);
-        *(WORD*)&file_buffer[i] = __builtin_tblrdl((WORD)flashAddress);
+        TBLPAG = (uint8_t)(flashAddress >> 16);
+        *(uint16_t*)&file_buffer[i] = __builtin_tblrdl((uint16_t)flashAddress);
         flashAddress += 2u;    //Skipping upper word.  Don't care about the implemented byte/don't use it when programming or reading from the sector.
         i += 2u;
     }    
@@ -412,7 +385,7 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
     if(sector_addr & 0x00000001)
     {
         //Odd sector address, must be the high file_buffer[] sector
-        offset = MEDIA_SECTOR_SIZE;
+        offset = FILEIO_CONFIG_MEDIA_SECTOR_SIZE;
     }
     else
     {
@@ -420,7 +393,7 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
     }        
 
     //Overwrite the file_buffer[] RAM contents for the sector that we are trying to write to.
-    for(i = 0; i < MEDIA_SECTOR_SIZE; i++)
+    for(i = 0; i < FILEIO_CONFIG_MEDIA_SECTOR_SIZE; i++)
     {
         file_buffer[offset + i] = *buffer++;
     }
@@ -429,7 +402,7 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
 
 #if defined(__dsPIC33E__) || defined (__PIC24E__)
 
-    INT gieBkUp;
+    int gieBkUp;
 
     //Now erase the entire erase page of flash memory.  
     //First we need to calculate the actual flash memory 
@@ -437,8 +410,8 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
     
     gieBkUp = INTCON2bits.GIE;
     INTCON2bits.GIE = 0; // Disable interrupts
-    NVMADRU = (WORD)(flashAddress >> 16);
-    NVMADR = (WORD)(flashAddress & 0xFFFF);
+    NVMADRU = (uint16_t)(flashAddress >> 16);
+    NVMADR = (uint16_t)(flashAddress & 0xFFFF);
     NVMCON = 0x4003;    // This value will erase a page.
     __builtin_write_NVM();
     INTCON2bits.GIE = gieBkUp; // Enable interrupts
@@ -451,7 +424,7 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
 
     TBLPAG = 0xFA;
     j = 0;
-    for(i = 0; i < ERASE_BLOCK_SIZE;i++)
+    for(i = 0; i < DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE;i++)
     {
 
        //
@@ -465,8 +438,8 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
         if(j >= 128u)
         {
             j = j - 128u;
-            NVMADRU = (WORD)(flashAddress >> 16);
-            NVMADR = (WORD)(flashAddress & 0xFFFF);
+            NVMADRU = (uint16_t)(flashAddress >> 16);
+            NVMADR = (uint16_t)(flashAddress & 0xFFFF);
             NVMCON = 0x4002;
             gieBkUp = INTCON2bits.GIE;
             INTCON2bits.GIE = 0; // Disable interrupts
@@ -478,11 +451,11 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
 #else 
     //Now erase the entire erase page of flash memory.  
     //First we need to calculate the actual flash memory address of the erase page.  The starting address of the erase page is as follows:
-    flashAddress = ((DWORD)FILES_ADDRESS + (DWORD)(sector_addr*MEDIA_SECTOR_SIZE)) & (DWORD)0xFFFFFC00;
+    flashAddress = ((uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_FILES_ADDRESS + (uint32_t)(sector_addr*FILEIO_CONFIG_MEDIA_SECTOR_SIZE)) & (uint32_t)0xFFFFFC00;
 
     //Peform NVM erase operation.
     NVMCON = INTERNAL_FLASH_ERASE;				    //Page erase on next WR
-    __builtin_tblwtl((WORD)flashAddress, 0xFFFF);   //Perform dummy write to load address of erase page
+    __builtin_tblwtl((uint16_t)flashAddress, 0xFFFF);   //Perform dummy write to load address of erase page
     UnlockAndActivate(NVM_UNLOCK_KEY);
 
     //Now reprogram the erase page with previously obtained contents of the file_buffer[]
@@ -492,12 +465,12 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
     //the data.  It also allows quick/convenient PSV access when reading back the flash contents.
     NVMCON = INTERNAL_FLASH_PROGRAM_PAGE;
     j = 0;
-    for(i = 0; i < ERASE_BLOCK_SIZE;)
+    for(i = 0; i < DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE;)
     {
-        TBLPAG = (BYTE)(flashAddress >> 16);
-        __builtin_tblwtl((WORD)flashAddress, *((WORD*)&file_buffer[i]));
+        TBLPAG = (uint8_t)(flashAddress >> 16);
+        __builtin_tblwtl((uint16_t)flashAddress, *((uint16_t*)&file_buffer[i]));
         flashAddress++;       
-        __builtin_tblwth((WORD)flashAddress, 0);
+        __builtin_tblwth((uint16_t)flashAddress, 0);
         flashAddress++;       
 
         i += 2;
@@ -515,124 +488,169 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
 #endif
 
     TBLPAG = TBLPAGSave;   
-    return TRUE;
-#else //else of #if !defined(INTERNAL_FLASH_WRITE_PROTECT)
-    return TRUE;
-#endif  //endif of #if !defined(INTERNAL_FLASH_WRITE_PROTECT)
+    return true;
+#else
+    return true;
+#endif
 
 }    
 #else   //else must be PIC18 or PIC32 device
-BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteToZero)
+uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uint8_t* buffer, uint8_t allowWriteToZero)
 {
-    #if !defined(INTERNAL_FLASH_WRITE_PROTECT)
-        ROM BYTE* dest;
-        BOOL foundDifference;
-        WORD blockCounter;
-        WORD sectorCounter;
+    #if !defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
+        const uint8_t* dest;
+        bool foundDifference;
+        uint16_t blockCounter;
+        uint16_t sectorCounter;
 
-        #if defined(__18CXX)
-            BYTE *p;
+        #if defined(__XC8) || defined(__18CXX)
+            uint8_t* p;
         #endif
 
         //First, error check the resulting address, to make sure the MSD host isn't trying 
         //to erase/program illegal LBAs that are not part of the designated MSD volume space.
-        if(sector_addr >= MDD_INTERNAL_FLASH_TOTAL_DISK_SIZE)
+        if(sector_addr >= DRV_FILEIO_INTERNAL_FLASH_TOTAL_DISK_SIZE)
         {
-            return FALSE;
+            return false;
         }  
 
-        dest = (ROM BYTE*)(MASTER_BOOT_RECORD_ADDRESS + (sector_addr * MEDIA_SECTOR_SIZE));
+        //Compute pointer to location in flash memory we should modify
+        dest = (const uint8_t*)(MASTER_BOOT_RECORD_ADDRESS + (sector_addr * FILEIO_CONFIG_MEDIA_SECTOR_SIZE));
 
         sectorCounter = 0;
-
-        while(sectorCounter < MEDIA_SECTOR_SIZE)
+        //Loop that actually does the flash programming, until all of the
+        //intended sector data has been programmed
+        while(sectorCounter < FILEIO_CONFIG_MEDIA_SECTOR_SIZE)
         {
-            foundDifference = FALSE;
-            for(blockCounter = 0; blockCounter < ERASE_BLOCK_SIZE; blockCounter++)
+            //First, read the contents of flash to see if they already match what the
+            //host is trying to write.  If every byte already matches perfectly,
+            //we can save flash endurance by not actually performing the reprogramming
+            //operation.
+            foundDifference = false;
+            for(blockCounter = 0; blockCounter < DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE; blockCounter++)
             {
                 if(dest[sectorCounter] != buffer[sectorCounter])
                 {
-                    foundDifference = TRUE;
+                    foundDifference = true;
                     sectorCounter -= blockCounter;
                     break;
                 }
                 sectorCounter++;
             }
-            if(foundDifference == TRUE)
+
+            //If the existing flash memory contents are different from what is waiting
+            //in the RAM buffer to be programmed.  We will need to do some flash reprogramming.
+            if(foundDifference == true)
             {
-                BYTE i,j;
+                uint8_t i;
                 PTR_SIZE address;
 
-                #if (ERASE_BLOCK_SIZE >= MEDIA_SECTOR_SIZE)
-                    address = ((PTR_SIZE)(dest + sectorCounter) & ~(ERASE_BLOCK_SIZE - 1));
+                //Check to see which is bigger, the flash memory minimum erase page size, or the sector size.
+                #if (DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE >= FILEIO_CONFIG_MEDIA_SECTOR_SIZE)
+                    //The hardware erases more flash memory than the amount of a sector that
+                    //we are programming.  Therefore, we will have to use a three step process:
+                    //1. Read out the flash memory contents that are part of the erase page (but we don't need to modify)
+                    //   and save it temporarily to a RAM buffer.
+                    //2. Erase the flash memory page (which blows away multiple sectors worth of data in flash)
+                    //3. Reprogram both the intended sector data, and the unmodified flash data that we didn't want to
+                    //   modify, but had to temporarily erase (since it was sharing the erase page with our intended write location).
 
-                    memcpypgm2ram
+                    //Compute a pointer to the first byte on the erase page of interest
+                    address = ((PTR_SIZE)(dest + sectorCounter) & ~((uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE - 1));
+
+                    //Read out the entire contents of the flash memory erase page of interest and save to RAM.
+                    memcpy
                     (
                         (void*)file_buffer,
-                        (ROM void*)address,
-                        ERASE_BLOCK_SIZE
+                        (const void*)address,
+                        DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE
                     );
 
-                    EraseBlock((ROM BYTE*)address);
+                    //Now erase the flash memory page
+                    EraseBlock((const uint8_t*)address);
 
-                    address = ((PTR_SIZE)(dest + sectorCounter) & (ERASE_BLOCK_SIZE - 1));
+                    //Compute a pointer into the RAM buffer with the erased flash contents,
+                    //to where we want to replace the existing data with the new data from the host.
+                    address = ((PTR_SIZE)(dest + sectorCounter) & ((uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE - 1));
 
+                    //Overwrite part of the erased page RAM buffer with the new data being
+                    //written from the host
                     memcpy
                     (
                         (void*)(&file_buffer[address]),
                         (void*)buffer,
-                        MEDIA_SECTOR_SIZE
+                        FILEIO_CONFIG_MEDIA_SECTOR_SIZE
                     );
 
                 #else
+                    //The erase page size is small enough, we don't have to (temporarily) erase
+                    //any data, other than the specific flash region that we want to re-program with new data.
 
-                    address = ((WORD)(&dest[sectorCounter]) & ~(ERASE_BLOCK_SIZE - 1));
+                    //Move sector counter to the first byte on the erase page of interest
+                    sectorCounter &= ~(DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE - 1);
 
-                    EraseBlock((ROM BYTE*)address);
+                    //Compute a pointer to the first byte of flash program memory on the erase page of interest
+                    address = (PTR_SIZE)dest + sectorCounter;
 
-                    sectorCounter = sectorCounter & ~(ERASE_BLOCK_SIZE - 1);
+                    //Erase a page of flash memory
+                    EraseBlock((const uint8_t*)address);
 
                     memcpy
                     (
-                        (void*)file_buffer,
-                        (void*)buffer+sectorCounter,
-                        ERASE_BLOCK_SIZE
+                        (void*)&file_buffer[0],
+                        (void*)(buffer+sectorCounter),
+                        DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE
                     );
                 #endif
 
-                //sectorCounter = sectorCounter & ~(ERASE_BLOCK_SIZE - 1);
 
-                i=ERASE_BLOCK_SIZE/WRITE_BLOCK_SIZE;
-                j=0;
+                //Compute the number of write blocks that are in the erase page.
+                i = DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE / DRV_FILEIO_INTERNAL_FLASH_CONFIG_WRITE_BLOCK_SIZE;
 
-                #if defined(__18CXX)
-                    p = file_buffer;
+                #if defined(__XC8) || defined(__18CXX)
+                    p = (uint8_t*)&file_buffer[0];
+                    TBLPTR = ((PTR_SIZE)(dest + sectorCounter) & ~((uint32_t)DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE - 1));
                 #endif
 
-                while(i-->0)
+                //Commit each write block worth of data to the flash memory, one block at a time
+                while(i-- > 0)
                 {
-                    //Write the new data
-                    for(blockCounter = 0; blockCounter < WRITE_BLOCK_SIZE; blockCounter++)
+                    //Write a block of the RAM bufferred data to the programming latches
+                    for(blockCounter = 0; blockCounter < DRV_FILEIO_INTERNAL_FLASH_CONFIG_WRITE_BLOCK_SIZE; blockCounter++)
                     {
                         //Write the data
-                        #if defined(__18CXX)
+                        #if defined(__XC8)
+                            TABLAT = *p++;
+                            #asm
+                                tblwtpostinc
+                            #endasm
+                            sectorCounter++;
+                        #elif defined(__18CXX)
                             TABLAT = *p++;
                             _asm tblwtpostinc _endasm
                             sectorCounter++;
                         #endif
 
                         #if defined(__C32__)
-                                NVMWriteWord((DWORD*)KVA_TO_PA(FileAddress), *((DWORD*)&file_buffer[sectorCounter]));
-                                FileAddress += 4;
-                                sectorCounter += 4;
+                            NVMWriteWord((uint32_t*)KVA_TO_PA(FileAddress), *((uint32_t*)&file_buffer[sectorCounter]));
+                            FileAddress += 4;
+                            sectorCounter += 4;
                         #endif
                     }
 
-                    j++;
+                    //Now commit/write the block of data from the programming latches into the flash memory
+                    #if defined(__XC8)
+                        // Start the write process: for PIC18, first need to reposition tblptr back into memory block that we want to write to.
+                        #asm 
+                            tblrdpostdec 
+                        #endasm
 
-                    //write the row
-                    #if defined(__18CXX)
-                        // Start the write process: reposition tblptr back into memory block that we want to write to.
+                        // Write flash memory, enable write control.
+                        EECON1 = 0x84;
+                        UnlockAndActivate(NVM_UNLOCK_KEY);
+                        TBLPTR++;                    
+                    #elif defined(__18CXX)
+                        // Start the write process: for PIC18, first need to reposition tblptr back into memory block that we want to write to.
                          _asm tblrdpostdec _endasm
 
                         // Write flash memory, enable write control.
@@ -640,23 +658,23 @@ BYTE MDD_IntFlash_SectorWrite(DWORD sector_addr, BYTE* buffer, BYTE allowWriteTo
                         UnlockAndActivate(NVM_UNLOCK_KEY);
                         TBLPTR++;
                     #endif
-                }
-            }
-        }
-    	return TRUE;
+                }//while(i-- > 0)
+            }//if(foundDifference == true)
+        }//while(sectorCounter < FILEIO_CONFIG_MEDIA_SECTOR_SIZE)
+    	return true;
     #else
-        return TRUE;
+        return true;
     #endif
 } //end SectorWrite
 #endif  //#if defined(__C30__)
 
 
 
-#if !defined(INTERNAL_FLASH_WRITE_PROTECT)
-void EraseBlock(ROM BYTE* dest)
+#if !defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
+void EraseBlock(const uint8_t* dest)
 {
-    #if defined(__18CXX)
-        TBLPTR = (unsigned short long)dest;
+    #if defined(__XC8) || defined(__18CXX)
+        TBLPTR = (unsigned long)dest;
 
         //Erase the current block
         EECON1 = 0x94;
@@ -665,13 +683,18 @@ void EraseBlock(ROM BYTE* dest)
 
     #if defined(__C32__)
         FileAddress = dest;
-        NVMErasePage((BYTE *)KVA_TO_PA(dest));
+        NVMErasePage((uint8_t *)KVA_TO_PA(dest));
     #endif
 }
 
 
 //------------------------------------------------------------------------------
-//Function: void UnlockAndActivate(BYTE UnlockKey)
+#if defined(__XC16__)
+    #pragma message "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
+#else
+    //#warning "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
+#endif
+//Function: void UnlockAndActivate(uint8_t UnlockKey)
 //Description: Activates and initiates a flash memory self erase or program 
 //operation.  Useful for writing to the MSD drive volume.
 //Note: Self erase/writes to flash memory could potentially corrupt the
@@ -683,10 +706,10 @@ void EraseBlock(ROM BYTE* dest)
 //performing any self erase/program unlock sequence.  See additional inline 
 //code comments.
 //------------------------------------------------------------------------------
-void UnlockAndActivate(BYTE UnlockKey)
+void UnlockAndActivate(uint8_t UnlockKey)
 {
-    #if defined(__18CXX)
-        BYTE InterruptEnableSave;
+    #if defined(__XC8) || defined(__18CXX)
+        uint8_t InterruptEnableSave;
     #endif
       
     //Should verify that the voltage on Vdd/Vddcore is high enough to meet
@@ -741,7 +764,7 @@ void UnlockAndActivate(BYTE UnlockKey)
     //that the UnlockKey variable would have been loaded with the proper value.
     if(UnlockKey != NVM_UNLOCK_KEY)
     {
-        #if defined(__18CXX)
+        #if defined(__XC8) || defined(__18CXX)
             EECON1bits.WREN = 0;
         #endif
         return;
@@ -749,7 +772,7 @@ void UnlockAndActivate(BYTE UnlockKey)
     
   
     //We passed the robustness checks.  Time to Erase/Write the flash memory.
-    #if defined(__18CXX)
+    #if defined(__XC8) || defined(__18CXX)
         InterruptEnableSave = INTCON;
         INTCONbits.GIEH = 0;    //Disable interrupts for unlock sequence.
         EECON2 = 0x55;
@@ -768,17 +791,17 @@ void UnlockAndActivate(BYTE UnlockKey)
     #endif
         
 }    
-#endif  //endif of "#if !defined(INTERNAL_FLASH_WRITE_PROTECT)"
+#endif  //end of #if !defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
 
 
 /******************************************************************************
- * Function:        BYTE WriteProtectState(void)
+ * Function:        uint8_t WriteProtectState(void* config)
  *
  * PreCondition:    None
  *
  * Input:           None
  *
- * Output:          BYTE    - Returns the status of the "write enabled" pin
+ * Output:          uint8_t    - Returns the status of the "write enabled" pin
  *
  * Side Effects:    None
  *
@@ -787,12 +810,12 @@ void UnlockAndActivate(BYTE UnlockKey)
  * Note:            None
  *****************************************************************************/
 
-BYTE MDD_IntFlash_WriteProtectState(void)
+uint8_t FILEIO_InternalFlash_WriteProtectStateGet(void* config)
 {
-    #if defined(INTERNAL_FLASH_WRITE_PROTECT)
-        return TRUE;
+    #if defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
+        return true;
     #else
-	    return FALSE;
+	    return false;
     #endif
 }
 

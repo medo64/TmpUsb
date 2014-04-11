@@ -1,6 +1,16 @@
 #ifndef FAT12_H
 #define	FAT12_H
 
+#include "fileio_config.h"
+#include "driver/fileio/internal_flash.h"
+
+
+#define MEDIA_PARTITION_SIZE    DRV_FILEIO_INTERNAL_FLASH_PARTITION_SIZE
+#define MEDIA_SECTOR_SIZE       FILEIO_CONFIG_MEDIA_SECTOR_SIZE
+#define MEDIA_RESERVED_SECTORS  DRV_FILEIO_INTERNAL_FLASH_NUM_RESERVED_SECTORS
+#define MEDIA_ROOT_ENTRIES      DRV_FILEIO_CONFIG_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT
+#define MEDIA_FAT_SECTORS       DRV_FILEIO_INTERNAL_FLASH_NUM_FAT_SECTORS
+
 
 #define FAT12_MBR {                                                                                  \
     /* Code Area */                                                                                  \
@@ -50,10 +60,10 @@
     0x07, 0xFF, 0xE6,        /* Cylinder-head-sector address of last sector in partition */          \
     0x01, 0x00, 0x00, 0x00,  /* Logical Block Address (LBA) of first sector in partition */          \
     /* Partition Entry 1 - Length in sectors */                                                      \
-    (BYTE)MDD_INTERNAL_FLASH_PARTITION_SIZE,                                                         \
-    (BYTE)(MDD_INTERNAL_FLASH_PARTITION_SIZE >> 8),                                                  \
-    (BYTE)(MDD_INTERNAL_FLASH_PARTITION_SIZE >> 16),                                                 \
-    (BYTE)(MDD_INTERNAL_FLASH_PARTITION_SIZE >> 24),                                                 \
+    (uint8_t)MEDIA_PARTITION_SIZE,                                                                         \
+    (uint8_t)(MEDIA_PARTITION_SIZE >> 8),                                                                  \
+    (uint8_t)(MEDIA_PARTITION_SIZE >> 16),                                                                 \
+    (uint8_t)(MEDIA_PARTITION_SIZE >> 24),                                                                 \
                                                                                                      \
     /* Partition Entry 2 */                                                                          \
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  \
@@ -76,20 +86,20 @@
     'M', 'S', 'D', 'O', 'S', '5', '.', '0',  /* OEM Name "MSDOS5.0" */                               \
     (MEDIA_SECTOR_SIZE&0xFF), (MEDIA_SECTOR_SIZE>>8), /* Bytes per sector (MEDIA_SECTOR_SIZE) */     \
     0x01,  /* Sectors per cluster */                                                                 \
-    MDD_INTERNAL_FLASH_NUM_RESERVED_SECTORS, 0x00, /* Reserved sector count */                       \
+    MEDIA_RESERVED_SECTORS, 0x00, /* Reserved sector count */                                              \
     0x01, /* number of FATs */                                                                       \
-    MDD_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT, 0x00, /* Max number of root directory entries */       \
+    MEDIA_ROOT_ENTRIES, 0x00, /* Max number of root directory entries */                             \
     0x00, 0x00,  /* total sectors (0x0000 means: use the 4 byte field at offset 0x20 instead) */     \
     0xF8,  /* Media Descriptor */                                                                    \
-    MDD_INTERNAL_FLASH_NUM_FAT_SECTORS, 0x00,  /* Sectors per FAT */                                 \
+    MEDIA_FAT_SECTORS, 0x00,  /* Sectors per FAT */                                                  \
     0x3F, 0x00,  /* Sectors per track */                                                             \
     0xFF, 0x00,  /* Number of heads */                                                               \
     0x01, 0x00, 0x00, 0x00,  /* Hidden sectors */                                                    \
     /* Total sectors (when WORD value at offset 20 is 0x0000) */                                     \
-    (BYTE)MDD_INTERNAL_FLASH_PARTITION_SIZE,                                                         \
-    (BYTE)(MDD_INTERNAL_FLASH_PARTITION_SIZE >> 8),                                                  \
-    (BYTE)(MDD_INTERNAL_FLASH_PARTITION_SIZE >> 16),                                                 \
-    (BYTE)(MDD_INTERNAL_FLASH_PARTITION_SIZE >> 24),                                                 \
+    (uint8_t)MEDIA_PARTITION_SIZE,                                                                            \
+    (uint8_t)(MEDIA_PARTITION_SIZE >> 8),                                                                     \
+    (uint8_t)(MEDIA_PARTITION_SIZE >> 16),                                                                    \
+    (uint8_t)(MEDIA_PARTITION_SIZE >> 24),                                                                    \
                                                                                                      \
     0x00,  /* Physical drive number */                                                               \
     0x00,  /* Reserved("current head") */                                                            \

@@ -5,32 +5,12 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Microchip" projectFiles="true">
-        <logicalFolder name="f1" displayName="Adjusted" projectFiles="true">
-          <itemPath>Microchip/HardwareProfile.h</itemPath>
-        </logicalFolder>
-        <itemPath>Microchip/GenericTypeDefs.h</itemPath>
-        <itemPath>Microchip/Compiler.h</itemPath>
-        <itemPath>Microchip/usb_config.h</itemPath>
-        <itemPath>Microchip/FSconfig.h</itemPath>
-        <itemPath>Microchip/Internal Flash.h</itemPath>
-        <itemPath>Microchip/FSDefs.h</itemPath>
-        <itemPath>Microchip/FSIO.h</itemPath>
-        <itemPath>Microchip/usb.h</itemPath>
-        <itemPath>Microchip/usb_ch9.h</itemPath>
-        <itemPath>Microchip/usb_common.h</itemPath>
-        <itemPath>Microchip/usb_device.h</itemPath>
-        <itemPath>Microchip/usb_device_local.h</itemPath>
-        <itemPath>Microchip/usb_function_msd.h</itemPath>
-        <itemPath>Microchip/usb_hal.h</itemPath>
-        <itemPath>Microchip/usb_hal_local.h</itemPath>
-        <itemPath>Microchip/usb_hal_pic18.h</itemPath>
       </logicalFolder>
       <itemPath>config.h</itemPath>
-      <itemPath>app_usb.h</itemPath>
       <itemPath>io.h</itemPath>
       <itemPath>fat12.h</itemPath>
-      <itemPath>timing.h</itemPath>
       <itemPath>settings.h</itemPath>
+      <itemPath>timing.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LibraryFiles"
                    displayName="Library Files"
@@ -49,15 +29,19 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f3" displayName="Microchip" projectFiles="true">
-        <itemPath>Microchip/Files.c</itemPath>
-        <itemPath>Microchip/usb_device.c</itemPath>
-        <itemPath>Microchip/usb_function_msd.c</itemPath>
-        <itemPath>Microchip/Internal Flash.c</itemPath>
-        <itemPath>Microchip/usb_descriptors.c</itemPath>
+        <logicalFolder name="f2" displayName="Application" projectFiles="true">
+          <itemPath>Microchip/Application/usb_descriptors.c</itemPath>
+          <itemPath>Microchip/Application/app_device_msd.c</itemPath>
+          <itemPath>Microchip/Application/files.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f1" displayName="Framework" projectFiles="true">
+          <itemPath>Microchip/Framework/usb/src/usb_device.c</itemPath>
+          <itemPath>Microchip/Framework/usb/src/usb_device_msd.c</itemPath>
+          <itemPath>Microchip/Framework/driver/fileio/src/internal_flash.c</itemPath>
+        </logicalFolder>
       </logicalFolder>
-      <itemPath>config.c</itemPath>
       <itemPath>app.c</itemPath>
-      <itemPath>app_usb.c</itemPath>
+      <itemPath>config.c</itemPath>
       <itemPath>io.c</itemPath>
       <itemPath>timing.c</itemPath>
       <itemPath>settings.c</itemPath>
@@ -69,10 +53,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>../MDD</Elem>
-    <Elem>../USB</Elem>
-    <Elem>../Include</Elem>
-    <Elem>Microchip</Elem>
+    <Elem>.</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -83,8 +64,8 @@
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
-        <languageToolchain>C18</languageToolchain>
-        <languageToolchainVersion>3.47</languageToolchainVersion>
+        <languageToolchain>XC8</languageToolchain>
+        <languageToolchainVersion>1.31</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
@@ -106,55 +87,69 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
-      <C18>
-        <property key="code-model" value="ml"/>
-        <property key="data-model" value="oa-"/>
-        <property key="default-char-unsigned" value="false"/>
-        <property key="enable-all-optimizations" value="true"/>
-        <property key="enable-int-promotion" value="false"/>
-        <property key="enable-multi-bank-stack-model" value="false"/>
-        <property key="enable-ob" value="true"/>
-        <property key="enable-od" value="true"/>
-        <property key="enable-om" value="true"/>
-        <property key="enable-on" value="true"/>
-        <property key="enable-op" value="true"/>
-        <property key="enable-opa" value="true"/>
-        <property key="enable-or" value="true"/>
-        <property key="enable-os" value="true"/>
-        <property key="enable-ot" value="true"/>
-        <property key="enable-ou" value="true"/>
-        <property key="enable-ow" value="true"/>
-        <property key="extra-include-directories" value="..;..\Include;..\;Microchip;."/>
-        <property key="optimization-master" value="Enable all"/>
-        <property key="preprocessor-macros" value=""/>
-        <property key="procedural-abstraction-passes" value="0"/>
-        <property key="storage-class" value="sca"/>
+      <HI-TECH-COMP>
+        <property key="asmlist" value="true"/>
+        <property key="define-macros" value=""/>
+        <property key="extra-include-directories"
+                  value="Microchip\Framework;Microchip\Framework\usb;Microchip\Application;Microchip\Custom"/>
+        <property key="identifier-length" value="255"/>
+        <property key="operation-mode" value="free"/>
+        <property key="opt-xc8-compiler-strict_ansi" value="false"/>
+        <property key="optimization-assembler" value="true"/>
+        <property key="optimization-assembler-files" value="true"/>
+        <property key="optimization-debug" value="false"/>
+        <property key="optimization-global" value="true"/>
+        <property key="optimization-level" value="9"/>
+        <property key="optimization-set" value="default"/>
+        <property key="optimization-speed" value="true"/>
+        <property key="preprocess-assembler" value="true"/>
+        <property key="undefine-macros" value=""/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
         <property key="verbose" value="false"/>
-        <property key="warning-level" value="2"/>
-      </C18>
-      <C18-AS>
-        <property key="cross.reference.file" value=""/>
-        <property key="default.radix" value="HEX"/>
-        <property key="enable.case.sensitivity" value="true"/>
-        <property key="hex.output.format" value="INHX32"/>
-        <property key="preprocessor.macros" value=""/>
-        <property key="warning.level" value="0"/>
-      </C18-AS>
-      <C18-LD>
-        <property key="cod-file" value="false"/>
-        <property key="extra-lib-directories" value=""/>
-        <property key="hex-output-format" value="INHX32"/>
-        <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
-      </C18-LD>
-      <C18LanguageToolchain>
-        <property key="extended-mode" value="false"/>
-        <property key="extended-mode-mcc18" value="false"/>
-        <property key="extended-mode-mpasm" value="false"/>
-        <property key="extended-mode-mplink" value="false"/>
-        <property key="stack-analysis" value="false"/>
-        <property key="stack-analysis-mcc18" value="false"/>
-        <property key="stack-analysis-mplink" value="false"/>
-      </C18LanguageToolchain>
+        <property key="warning-level" value="0"/>
+        <property key="what-to-do" value="ignore"/>
+      </HI-TECH-COMP>
+      <HI-TECH-LINK>
+        <property key="additional-options-checksum" value=""/>
+        <property key="additional-options-code-offset" value=""/>
+        <property key="additional-options-command-line" value=""/>
+        <property key="additional-options-errata" value=""/>
+        <property key="additional-options-extend-address" value="false"/>
+        <property key="additional-options-trace-type" value=""/>
+        <property key="additional-options-use-response-files" value="false"/>
+        <property key="backup-reset-condition-flags" value="false"/>
+        <property key="calibrate-oscillator" value="true"/>
+        <property key="calibrate-oscillator-value" value=""/>
+        <property key="clear-bss" value="true"/>
+        <property key="code-model-external" value="wordwrite"/>
+        <property key="code-model-rom" value=""/>
+        <property key="create-html-files" value="false"/>
+        <property key="data-model-ram" value=""/>
+        <property key="data-model-size-of-double" value="24"/>
+        <property key="data-model-size-of-float" value="24"/>
+        <property key="display-class-usage" value="false"/>
+        <property key="display-hex-usage" value="false"/>
+        <property key="display-overall-usage" value="true"/>
+        <property key="display-psect-usage" value="false"/>
+        <property key="fill-flash-options-addr" value=""/>
+        <property key="fill-flash-options-const" value=""/>
+        <property key="fill-flash-options-how" value="0"/>
+        <property key="fill-flash-options-inc-const" value="1"/>
+        <property key="fill-flash-options-increment" value=""/>
+        <property key="fill-flash-options-seq" value=""/>
+        <property key="fill-flash-options-what" value="0"/>
+        <property key="format-hex-file-for-download" value="false"/>
+        <property key="initialize-data" value="true"/>
+        <property key="keep-generated-startup.as" value="false"/>
+        <property key="link-in-c-library" value="true"/>
+        <property key="link-in-peripheral-library" value="true"/>
+        <property key="managed-stack" value="false"/>
+        <property key="opt-xc8-linker-file" value="false"/>
+        <property key="opt-xc8-linker-link_startup" value="false"/>
+        <property key="opt-xc8-linker-serial" value=""/>
+        <property key="program-the-device-with-default-config-words" value="true"/>
+      </HI-TECH-LINK>
       <PICkit3PlatformTool>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="Freeze Peripherals" value="true"/>
@@ -162,7 +157,6 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
@@ -187,6 +181,14 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </PICkit3PlatformTool>
+      <XC8-config-global>
+        <property key="advanced-elf" value="true"/>
+        <property key="output-file-format" value="-mcof,+elf"/>
+        <property key="stack-size-high" value="auto"/>
+        <property key="stack-size-low" value="auto"/>
+        <property key="stack-size-main" value="auto"/>
+        <property key="stack-type" value="compiled"/>
+      </XC8-config-global>
     </conf>
   </confs>
 </configurationDescriptor>
