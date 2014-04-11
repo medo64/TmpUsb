@@ -146,7 +146,6 @@
 #define FAT12_FAT {                                                                                  \
     0xF8,0x0F,  /* Copy of the media descriptor 0xFF8 */                                             \
     0x00,                                                                                            \
-    0xFF,0x0F                                                                                        \
 }
 
 #define FAT12_ROOT_DEFAULT_LABEL  'N','o','t',' ','A','r','m','e','d',' ',' '
