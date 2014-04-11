@@ -100,7 +100,7 @@
 //by carefully choosing the DRV_FILEIO_INTERNAL_FLASH_CONFIG_FILES_ADDRESS and DRV_FILEIO_INTERNAL_FLASH_CONFIG_DRIVE_CAPACITY,
 //to make sure the MSD volume does extend into the erase page with the configuration
 //bits.
-#define DRV_FILEIO_INTERNAL_FLASH_CONFIG_DRIVE_CAPACITY 12          //Number of 512 byte sectors of useable drive volume
+#define DRV_FILEIO_INTERNAL_FLASH_CONFIG_DRIVE_CAPACITY 11          //Number of 512 byte sectors of useable drive volume
 
 
 //--------------------------------------------------------------------------
@@ -126,7 +126,7 @@
 //suppport "up to" 16 files, but other limits could be hit first, even before
 //the drive is full.  The RootDirectory0[] sector could get full with less
 //files, especially if the files are using long filenames.
-#define DRV_FILEIO_CONFIG_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT 16
+#define DRV_FILEIO_CONFIG_INTERNAL_FLASH_MAX_NUM_FILES_IN_ROOT 32
 
 //name and extern definition for the master boot record
 extern const uint8_t MasterBootRecord[FILEIO_CONFIG_MEDIA_SECTOR_SIZE];

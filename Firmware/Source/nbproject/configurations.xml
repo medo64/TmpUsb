@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Microchip" projectFiles="true">
+        <itemPath>Microchip/Application/fileio_config.h</itemPath>
       </logicalFolder>
       <itemPath>config.h</itemPath>
       <itemPath>io.h</itemPath>
@@ -157,6 +158,7 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
