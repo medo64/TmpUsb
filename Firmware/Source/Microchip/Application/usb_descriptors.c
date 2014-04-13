@@ -235,7 +235,7 @@ sizeof(sd001),USB_DESCRIPTOR_STRING,
 //Product string descriptor
 const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd002={
 sizeof(sd002),USB_DESCRIPTOR_STRING,
-{'T','m','p','U','s','b',' ','M','a','s','s',' ','S','t','o','r','a','g','e',' ','D','r','i','v','e'
+{'T','m','p','U','s','b'
 }};
 
 //Serial number string descriptor.  Note: This should be unique for each unit 
