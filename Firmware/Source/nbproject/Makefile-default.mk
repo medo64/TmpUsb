@@ -82,8 +82,8 @@ ImageName="Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
 .build-conf:  ${BUILD_SUBPROJECTS}
 	${MAKE} ${MAKE_OPTIONS} -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 	@echo "--------------------------------------"
-	@echo "User defined post-build step: [COPY ${ProjectDir}\dist\default\production\Source.production.hex ${ProjectDir}\..\Binaries\TmpUsb.hex]"
-	@COPY ${ProjectDir}\dist\default\production\Source.production.hex ${ProjectDir}\..\Binaries\TmpUsb.hex
+	@echo "User defined post-build step: [Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\Setup\HexReplace.ps1 ${ProjectDir}\dist\default\production\Source.production.hex 197901281815 -Destination2 ${ProjectDir}\..\Binaries\TmpUsb.hex -AsciiHexRandom]"
+	@Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\Setup\HexReplace.ps1 ${ProjectDir}\dist\default\production\Source.production.hex 197901281815 -Destination2 ${ProjectDir}\..\Binaries\TmpUsb.hex -AsciiHexRandom
 	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=18F26J50

@@ -83,7 +83,7 @@
         <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
         <makeCustomizationPreStep></makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
-        <makeCustomizationPostStep>COPY ${ProjectDir}\dist\default\production\Source.production.hex ${ProjectDir}\..\Binaries\TmpUsb.hex</makeCustomizationPostStep>
+        <makeCustomizationPostStep>Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\Setup\HexReplace.ps1 ${ProjectDir}\dist\default\production\Source.production.hex 197901281815 -Destination2 ${ProjectDir}\..\Binaries\TmpUsb.hex -AsciiHexRandom</makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
