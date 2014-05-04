@@ -23,8 +23,9 @@ void main(void) {
         settings_setIsArmed(false);
         reset();
     }
+    if (settings_getIsArmed() == false) { settings_setIsReadOnly(false); } //cannot be read-only if it is not armed
 
-    
+
     init();
     io_init();
 
@@ -57,12 +58,12 @@ void main(void) {
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
 
-        settings_setIsArmed(TRUE);
+        settings_setIsArmed(true);
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_1) || io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_2)) {
 
-        settings_setIsArmed(TRUE);
-        settings_setTimingChargeLimit(1024); //this will ensure it always gets erased since there is no ADC value higher than 1024
+        settings_setIsArmed(true);
+        settings_setTimingChargeLimit(TIMING_CEILING); //this will ensure it always gets erased since there is no ADC value higher than 1024
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_CALIBRATE)) {
 
@@ -70,6 +71,8 @@ void main(void) {
         uint8_t offset = 4;
 
         settings_reset();
+
+        timingCharge = (timingCharge < TIMING_LIMIT) ? timingCharge : TIMING_LIMIT;
         settings_setTimingChargeLimit(timingCharge);
 
         if (timingCharge >= 1000) {
@@ -102,7 +105,7 @@ void main(void) {
 
     //wait for charge
     io_led_on();
-    while (timing_getCharge() < 1012);
+    while (timing_getCharge() < TIMING_STARTUP);
     io_led_off();
 
 
@@ -129,18 +132,29 @@ void main(void) {
 
 
         indexer++;
-        if ((indexer == 0) && !settings_getIsArmed()) {
-            if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
-                settings_setIsArmed(TRUE);
-                io_led_off();
+        if (indexer == 0) {
+            if (!settings_getIsArmed()) {
+                if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
+                    settings_setIsArmed(true);
+                    io_led_off();
+                }
+            } else if (!settings_getIsReadOnly()) {
+                if (io_disk_hasLabel(IO_DISK_LABEL_READONLY)) {
+                    settings_setIsReadOnly(true);
+                    if (settings_getTimingChargeLimit() <= TIMING_LIMIT) {
+                        reset();
+                    }
+                }
             }
-        } else if (!io_5v_isOn() && settings_getIsArmed()) {
+        }
+        
+        if (!io_5v_isOn() && settings_getIsArmed()) {
             unsigned char label[] = { FAT12_ROOT_DEFAULT_LABEL };
             unsigned int oldChargeLimit = settings_getTimingChargeLimit();
-            settings_setTimingChargeLimit(1024); //ensure it gets deleted on next boot
+            settings_setTimingChargeLimit(TIMING_CEILING); //ensure it gets deleted on next boot
             io_disk_erase(label);
             settings_setTimingChargeLimit(oldChargeLimit);
-            while (TRUE) {
+            while (true) {
                 io_led_toggle();
                 wait_short();
             }

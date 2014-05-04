@@ -10,16 +10,18 @@
 #define SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH      0
 #define SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW       1
 #define SETTING_INDEX_ISARMED                       2
+#define SETTING_INDEX_ISREADONLY                    3
 
 #define SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH    0
 #define SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW    42
 #define SETTING_DEFAULT_ISARMED                     0
+#define SETTING_DEFAULT_ISREADONLY                  0
 
 
 #define BLOCK_ERASE_SIZE  DRV_FILEIO_INTERNAL_FLASH_CONFIG_ERASE_BLOCK_SIZE
 #define BLOCK_WRITE_SIZE  DRV_FILEIO_INTERNAL_FLASH_CONFIG_WRITE_BLOCK_SIZE
 
-const uint8_t SettingsRomBlock[BLOCK_ERASE_SIZE] @0xF000 = { SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH, SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW, SETTING_DEFAULT_ISARMED, 0 };
+const uint8_t SettingsRomBlock[BLOCK_ERASE_SIZE] @0xF000 = { SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH, SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW, SETTING_DEFAULT_ISARMED, SETTING_DEFAULT_ISREADONLY, 0 };
 
 uint8_t SettingsBuffer[BLOCK_WRITE_SIZE];
 
@@ -68,6 +70,7 @@ void settings_reset() {
     SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_HIGH] = SETTING_DEFAULT_TIMING_CHARGE_LIMIT_HIGH;
     SettingsBuffer[SETTING_INDEX_TIMING_CHARGE_LIMIT_LOW]  = SETTING_DEFAULT_TIMING_CHARGE_LIMIT_LOW;
     SettingsBuffer[SETTING_INDEX_ISARMED]                  = SETTING_DEFAULT_ISARMED;
+    SettingsBuffer[SETTING_INDEX_ISREADONLY]               = SETTING_DEFAULT_ISREADONLY;
     settings_write();
 }
 
@@ -89,5 +92,15 @@ bool settings_getIsArmed() {
 
 void settings_setIsArmed(bool value) {
     SettingsBuffer[SETTING_INDEX_ISARMED] = value ? 1 : 0;
+    settings_write();
+}
+
+
+bool settings_getIsReadOnly() {
+    return (SettingsBuffer[SETTING_INDEX_ISREADONLY] != 0) ? true : false;
+}
+
+void settings_setIsReadOnly(bool value) {
+    SettingsBuffer[SETTING_INDEX_ISREADONLY] = value ? 1 : 0;
     settings_write();
 }

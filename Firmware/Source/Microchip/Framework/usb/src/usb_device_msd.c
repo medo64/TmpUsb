@@ -34,6 +34,9 @@
 
 #include "usb/usb_device_msd.h"
 
+#include "..\..\settings.h"
+
+
 #ifdef USB_USE_MSD
 
 #if MAX_LUN == 0
@@ -56,7 +59,7 @@ extern LUN_FUNCTIONS LUN[MAX_LUN + 1];
 #define LUNReadSectorSize()                 LUN[LUN_INDEX].ReadSectorSize(LUN[LUN_INDEX].mediaParameters)
 #define LUNMediaDetect()                    LUN[LUN_INDEX].MediaDetect(LUN[LUN_INDEX].mediaParameters)
 #define LUNSectorWrite(bLBA,pDest,Write0)   LUN[LUN_INDEX].SectorWrite(LUN[LUN_INDEX].mediaParameters, bLBA, pDest, Write0)
-#define LUNWriteProtectState()              LUN[LUN_INDEX].WriteProtectState(LUN[LUN_INDEX].mediaParameters)
+#define LUNWriteProtectState()              LUN[LUN_INDEX].WriteProtectState(LUN[LUN_INDEX].mediaParameters) || settings_getIsReadOnly()
 #define LUNSectorRead(bLBA,pSrc)            LUN[LUN_INDEX].SectorRead(LUN[LUN_INDEX].mediaParameters, bLBA, pSrc)
 
 //Adjustable user options
