@@ -68,7 +68,7 @@ const InquiryResponse inq_resp = {
 	// this is the T10 assigned Vendor ID
 	{'T','m','p','U','s','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '
     },
-	{'0','0','0','1'
+	{'1','.','0','0'
     }
 };
 
