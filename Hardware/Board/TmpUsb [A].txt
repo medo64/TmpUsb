@@ -15,4 +15,4 @@ TmpUsb                                                               ~ 0.61 sqin
  1  U PIC18F26J50-I/SS (SSOP-28)     U1       PIC18F26J50-I/SS-ND        98M1806
  1  VR MCP1700 (SOT-23)              VR1      MCP1700T3302ETTCT-ND       88H9817
 
-    1/2" heat-shrink tubing, 33mm
+    1/2" heat-shrink tubing, 31mm
