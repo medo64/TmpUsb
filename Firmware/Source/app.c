@@ -38,13 +38,13 @@ void main(void) {
         io_disk_erase(label);
         settings_setIsArmed(FALSE);
 
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_RESET)) {
 
@@ -52,9 +52,9 @@ void main(void) {
         io_disk_erase(label);
         settings_reset();
 
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
 
@@ -96,23 +96,17 @@ void main(void) {
         }
         io_disk_erase(label);
 
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
-        io_led_on(); wait_short();  io_led_off(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        io_led_active(); wait_short();  io_led_inactive(); wait_short();
 
     }
 
 
     //wait for charge
-    io_led_on();
+    io_led_active();
     while (timing_getCharge() < TIMING_STARTUP);
-    io_led_off();
-
-
-    if (!settings_getIsArmed()) {
-        wait_short(); //just to blink a bit
-        io_led_on();
-    }
+    io_led_inactive();
 
 
     #if defined(USB_INTERRUPT)
@@ -136,7 +130,7 @@ void main(void) {
             if (!settings_getIsArmed()) {
                 if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
                     settings_setIsArmed(true);
-                    io_led_off();
+                    io_led_inactive();
                 }
             } else if (!settings_getIsReadOnly()) {
                 if (io_disk_hasLabel(IO_DISK_LABEL_READONLY)) {

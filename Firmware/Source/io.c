@@ -29,14 +29,6 @@ void io_init() {
 }
 
 
-void io_led_on() {
-    LATAbits.LATA0 = 1;
-}
-
-void io_led_off() {
-    LATAbits.LATA0 = 0;
-}
-
 void io_led_toggle() {
     LATAbits.LATA0 = !LATAbits.LATA0;
 }

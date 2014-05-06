@@ -33,7 +33,7 @@ void settings_init() {
 void settings_write(void) {
     uint8_t buffer[BLOCK_WRITE_SIZE] = { 0 };
 
-    io_led_toggle();
+    io_led_active();
 
     //Erase all
     TBLPTR = (uint32_t)(&SettingsRomBlock[0]);
