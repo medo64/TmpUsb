@@ -23,7 +23,6 @@ void main(void) {
         settings_setIsArmed(false);
         reset();
     }
-    if (settings_getIsArmed() == false) { settings_setIsReadOnly(false); } //cannot be read-only if it is not armed
 
 
     init();
@@ -36,15 +35,14 @@ void main(void) {
 
         uint8_t label[] = { FAT12_ROOT_DEFAULT_LABEL };
         io_disk_erase(label);
-        settings_setIsArmed(FALSE);
+        settings_setIsArmed(false);
 
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        for (int i = 0; i < 7; i++) {
+            io_led_active();
+            wait_short();
+            io_led_inactive();
+            wait_short();
+        }
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_RESET)) {
 
@@ -52,9 +50,12 @@ void main(void) {
         io_disk_erase(label);
         settings_reset();
 
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        for (int i = 0; i < 3; i++) {
+            io_led_active();
+            wait_short();
+            io_led_inactive();
+            wait_short();
+        }
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
 
@@ -96,9 +97,12 @@ void main(void) {
         }
         io_disk_erase(label);
 
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
-        io_led_active(); wait_short();  io_led_inactive(); wait_short();
+        for (int i = 0; i < 3; i++) {
+            io_led_active();
+            wait_short();
+            io_led_inactive();
+            wait_short();
+        }
 
     }
 
@@ -126,7 +130,7 @@ void main(void) {
 
 
         indexer++;
-        if (indexer == 0) {
+        if (indexer == 0) { //check online commands
             if (!settings_getIsArmed()) {
                 if (io_disk_hasLabel(IO_DISK_LABEL_ARMED)) {
                     settings_setIsArmed(true);
@@ -143,12 +147,13 @@ void main(void) {
         }
         io_led_inactive();
         
-        if (!io_5v_isOn() && settings_getIsArmed()) {
+        if (!io_5v_isOn() && settings_getIsArmed()) { //if 5V line goes off and PIC is still working
             unsigned char label[] = { FAT12_ROOT_DEFAULT_LABEL };
             unsigned int oldChargeLimit = settings_getTimingChargeLimit();
-            settings_setTimingChargeLimit(TIMING_CEILING); //ensure it gets deleted on next boot
+            settings_setTimingChargeLimit(TIMING_CEILING); //ensure it gets deleted on next boot in case something goes wrong here
             io_disk_erase(label);
             settings_setTimingChargeLimit(oldChargeLimit);
+            settings_setIsArmed(false);
             while (true) {
                 io_led_toggle();
                 wait_short();

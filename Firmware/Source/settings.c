@@ -92,6 +92,7 @@ bool settings_getIsArmed() {
 
 void settings_setIsArmed(bool value) {
     SettingsBuffer[SETTING_INDEX_ISARMED] = value ? 1 : 0;
+    if (value == false) { SettingsBuffer[SETTING_INDEX_ISREADONLY] = 0; } //read-only must be off if drive is not armed
     settings_write();
 }
 
