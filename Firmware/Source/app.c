@@ -21,6 +21,7 @@ void main(void) {
         uint8_t label[] = { FAT12_ROOT_DEFAULT_LABEL };
         io_disk_erase(label);
         settings_setIsArmed(false);
+        if (settings_getTimingChargeLimit() > TIMING_LIMIT) { settings_setTimingChargeLimit(TIMING_DEFAULT); } //reset timings if it was ArmMax
         reset();
     }
 
