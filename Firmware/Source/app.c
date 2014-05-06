@@ -147,6 +147,7 @@ void main(void) {
                 }
             }
         }
+        io_led_inactive();
         
         if (!io_5v_isOn() && settings_getIsArmed()) {
             unsigned char label[] = { FAT12_ROOT_DEFAULT_LABEL };

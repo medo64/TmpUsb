@@ -19,6 +19,8 @@ void io_init(void);
 void io_led_on(void);
 void io_led_off(void);
 void io_led_toggle(void);
+void io_led_active(void);
+void io_led_inactive(void);
 
 bool io_5v_isOn(void);
 

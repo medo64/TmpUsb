@@ -39,6 +39,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "..\..\io.h"
+
+
 /******************************************************************************
  * Global Variables
  *****************************************************************************/
@@ -497,6 +500,8 @@ uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uin
 #else   //else must be PIC18 or PIC32 device
 uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uint8_t* buffer, uint8_t allowWriteToZero)
 {
+    io_led_active();
+
     #if !defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
         const uint8_t* dest;
         bool foundDifference;

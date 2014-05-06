@@ -1,10 +1,12 @@
 #include <p18cxxx.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "fileio_config.h"
 
 #include "fat12.h"
+#include "settings.h"
 
 
 #define MEDIA_SECTOR_SIZE   FILEIO_CONFIG_MEDIA_SECTOR_SIZE
@@ -37,6 +39,14 @@ void io_led_off() {
 
 void io_led_toggle() {
     LATAbits.LATA0 = !LATAbits.LATA0;
+}
+
+void io_led_active() {
+    LATAbits.LATA0 = settings_getIsArmed() ? 1 : 0;
+}
+
+void io_led_inactive() {
+    LATAbits.LATA0 = settings_getIsArmed() ? 0 : 1;
 }
 
 
