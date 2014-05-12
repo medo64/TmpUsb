@@ -17,17 +17,26 @@ void main(void) {
     unsigned short timingCharge = timing_getCharge();
 
     settings_init();
-    if (settings_getIsArmed() && (timingCharge <= settings_getTimingChargeLimit())) {
+
+    if (settings_getIsArmed() && (timingCharge <= settings_getTimingChargeLimit())) { //erase it all
         uint8_t label[] = { FAT12_ROOT_DEFAULT_LABEL };
         io_disk_erase(label);
         settings_setIsArmed(false);
         if (settings_getTimingChargeLimit() > TIMING_LIMIT) { settings_setTimingChargeLimit(TIMING_DEFAULT); } //reset timings if it was ArmMax
-        reset();
+
+        init();
+        for (int i = 0; i < 3; i++) {
+            io_led_active();
+            wait_short();
+            io_led_inactive();
+            wait_short();
+        }
+    } else {
+        init();
     }
 
-
-    init();
     io_init();
+
 
     timing_charge();
 
