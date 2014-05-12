@@ -58,9 +58,14 @@ void main(void) {
             wait_short();
         }
 
-    } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM)) {
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM) && !settings_getIsArmed()) {
 
         settings_setIsArmed(true);
+
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_READONLY) && !settings_getIsReadOnly()) {
+
+        settings_setIsArmed(true);
+        settings_setIsReadOnly(true);
 
     } else if (io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_1) || io_disk_hasLabel(IO_DISK_LABEL_ARM_MAX_2)) {
 
