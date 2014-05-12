@@ -79,7 +79,7 @@ ImagePath="dist\default\${IMAGE_TYPE}\Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
 ImageDir="dist\default\${IMAGE_TYPE}"
 ImageName="Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
 
-.build-conf:  ${BUILD_SUBPROJECTS}
+.build-conf:  .pre ${BUILD_SUBPROJECTS}
 	${MAKE} ${MAKE_OPTIONS} -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 	@echo "--------------------------------------"
 	@echo "User defined post-build step: [Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\Setup\HexReplace.ps1 ${ProjectDir}\dist\default\production\Source.production.hex 197901281815 -Destination2 ${ProjectDir}\..\Binaries\TmpUsb.hex -AsciiHexRandom]"
@@ -290,6 +290,11 @@ dist/${CND_CONF}/${IMAGE_TYPE}/Source.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFI
 	
 endif
 
+.pre:
+	@echo "--------------------------------------"
+	@echo "User defined pre-build step: [COPY /B ${ProjectDir}\App.c+,,]"
+	@COPY /B ${ProjectDir}\App.c+,,
+	@echo "--------------------------------------"
 
 # Subprojects
 .build-subprojects:

@@ -80,8 +80,8 @@
         </loading>
       </compileType>
       <makeCustomizationType>
-        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
-        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPreStepEnabled>true</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep>COPY /B ${ProjectDir}\App.c+,,</makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
         <makeCustomizationPostStep>Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\Setup\HexReplace.ps1 ${ProjectDir}\dist\default\production\Source.production.hex 197901281815 -Destination2 ${ProjectDir}\..\Binaries\TmpUsb.hex -AsciiHexRandom</makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>

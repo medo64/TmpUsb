@@ -269,4 +269,6 @@ foreach ($i in 0, 1) {
         return;
     }
 }
+
 Write-Error "Cannot find placeholder!"
+exit 1
