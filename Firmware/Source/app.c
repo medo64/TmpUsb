@@ -119,6 +119,11 @@ void main(void) {
             wait_short();
         }
 
+    } else if (io_disk_hasLabel(IO_DISK_LABEL_FORGETFUL)) {
+
+        uint8_t label[12] = "Forgetful"; //11 + null char
+        io_disk_erase(label);
+        
     }
 
 

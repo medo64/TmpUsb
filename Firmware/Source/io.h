@@ -12,6 +12,7 @@
 #define IO_DISK_LABEL_NOTARMED   "Not Armed"
 #define IO_DISK_LABEL_CALIBRATE  "Calibrate"
 #define IO_DISK_LABEL_READONLY   "ReadOnly"
+#define IO_DISK_LABEL_FORGETFUL  "Forgetful"
 
 
 void io_init(void);
