@@ -1,5 +1,4 @@
-TmpUsb
-======
+### TmpUsb ###
 
 TmpUsb is presented to a computer as an USB disk drive 11 KB in size (7-8 KB
 usable). This drive can be then used to store any data (providing that size is
@@ -19,8 +18,7 @@ server completely unusable. While this won't bring your server back, at least
 data won't be readable any more.
 
 
-How It Works
-------------
+#### How It Works ####
 
 When you plug TmpUsb in for the first time, it will start in "Not Armed" mode,
 as visible from drive's label. Visually you would recognize this mode by the
@@ -35,8 +33,7 @@ approximately three seconds (configurable, to allow for computer reset) drive
 will self-erase and return to an empty state.
 
 
-LED
----
+#### LED ####
 
 There is a single LED on a drive. If it is on, drive hasn't been armed and it
 is safe to unplug it without going into risk of losing data to self-erase. Once
@@ -47,13 +44,12 @@ to validation error (i.e. drive content was corrupted) it will blink five
 times.
 
 
-Commands
---------
+#### Commands ####
 
 All commands are entered by changing drive label. Casing is not important.
 
 
-### Arm ###
+##### Arm #####
 
 Gives command to TmpUsb to be "armed" on next plugin. This fits scenario where
 user prepares encryption keys on one computer, arms TmpUsb and then plugs it in
@@ -63,7 +59,7 @@ this mode TmpUsb will tolerate short power loss (approximate three seconds) but
 anything longer will trigger self-erase.
 
 
-### ArmMax ###
+##### ArmMax #####
 
 As with Arm command, this will cause TmpUsb to be armed on next plugin.
 However, unlike with Arm command, any power failure will trigger self-erasure
@@ -71,7 +67,7 @@ regardless of power-loss duration. On most computers this means that
 self-erasure will be also triggered by a simple reset.
 
 
-### Armed ###
+##### Armed #####
 
 Immediately "arms" TmpUsb without need to wait until next plugin. This is
 useful in case where preparation of encryption keys is done on same computer
@@ -80,7 +76,7 @@ unplug-plug that Arm command needs. Once armed, LED will be turned off and
 status will remain armed even if drive label gets further changes.
 
 
-### Calibrate ###
+##### Calibrate #####
 
 If standard power-loss buffer duration (approximately three seconds) is not
 satisfactory, user can change drive label to `Calibrate` and unplug the drive.
@@ -93,14 +89,13 @@ procedure will be used until either ArmMax or Reset are given. At that time
 TmpUsb will revert to default three seconds.
 
 
-### Reset ###
+##### Reset #####
 
 On next plug-in TmpUsb will perform self-erasure together with reset of all
 settings.
 
 
-Security Risks
---------------
+#### Security Risks ####
 
 As expected, there are some security risks involved.
 
@@ -130,8 +125,7 @@ attackers, especially if they are not aware its presence. It is not be-all and
 end-all device but it surely beats keeping keys on a normal USB drive.
 
 
-Known Issues
-------------
+#### Known Issues ####
 
 Device has no battery, time is kept only by monitoring voltage decay on a big
 capacitor. Major downfall is the fact that such timing is imprecise and doesn't
@@ -158,3 +152,12 @@ Information folder on each drive it sees and that means that it gets hit with
 additional 1 KB penalty and at least four directory entries are gone. Under
 Windows available size is thus 7-8 KB (depending on version) while we get 8 KB
 under Linux.
+
+
+#### Manufacturing ####
+
+If you want to make this board your self, just [grab the latest gerbers](http://www.jmedved.com/releases/tmpusb/)
+and send it over to [OSH Park](http://oshpark.com/) (or any other PCB
+manufacturer of your choice).
+
+Inside the archive you will also find parts list and the latest firmware.
