@@ -17,6 +17,8 @@ By using TmpUsb your encryption keys will be deleted rendering data on stolen
 server completely unusable. While this won't bring your server back, at least
 data won't be readable any more.
 
+![TmpUsb](Wiki/Picture.jpg)
+
 
 #### How It Works ####
 

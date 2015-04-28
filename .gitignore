@@ -1,4 +1,5 @@
 Firmware/Binaries/**
+Firmware/Research/**
 Firmware/Source/*.err
 Firmware/Source/*.obj
 Firmware/Source/build/**
