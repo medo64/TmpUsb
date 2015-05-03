@@ -158,8 +158,12 @@ under Linux.
 
 #### Manufacturing ####
 
-If you want to make this board your self, just [grab the latest gerbers](http://www.jmedved.com/releases/tmpusb/)
-and send it over to [OSH Park](http://oshpark.com/) (or any other PCB
-manufacturer of your choice).
+If you want to make this board your self, just grab the latest release and send
+gerbers over to [OSH Park](http://oshpark.com/) (or any other PCB manufacturer
+of your choice).
 
 Inside the archive you will also find parts list and the latest firmware.
+
+---
+
+*You can check my blog and other projects at [www.jmedved.com](http://www.jmedved.com/).*
