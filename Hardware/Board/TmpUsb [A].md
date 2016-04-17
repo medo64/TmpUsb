@@ -1,10 +1,10 @@
 ### TmpUsb ###
 
-|      |                       |
-|------|-----------------------|
-| Size | 26 x 17 mm ~ 0.7 sqin |
-| VID  | 0x04D8                |
-| PID  | 0xF777                |
+|      |                           |
+|------|---------------------------|
+| Size | 22.5 x 17.0 mm ~ 0.6 sqin |
+| VID  | 0x04D8                    |
+| PID  | 0xF777                    |
 
 
 #### Parts ####
@@ -23,4 +23,4 @@
 |  1 | U PIC18F26J50-I/SS (SSOP-28)     | U1      | PIC18F26J50-I/SS-ND        | 98M1806 |
 |  1 | VR MCP1700 (SOT-23)              | VR1     | MCP1700T3302ETTCT-ND       | 88H9817 |
 
-1/2" heat-shrink tubing, 31mm
+1/2" heat-shrink tubing, 30mm
