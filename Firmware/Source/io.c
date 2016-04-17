@@ -1,4 +1,4 @@
-#include <p18cxxx.h>
+#include <xc.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -43,7 +43,7 @@ void io_led_inactive() {
 
 
 bool io_5v_isOn(void) {
-    return PORTCbits.RC6 ? TRUE : FALSE;
+    return PORTCbits.RC6 ? true : false;
 }
 
 

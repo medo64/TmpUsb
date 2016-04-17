@@ -1,5 +1,5 @@
-#include <p18cxxx.h>
-#include <delays.h>
+#include <xc.h>
+#include <stdint.h>
 #include "config.h"
 
 
@@ -46,7 +46,7 @@ void init(void) {
 
     //wait for PLL lock
     OSCTUNEbits.PLLEN = 1;
-    Delay10KTCYx(6);
+    _delay(60000);
 
     //all lines are outputs (except for A3, B3, B7 and C6)
     TRISA = 0b00001000;
@@ -65,7 +65,9 @@ void init(void) {
 
 
 void wait_short(void) {
-    Delay10KTCYx(64);
+    for (uint8_t i=0; i<64; i++) {
+        _delay(10000);
+    }
 }
 
 

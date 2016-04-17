@@ -1,8 +1,6 @@
 #ifndef SETTINGS_H
 #define	SETTINGS_H
 
-#include <GenericTypeDefs.h>
-
 
 void settings_init(void);
 void settings_reset(void);
