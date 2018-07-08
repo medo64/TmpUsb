@@ -164,6 +164,9 @@ of your choice).
 
 Inside the archive you will also find parts list and the latest firmware.
 
+To compile you will need XC8 1.45 compiler - higher versions are currently not
+supported.
+
 ---
 
 *You can check my blog and other projects at [www.jmedved.com](http://www.jmedved.com/).*
