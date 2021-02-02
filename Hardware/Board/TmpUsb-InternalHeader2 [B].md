@@ -1,5 +1,7 @@
 ### TmpUsb ###
 
+This variant is intended for direct plug into the motherboard's 2.0 header.
+
 |      |                           |
 |------|---------------------------|
 | Size | 28.0 x 17.5 mm ~ 0.8 sqin |
