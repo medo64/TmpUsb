@@ -27,4 +27,5 @@ This variant is intended for direct plug into the motherboard's 3.0 header.
 |  1 | VR MCP1700 (SOT-23)                  | VR1     | MCP1700T3302ETTCT-ND |
 
 † This connector is not an excellent match but the best I could find on
-DigiKey. It seems that blue USB connector is only available on Chinese sites.
+  DigiKey. It seems that blue USB connector is only available on Chinese
+  sites.
