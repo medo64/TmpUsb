@@ -246,7 +246,7 @@ sizeof(sd002),USB_DESCRIPTOR_STRING,
 //of ASCII characters "0" through "9" and capital letters "A" through "F".
 const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[12];}sd003={
 sizeof(sd003),USB_DESCRIPTOR_STRING,
-{'1','9','7','9','0','1','2','8','1','8','1','5'}};
+{ 'F','7','7','7','1','9','7','9','0','1','2','8' }};
 
 
 //Array of configuration descriptors

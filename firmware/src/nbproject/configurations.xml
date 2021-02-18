@@ -94,7 +94,7 @@
         <makeUseCleanTarget>false</makeUseCleanTarget>
         <makeCustomizationPreStep>COPY /B ${ProjectDir}\App.c+,,</makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
-        <makeCustomizationPostStep>Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\package\HexReplace.ps1 ${ProjectDir}\dist\default\production\src.production.hex 197901281815 -Destination2 ${ProjectDir}\..\bin\TmpUsb.hex -AsciiHexRandom</makeCustomizationPostStep>
+        <makeCustomizationPostStep>Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\package\HexReplace.ps1 ${ProjectDir}\dist\default\production\src.production.hex 19790128 -Destination2 ${ProjectDir}\..\bin\TmpUsb.hex -AsciiHexRandom</makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>

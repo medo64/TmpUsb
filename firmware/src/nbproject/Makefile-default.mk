@@ -104,8 +104,8 @@ ifneq ($(INFORMATION_MESSAGE), )
 endif
 	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 	@echo "--------------------------------------"
-	@echo "User defined post-build step: [Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\package\HexReplace.ps1 ${ProjectDir}\dist\default\production\src.production.hex 197901281815 -Destination2 ${ProjectDir}\..\bin\TmpUsb.hex -AsciiHexRandom]"
-	@Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\package\HexReplace.ps1 ${ProjectDir}\dist\default\production\src.production.hex 197901281815 -Destination2 ${ProjectDir}\..\bin\TmpUsb.hex -AsciiHexRandom
+	@echo "User defined post-build step: [Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\package\HexReplace.ps1 ${ProjectDir}\dist\default\production\src.production.hex 19790128 -Destination2 ${ProjectDir}\..\bin\TmpUsb.hex -AsciiHexRandom]"
+	@Powershell.exe -ExecutionPolicy RemoteSigned -File ${ProjectDir}\..\package\HexReplace.ps1 ${ProjectDir}\dist\default\production\src.production.hex 19790128 -Destination2 ${ProjectDir}\..\bin\TmpUsb.hex -AsciiHexRandom
 	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=18F26J50
