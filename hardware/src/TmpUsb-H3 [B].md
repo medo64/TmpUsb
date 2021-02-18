@@ -1,4 +1,4 @@
-### TmpUsb ###
+## TmpUsb: USB 3.0 motherboard header
 
 This variant is intended for direct plug into the motherboard's 3.0 header.
 
@@ -9,7 +9,7 @@ This variant is intended for direct plug into the motherboard's 3.0 header.
 | PID  | 0xF777                    |
 
 
-#### Parts ####
+### Parts
 
 |  # | Part name                            | RefDes  | DigiKey              |
 |---:|--------------------------------------|---------|----------------------|

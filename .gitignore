@@ -1,16 +1,16 @@
-Firmware/Binaries/**
-Firmware/Research/**
-Firmware/Source/*.err
-Firmware/Source/*.obj
-Firmware/Source/build/**
-Firmware/Source/disassembly/**
-Firmware/Source/dist/**
-Firmware/Source/funclist
-Firmware/Source/nbproject/private/**
-Firmware/Source/nbproject/Makefile-genesis.properties
+firmware/bin/**
+firmware/dist/**
+firmware/src/*.err
+firmware/src/*.obj
+firmware/src/build/**
+firmware/src/disassembly/**
+firmware/src/dist/**
+firmware/src/funclist
+firmware/src/nbproject/private/**
+firmware/src/nbproject/Makefile-genesis.properties
 
-Hardware/Datasheets/**
-Hardware/Research/**
-Hardware/Releases/**
+hardware/bin/**
+hardware/dist/**
 
-Private/**
+private/**
+temp/**
