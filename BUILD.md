@@ -7,7 +7,7 @@ PCB was designed in [DipTrace 3.3](https://diptrace.com/) and gerber files can
 be exported from the same. There are three distint versions:
 
 * [USB A plug](hardware/src/TmpUsb-A%20%5BB%5D.md)
-* [USB 2.0 motherboard header](hardware/src/TmpUsb-H2%20%5BB%5D.md)
+* [USB 2.0 motherboard header](hardware/src/TmpUsb-H2%20%5BC%5D.md)
 * [USB 3.0 motherboard header](hardware/src/TmpUsb-H3%20%5BB%5D.md)
 
 Parts needed are similar for all three but USB 3.0 header version does use 0603
