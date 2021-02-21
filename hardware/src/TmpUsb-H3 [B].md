@@ -1,6 +1,7 @@
 ## TmpUsb: USB 3.0 motherboard header
 
-This variant is intended for direct plug into the motherboard's 3.0 header.
+This variant is intended for direct plug into the motherboard's 3.0 header
+while leaving one extra 3.0 USB receptacle available for other devices.
 
 |      |                           |
 |------|---------------------------|
