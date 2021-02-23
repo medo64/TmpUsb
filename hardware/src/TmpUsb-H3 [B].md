@@ -20,7 +20,7 @@ while leaving one extra 3.0 USB receptacle available for other devices.
 |  1 | DS LED (0805)                        | DS1     | 160-1468-1-ND        |
 |  1 | J USB A 3.0, receptacle, horizontal  | J1      | 609-4662-ND          |
 |  1 | L Ferrite 40Ohm (0805)               | L1      | 445-2201-1-ND        |
-|  1 | P USB header, r/a plug               | P1      | SQW-110-01-L-D-020   |
+|  1 | P USB3 header F (2x10w)              | P1      | A108127-ND †         |
 |  2 | R 1K 0.125W (0805)                   | R1 R2   | RMCF0805FT1K00CT-ND  |
 |  1 | R 10K 0.125W (0805)                  | R3      | RMCF0805JT10K0CT-ND  |
 |  1 | R 100K 0.125W (0805)                 | R4      | RMCF0805JT100KCT-ND  |
