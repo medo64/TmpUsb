@@ -5,7 +5,7 @@ while leaving one extra 3.0 USB receptacle available for other devices.
 
 |      |                           |
 |------|---------------------------|
-| Size | 27.0 x 22.0 mm ~ 1.0 sqin |
+| Size | 25.0 x 23.0 mm ~ 0.9 sqin |
 | VID  | 0x04D8                    |
 | PID  | 0xF777                    |
 
