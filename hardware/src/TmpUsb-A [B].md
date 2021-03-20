@@ -24,3 +24,22 @@
 |  1 | VR MCP1700 (SOT-23)              | VR1     | MCP1700T3302ETTCT-ND       | 88H9817 |
 
 1/2" heat-shrink tubing, 30mm
+
+
+### Suggested Soldering order
+
+Here is the suggested order for easy hand soldering.
+
+|  # | Part name                        | RefDes  |
+|---:|----------------------------------|---------|
+|  1 | U PIC18F26J50-I/SS (SSOP-28)     | U1      |
+|  1 | VR MCP1700 (SOT-23)              | VR1     |
+|  2 | C 100nF /10V X7R (0805)          | C1 C2   |
+|  2 | C 1uF /10V X5R (0805)            | C3 C4   |
+|  2 | C 10uF /10V X5R (0805)           | C5 C6   |
+|  1 | L Ferrite 40Ohm (0805)           | L1      |
+|  1 | DS LED (0805)                    | DS1     |
+|  1 | R 10K 0.125W (0805)              | R3      |
+|  2 | R 1K 0.125W (0805)               | R1 R2   |
+|  1 | R 100K 0.125W (0805)             | R4      |
+|  1 | P USB A, plug, horizontal        | P1      |

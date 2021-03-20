@@ -30,3 +30,23 @@ while leaving one extra 3.0 USB receptacle available for other devices.
 † This connector is not an excellent match but the best I could find on
   DigiKey. It seems that blue USB connector is only available on Chinese
   sites.
+
+
+### Suggested Soldering order
+
+Here is the suggested order for easy hand soldering.
+
+|  # | Part name                            | RefDes  |
+|---:|--------------------------------------|---------|
+|  1 | U PIC18F26J50-I/SS (SSOP-28)         | U1      |
+|  1 | VR MCP1700 (SOT-23)                  | VR1     |
+|  2 | C 1uF /10V X5R (0805)                | C3 C4   |
+|  2 | C 10uF /10V X5R (0805)               | C5 C6   |
+|  2 | C 100nF /10V X7R (0805)              | C1 C2   |
+|  1 | L Ferrite 40Ohm (0805)               | L1      |
+|  2 | R 1K 0.125W (0805)                   | R1 R2   |
+|  1 | R 10K 0.125W (0805)                  | R3      |
+|  1 | R 100K 0.125W (0805)                 | R4      |
+|  1 | DS LED (0805)                        | DS1     |
+|  1 | P USB3 header F (2x10w)              | P1      |
+|  1 | J USB A 3.0, receptacle, horizontal  | J1      |
