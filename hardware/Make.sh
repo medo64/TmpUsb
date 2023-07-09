@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SRC_FILE="src/TmpUsb-A [B].kicad_pcb"
+SRC_FILE="src/TmpUsb [B].kicad_pcb"
 
 PROJECT_NAME=$(basename "$SRC_FILE" | cut -d'[' -f1 | xargs)
 PROJECT_REV=$(basename "$SRC_FILE" | cut -d'[' -f2 | cut -d']' -f1 | xargs)
