@@ -10,7 +10,11 @@ firmware/src/nbproject/private/**
 firmware/src/nbproject/Makefile-genesis.properties
 
 hardware/bin/**
+hardware/datasheets/**
 hardware/dist/**
+hardware/src/*-backups/
+hardware/src/*.kicad_prl
+hardware/src/fp-info-cache
 
 private/**
 temp/**
