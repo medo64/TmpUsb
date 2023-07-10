@@ -451,7 +451,16 @@
       "version": 3
     },
     "net_colors": {
-      "CAP_POWER": "rgb(192, 128, 128)"
+      "+3.3V": "rgb(255, 0, 0)",
+      "+5V": "rgb(255, 0, 0)",
+      "CAP": "rgb(255, 128, 0)",
+      "CAP_POWER": "rgb(224, 112, 0)",
+      "GND": "rgb(0, 255, 0)",
+      "ICSP_VPP": "rgb(255, 0, 0)",
+      "USB_D+": "rgb(0, 0, 255)",
+      "USB_D-": "rgb(0, 0, 255)",
+      "VCAP": "rgb(255, 0, 0)",
+      "VCC": "rgb(255, 0, 0)"
     },
     "netclass_assignments": null,
     "netclass_patterns": [
