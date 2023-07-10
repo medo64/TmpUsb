@@ -4,8 +4,9 @@ SRC_FILE="src/TmpUsb [B].kicad_pcb"
 
 PROJECT_NAME=$(basename "$SRC_FILE" | cut -d'[' -f1 | xargs)
 PROJECT_REV=$(basename "$SRC_FILE" | cut -d'[' -f2 | cut -d']' -f1 | xargs)
+PROJECT_DATE="`date +%g%V`"
 
-DIST_NAME="$PROJECT_NAME $PROJECT_REV`date +%g%V`"
+DIST_NAME="$PROJECT_NAME $PROJECT_REV$PROJECT_DATE"
 DIST_DIR="dist/$DIST_NAME"
 DIST_ZIP="dist/$DIST_NAME.zip"
 
@@ -19,6 +20,10 @@ cp "$SRC_FILE" "$DIST_FILE"
 if [ -e "${SRC_FILE%.kicad_pcb}.md" ]; then
     cp "${SRC_FILE%.kicad_pcb}.md" "$DIST_DIR/$DIST_NAME.txt"
 fi
+
+sed -i 's/(gr_text "'$PROJECT_NAME' '$PROJECT_REV'...." /(gr_text "'$PROJECT_NAME' '$PROJECT_REV$PROJECT_DATE'" /g' "$DIST_FILE"
+
+exit
 
 kicad-cli pcb export gerbers --layers "Edge.Cuts,F.Cu,B.Cu,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,F.Paste,B.Paste" \
                              --output "$DIST_DIR/" \
