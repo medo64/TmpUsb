@@ -23,8 +23,6 @@ fi
 
 sed -i 's/(gr_text "'$PROJECT_NAME' '$PROJECT_REV'...." /(gr_text "'$PROJECT_NAME' '$PROJECT_REV$PROJECT_DATE'" /g' "$DIST_FILE"
 
-exit
-
 kicad-cli pcb export gerbers --layers "Edge.Cuts,F.Cu,B.Cu,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,F.Paste,B.Paste" \
                              --output "$DIST_DIR/" \
                              "$DIST_FILE"
