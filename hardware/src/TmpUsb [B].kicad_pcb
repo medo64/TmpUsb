@@ -564,7 +564,7 @@
         (effects (font (size 0.7 0.6) (thickness 0.1)) (justify bottom))
       (tstamp b7b9de1b-8ed9-4233-aecb-971690b44c0d)
     )
-    (fp_text value "PIC18F26J50" (at -0.7 -0.05 unlocked) (layer "F.SilkS")
+    (fp_text value "PIC18F26J50" (at 1 0.2 unlocked) (layer "F.SilkS")
         (effects (font (size 0.7 0.6) (thickness 0.1)))
       (tstamp a26c4c99-1561-4b9d-878d-7f18f8dbd257)
     )
