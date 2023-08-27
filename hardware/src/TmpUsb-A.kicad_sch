@@ -1207,7 +1207,7 @@
     )
     (pin "1" (uuid ab927161-a11f-4c84-abba-3f43330a7f83))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR010") (unit 1)
         )
@@ -1233,7 +1233,7 @@
     (pin "1" (uuid 7b0f13bd-c20b-439c-97a0-21ed124f22b2))
     (pin "2" (uuid 6f1f741f-f261-4cc9-89c4-dbf4a5fb26a4))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "C3") (unit 1)
         )
@@ -1259,7 +1259,7 @@
     (pin "1" (uuid c325c2c0-f06a-4a4a-bf23-cb002c8d7679))
     (pin "2" (uuid 086cf8d6-5363-485b-8a94-7155bcfa526d))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "R3") (unit 1)
         )
@@ -1288,7 +1288,7 @@
     (pin "4" (uuid d22d4408-f5a2-44bd-9de0-ab5df65e2d6f))
     (pin "5" (uuid 2b7b10c6-acdd-4de9-8829-4c3be8dd67cf))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "J1") (unit 1)
         )
@@ -1313,7 +1313,7 @@
     )
     (pin "1" (uuid d3d09f4a-673b-4c9a-aeab-41d70403ef7b))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#USB_5V0101") (unit 1)
         )
@@ -1339,7 +1339,7 @@
     (pin "1" (uuid 160bd141-f6e6-43f9-99b0-b96934d377ff))
     (pin "2" (uuid 3678d591-dbc4-4b73-939e-04029504cf82))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "R1") (unit 1)
         )
@@ -1364,7 +1364,7 @@
     )
     (pin "1" (uuid dfdc7325-5d78-473c-bddd-81400ce5b502))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR07") (unit 1)
         )
@@ -1390,7 +1390,7 @@
     (pin "1" (uuid fa79ffa0-59cb-4dc5-a371-ad3272bebf4f))
     (pin "2" (uuid 35898eba-04e8-41d7-92dc-9c6ac5c9af94))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "R2") (unit 1)
         )
@@ -1415,7 +1415,7 @@
     )
     (pin "1" (uuid 9f6d30eb-a7e6-42b6-a050-0048e28e914b))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR01") (unit 1)
         )
@@ -1442,7 +1442,7 @@
     (pin "2" (uuid 76466883-77ce-4253-9f3d-12c5e71fd3a5))
     (pin "3" (uuid 8beda46f-d71d-46bf-a3bc-64cd0f250943))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "VR1") (unit 1)
         )
@@ -1471,7 +1471,7 @@
     (pin "4" (uuid 7bbb291c-7360-4d00-be36-ef1987658514))
     (pin "5" (uuid 36407ecc-3eec-4e13-a975-78246073e563))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "P1") (unit 1)
         )
@@ -1497,7 +1497,7 @@
     (pin "1" (uuid b7035a6a-164c-4e9d-92c2-3900ec740645))
     (pin "2" (uuid 9914e456-393e-435b-bf2e-8dd8f85303ef))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "C1") (unit 1)
         )
@@ -1522,7 +1522,7 @@
     )
     (pin "1" (uuid 9def7712-da54-4a8c-bc48-aea558f8cb02))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR03") (unit 1)
         )
@@ -1548,7 +1548,7 @@
     (pin "1" (uuid b3b86a89-5a7e-4d1a-92f5-7379fc7be3c6))
     (pin "2" (uuid e22dae92-3478-462f-936e-dd636c4f0323))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "C2") (unit 1)
         )
@@ -1573,7 +1573,7 @@
     )
     (pin "1" (uuid 9ba54352-8165-417d-a80b-ebb94eee0cad))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR012") (unit 1)
         )
@@ -1598,7 +1598,7 @@
     )
     (pin "1" (uuid c01c8a32-b5c3-473a-ba9a-912b60e0baab))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR09") (unit 1)
         )
@@ -1623,7 +1623,7 @@
     )
     (pin "1" (uuid 60d926d1-d47c-4ac8-bcfa-6e7883687da1))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR011") (unit 1)
         )
@@ -1648,7 +1648,7 @@
     )
     (pin "1" (uuid df0c4d91-5bd2-4daf-8b6d-44316fe734cd))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR04") (unit 1)
         )
@@ -1673,7 +1673,7 @@
     )
     (pin "1" (uuid 506e2341-b61f-416b-917e-bbb18038b772))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR08") (unit 1)
         )
@@ -1698,7 +1698,7 @@
     )
     (pin "1" (uuid f6685b85-6ebb-4f24-8993-17e2c232e76e))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR06") (unit 1)
         )
@@ -1724,7 +1724,7 @@
     (pin "1" (uuid c4bce1ec-c348-4afc-9ded-c74299322283))
     (pin "2" (uuid fc3fa919-a22b-4550-ada8-de9156183ddf))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "C6") (unit 1)
         )
@@ -1750,7 +1750,7 @@
     (pin "1" (uuid 98c5d4f7-f247-4dc2-b889-d40e35b43152))
     (pin "2" (uuid 30b89397-7853-4d89-9c03-29089f1316cc))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "DS1") (unit 1)
         )
@@ -1776,7 +1776,7 @@
     (pin "1" (uuid af0f818d-e36b-4b61-89f8-2f90805e7fb5))
     (pin "2" (uuid 01929d87-fd8d-4c9a-b43c-f9ef67a8b82b))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "C4") (unit 1)
         )
@@ -1801,7 +1801,7 @@
     )
     (pin "1" (uuid 1fb828a8-d39a-48b4-a11a-cec6f521dfa2))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "#PWR05") (unit 1)
         )
@@ -1853,7 +1853,7 @@
     (pin "8" (uuid af186756-c356-475b-882f-4d283b501b1d))
     (pin "9" (uuid dfbbe1fc-14ae-497a-9f33-426c5efeeab3))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "U1") (unit 1)
         )
@@ -1879,7 +1879,7 @@
     (pin "1" (uuid b68c0a21-7b6d-49d0-a9f7-32850c8e9285))
     (pin "2" (uuid 30f5073c-09d3-4768-9d74-3c69ef49340d))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "C5") (unit 1)
         )
@@ -1905,7 +1905,7 @@
     (pin "1" (uuid be6a276b-fddf-455d-a4a1-485ad10801fa))
     (pin "2" (uuid b4c07b8d-e52e-4794-82b3-1314c77fe620))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "R4") (unit 1)
         )
@@ -1931,7 +1931,7 @@
     (pin "1" (uuid 240cdc4f-48ab-4002-8ab5-896dc519b848))
     (pin "2" (uuid 9d9d787d-cd8f-4ffd-87e4-25c74cb58ab0))
     (instances
-      (project "TmpUsb [B]"
+      (project "TmpUsb"
         (path "/7e726e8e-aac8-4518-adb0-f940a1045e8c"
           (reference "L1") (unit 1)
         )
