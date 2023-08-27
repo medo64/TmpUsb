@@ -1319,7 +1319,7 @@
     (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp cb6deb52-7012-4446-b55b-3884f81ea102))
   (gr_line (start 22 20) (end 41 20)
     (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp cbda4269-b94c-42a4-b07c-439d5f6cd5fb))
-  (gr_text "TmpUsb:A B" (at 42.352 36.238) (layer "B.SilkS") (tstamp 5d5821e0-50b0-479d-8605-2c3c8c65136e)
+  (gr_text "TmpUsb'A B" (at 42.352 36.238) (layer "B.SilkS") (tstamp 5d5821e0-50b0-479d-8605-2c3c8c65136e)
     (effects (font (size 1 1) (thickness 0.15)) (justify left bottom mirror))
   )
 
