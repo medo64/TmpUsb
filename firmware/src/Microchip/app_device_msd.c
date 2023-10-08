@@ -23,11 +23,11 @@
 #include <system.h>
 #include <system_config.h>
 
-#include <usb/usb.h>
-#include <usb/usb_device_hid.h>
-#include <usb/usb_device_msd.h>
+#include <usb.h>
+#include <usb_device_hid.h>
+#include <usb_device_msd.h>
 
-#include <driver/fileio/internal_flash.h>
+#include <internal_flash.h>
 
 
 //The LUN variable definition is critical to the MSD function driver.  This

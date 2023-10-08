@@ -31,10 +31,10 @@
 *****************************************************************************/
 
 #include "fileio_config.h"
-#include <fileio/fileio.h>
-#include <driver/fileio/internal_flash.h>
+#include <fileio.h>
+#include <internal_flash.h>
 
-#include "../../fat12.h"
+#include "../fat12.h"
 
 
 #if defined(__PIC32MX__)

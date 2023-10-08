@@ -154,8 +154,8 @@ state according to the definition in the USB specification.
 #define __USB_DESCRIPTORS_C
 
 /** INCLUDES *******************************************************/
-#include "usb/usb.h"
-#include "usb/usb_device_msd.h"
+#include "usb.h"
+#include "usb_device_msd.h"
 
 /** CONSTANTS ******************************************************/
 #if defined(__18CXX)

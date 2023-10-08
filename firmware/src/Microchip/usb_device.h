@@ -28,7 +28,7 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 #define USBDEVICE_H
 //DOM-IGNORE-END
 
-#include <usb/usb_common.h>
+#include <usb_common.h>
 #include <stdint.h>
 
 
@@ -1892,6 +1892,6 @@ extern USB_VOLATILE uint8_t USBActiveConfiguration;
 /******************************************************************************/
 /* DOM-IGNORE-END */
 
-#include <usb/usb_hal.h>
+#include <usb_hal.h>
 
 #endif //USB_DEVICE_H

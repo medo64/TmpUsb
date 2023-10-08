@@ -28,13 +28,13 @@
 ********************************************************************/
  
 /** I N C L U D E S **************************************************/
-#include "usb/usb.h"
+#include "usb.h"
 #include "system.h"
 #include "system_config.h"
 
-#include "usb/usb_device_msd.h"
+#include "usb_device_msd.h"
 
-#include "..\..\settings.h"
+#include "../settings.h"
 
 
 #ifdef USB_USE_MSD

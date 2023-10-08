@@ -33,13 +33,13 @@
 
 #include "string.h"
 #include <fileio_config.h>
-#include <fileio/fileio.h>
-#include <driver/fileio/internal_flash.h>
+#include <fileio.h>
+#include <internal_flash.h>
 
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "..\..\io.h"
+#include "../io.h"
 
 
 /******************************************************************************

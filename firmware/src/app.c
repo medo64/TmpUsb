@@ -15,7 +15,6 @@
 
 
 void main(void) {
-    crc8a(0, 0);
     unsigned short timingCharge = timing_getCharge();
 
     settings_init();

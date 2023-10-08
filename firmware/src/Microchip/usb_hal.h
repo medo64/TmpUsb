@@ -35,9 +35,9 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 #if defined(__18CXX) || defined(__XC8)
     #if defined(_PIC14E)
-        #include "usb/usb_hal_pic16f1.h"
+        #include "usb_hal_pic16f1.h"
     #else
-        #include "usb/usb_hal_pic18.h"
+        #include "usb_hal_pic18.h"
     #endif
 #elif defined(__C30__) || defined __XC16__
 	#if defined(__dsPIC33E__) 
