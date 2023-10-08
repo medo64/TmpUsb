@@ -219,7 +219,7 @@ sizeof(sd001),USB_DESCRIPTOR_STRING,
 }};
 
 //Product string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd002={
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[6];}sd002={
 sizeof(sd002),USB_DESCRIPTOR_STRING,
 {'T','m','p','U','s','b'
 }};
@@ -230,9 +230,9 @@ sizeof(sd002),USB_DESCRIPTOR_STRING,
 //all hosts support all character values in the serial number string.  The MSD 
 //Bulk Only Transport (BOT) specs v1.0 restrict the serial number to consist only
 //of ASCII characters "0" through "9" and capital letters "A" through "F".
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[12];}sd003={
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[7];}sd003 __at(0x1000)={
 sizeof(sd003),USB_DESCRIPTOR_STRING,
-{ 'F','7','7','7','1','9','7','9','0','1','2','8' }};
+{ '2','8','4','4','3','4','2' }};
 
 
 //Array of configuration descriptors

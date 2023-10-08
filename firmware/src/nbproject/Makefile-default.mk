@@ -94,14 +94,14 @@ else
 IsDebug="false"
 endif
 
-.build-conf:  .pre ${BUILD_SUBPROJECTS}
+.build-conf:  ${BUILD_SUBPROJECTS}
 ifneq ($(INFORMATION_MESSAGE), )
 	@echo $(INFORMATION_MESSAGE)
 endif
 	${MAKE}  -f nbproject/Makefile-default.mk ${DISTDIR}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 	@echo "--------------------------------------"
-	@echo "User defined post-build step: []"
-	@
+	@echo "User defined post-build step: [bash "${ProjectDir}/../package/randomize-usb-serial.sh" "${ProjectDir}" "${ImagePath}" "2844342" "${ProjectDir}/../bin/TmpUsb.hex"]"
+	@bash "${ProjectDir}/../package/randomize-usb-serial.sh" "${ProjectDir}" "${ImagePath}" "2844342" "${ProjectDir}/../bin/TmpUsb.hex"
 	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=18F26J50
@@ -314,11 +314,6 @@ ${DISTDIR}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefil
 	
 endif
 
-.pre:
-	@echo "--------------------------------------"
-	@echo "User defined pre-build step: []"
-	@
-	@echo "--------------------------------------"
 
 # Subprojects
 .build-subprojects:
