@@ -1,35 +1,31 @@
-//DOM-IGNORE-BEGIN
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
-Software License Agreement
+Copyright 2015 Microchip Technology Inc. (www.microchip.com)
 
-The software supplied herewith by Microchip Technology Incorporated
-(the "Company") for its PICmicro(R) Microcontroller is intended and
-supplied to you, the Company's customer, for use solely and
-exclusively on Microchip PICmicro Microcontroller products. The
-software is owned by the Company and/or its supplier, and is
-protected under applicable copyright laws. All rights are reserved.
-Any use in violation of the foregoing restrictions may subject the
-user to criminal sanctions under applicable laws, as well as to
-civil liability for the breach of the terms and conditions of this
-license.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
-WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
-TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
-IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+    http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+To request to license the code under the MLA license (www.microchip.com/mla_license),
+please contact mla_licensing@microchip.com
 *******************************************************************************/
 //DOM-IGNORE-END
 
 #ifndef HID_H
 #define HID_H
-//DOM-IGNORE-END
+
 
 /** INCLUDES *******************************************************/
 
-#include <usb_ch9.h>
+#include "usb_ch9.h"
 
 /** DEFINITIONS ****************************************************/
 
@@ -104,23 +100,23 @@ void USBCheckHIDRequest(void);
 /********************************************************************
     Function:
         bool HIDTxHandleBusy(USB_HANDLE handle)
-        
+
     Summary:
-        Retreives the status of the buffer ownership
+        Retrieves the status of the buffer ownership
 
     Description:
-        Retreives the status of the buffer ownership.  This function will
+        Retrieves the status of the buffer ownership.  This function will
         indicate if the previous transfer is complete or not.
-        
-        This function will take the input handle (pointer to a BDT entry) and 
-        will check the UOWN bit.  If the UOWN bit is set then that indicates 
-        that the transfer is not complete and the USB module still owns the data
-        memory.  If the UOWN bit is clear that means that the transfer is 
-        complete and that the CPU now owns the data memory.  
 
-        For more information about the BDT, please refer to the appropriate 
+        This function will take the input handle (pointer to a BDT entry) and
+        will check the UOWN bit.  If the UOWN bit is set then that indicates
+        that the transfer is not complete and the USB module still owns the data
+        memory.  If the UOWN bit is clear that means that the transfer is
+        complete and that the CPU now owns the data memory.
+
+        For more information about the BDT, please refer to the appropriate
         datasheet for the device in use.
-        
+
         Typical Usage:
         <code>
         //make sure that the last transfer isn't busy by checking the handle
@@ -134,42 +130,42 @@ void USBCheckHIDRequest(void);
 
     PreCondition:
         None.
-        
+
     Parameters:
         USB_HANDLE handle - the handle for the transfer in question.
         The handle is returned by the HIDTxPacket() and HIDRxPacket()
         functions.  Please insure that USB_HANDLE objects are initialized
         to NULL.
-        
+
     Return Values:
         TRUE - the HID handle is still busy
         FALSE - the HID handle is not busy and is ready to send
                 additional data.
-        
+
    Remarks:
         None
- 
+
  *******************************************************************/
 #define HIDTxHandleBusy(handle) USBHandleBusy(handle)
 
 /********************************************************************
     Function:
         bool HIDRxHandleBusy(USB_HANDLE handle)
-        
-    Summary:
-        Retreives the status of the buffer ownership
-        
-    Description:
-        Retreives the status of the buffer ownership.  This function will
-        indicate if the previous transfer is complete or not.
-        
-        This function will take the input handle (pointer to a BDT entry) and 
-        will check the UOWN bit.  If the UOWN bit is set then that indicates 
-        that the transfer is not complete and the USB module still owns the data
-        memory.  If the UOWN bit is clear that means that the transfer is 
-        complete and that the CPU now owns the data memory.  
 
-        For more information about the BDT, please refer to the appropriate 
+    Summary:
+        Retrieves the status of the buffer ownership
+
+    Description:
+        Retrieves the status of the buffer ownership.  This function will
+        indicate if the previous transfer is complete or not.
+
+        This function will take the input handle (pointer to a BDT entry) and
+        will check the UOWN bit.  If the UOWN bit is set then that indicates
+        that the transfer is not complete and the USB module still owns the data
+        memory.  If the UOWN bit is clear that means that the transfer is
+        complete and that the CPU now owns the data memory.
+
+        For more information about the BDT, please refer to the appropriate
         datasheet for the device in use.
 
         Typical Usage:
@@ -183,33 +179,33 @@ void USBCheckHIDRequest(void);
 
     PreCondition:
         None
-        
+
     Parameters:
         USB_HANDLE handle - the handle for the transfer in question.
         The handle is returned by the HIDTxPacket() and HIDRxPacket()
         functions.  Please insure that USB_HANDLE objects are initialized
         to NULL.
-        
+
     Return Values:
         TRUE - the HID handle is still busy
         FALSE - the HID handle is not busy and is ready to receive
                 additional data.
-        
+
    Remarks:
         None
- 
+
  *******************************************************************/
 #define HIDRxHandleBusy(handle) USBHandleBusy(handle)
 
 /********************************************************************
     Function:
         USB_HANDLE HIDTxPacket(uint8_t ep, uint8_t* data, uint16_t len)
-        
+
     Summary:
         Sends the specified data out the specified endpoint
 
     Description:
-        This function sends the specified data out the specified 
+        This function sends the specified data out the specified
         endpoint and returns a handle to the transfer information.
 
         Typical Usage:
@@ -222,32 +218,32 @@ void USBCheckHIDRequest(void);
             USBInHandle = HIDTxPacket(HID_EP,(uint8_t*)&ToSendDataBuffer[0],sizeof(ToSendDataBuffer));
         }
         </code>
-        
+
     PreCondition:
         None
-        
+
     Parameters:
         uint8_t ep    - the endpoint you want to send the data out of
         uint8_t* data - pointer to the data that you wish to send
         uint16_t len   - the length of the data that you wish to send
-        
+
     Return Values:
         USB_HANDLE - a handle for the transfer.  This information
         should be kept to track the status of the transfer
-        
+
     Remarks:
         None
-  
+
  *******************************************************************/
 #define HIDTxPacket USBTxOnePacket
 
 /********************************************************************
     Function:
         USB_HANDLE HIDRxPacket(uint8_t ep, uint8_t* data, uint16_t len)
-        
+
     Summary:
         Receives the specified data out the specified endpoint
-        
+
     Description:
         Receives the specified data out the specified endpoint.
 
@@ -261,25 +257,25 @@ void USBCheckHIDRequest(void);
 
     PreCondition:
         None
-        
+
     Parameters:
         uint8_t ep    - the endpoint you want to receive the data into
         uint8_t* data - pointer to where the data will go when it arrives
         uint16_t len   - the length of the data that you wish to receive
-        
+
     Return Values:
         USB_HANDLE - a handle for the transfer.  This information
         should be kept to track the status of the transfer
-        
+
     Remarks:
         None
-  
+
  *******************************************************************/
 #define HIDRxPacket USBRxOnePacket
 
 // Section: STRUCTURES *********************************************/
 
-//USB HID Descriptor header as detailed in section 
+//USB HID Descriptor header as detailed in section
 //"6.2.1 HID Descriptor" of the HID class definition specification
 typedef struct _USB_HID_DSC_HEADER
 {
@@ -287,7 +283,7 @@ typedef struct _USB_HID_DSC_HEADER
     uint16_t wDscLength;		//offset 10
 } USB_HID_DSC_HEADER;
 
-//USB HID Descriptor header as detailed in section 
+//USB HID Descriptor header as detailed in section
 //"6.2.1 HID Descriptor" of the HID class definition specification
 typedef struct _USB_HID_DSC
 {
@@ -300,7 +296,7 @@ typedef struct _USB_HID_DSC
 
     //USB_HID_DSC_HEADER hid_dsc_header[HID_NUM_OF_DSC];
     /* HID_NUM_OF_DSC is defined in usbcfg.h */
-    
+
 } USB_HID_DSC;
 
 /** Section: EXTERNS ********************************************************/

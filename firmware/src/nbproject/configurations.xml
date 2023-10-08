@@ -6,6 +6,23 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Microchip" projectFiles="true">
         <itemPath>Microchip/fileio_config.h</itemPath>
+        <itemPath>Microchip/app_device_msd.h</itemPath>
+        <itemPath>Microchip/internal_flash.h</itemPath>
+        <itemPath>Microchip/io_mapping.h</itemPath>
+        <itemPath>Microchip/system.h</itemPath>
+        <itemPath>Microchip/system_config.h</itemPath>
+        <itemPath>Microchip/usb.h</itemPath>
+        <itemPath>Microchip/usb_ch9.h</itemPath>
+        <itemPath>Microchip/usb_common.h</itemPath>
+        <itemPath>Microchip/usb_config.h</itemPath>
+        <itemPath>Microchip/usb_device.h</itemPath>
+        <itemPath>Microchip/usb_device_hid.h</itemPath>
+        <itemPath>Microchip/usb_device_local.h</itemPath>
+        <itemPath>Microchip/usb_device_msd.h</itemPath>
+        <itemPath>Microchip/usb_hal.h</itemPath>
+        <itemPath>Microchip/usb_hal_pic18f.h</itemPath>
+        <itemPath>Microchip/internal_flash_config_template.h</itemPath>
+        <itemPath>Microchip/fileio_media.h</itemPath>
       </logicalFolder>
       <itemPath>config.h</itemPath>
       <itemPath>io.h</itemPath>
@@ -17,11 +34,6 @@
                    displayName="Library Files"
                    projectFiles="true">
     </logicalFolder>
-    <logicalFolder name="LinkerScript"
-                   displayName="Linker Files"
-                   projectFiles="true">
-      <itemPath>Microchip/rm18f26j50_g.lkr</itemPath>
-    </logicalFolder>
     <logicalFolder name="ObjectFiles"
                    displayName="Object Files"
                    projectFiles="true">
@@ -30,16 +42,12 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f3" displayName="Microchip" projectFiles="true">
-        <logicalFolder name="f2" displayName="Application" projectFiles="true">
-          <itemPath>Microchip/usb_descriptors.c</itemPath>
-          <itemPath>Microchip/app_device_msd.c</itemPath>
-          <itemPath>Microchip/files.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="f1" displayName="Framework" projectFiles="true">
-          <itemPath>Microchip/usb_device.c</itemPath>
-          <itemPath>Microchip/usb_device_msd.c</itemPath>
-          <itemPath>Microchip/internal_flash.c</itemPath>
-        </logicalFolder>
+        <itemPath>Microchip/app_device_msd.c</itemPath>
+        <itemPath>Microchip/files.c</itemPath>
+        <itemPath>Microchip/internal_flash.c</itemPath>
+        <itemPath>Microchip/usb_descriptors.c</itemPath>
+        <itemPath>Microchip/usb_device.c</itemPath>
+        <itemPath>Microchip/usb_device_msd.c</itemPath>
       </logicalFolder>
       <itemPath>app.c</itemPath>
       <itemPath>config.c</itemPath>
@@ -259,6 +267,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-fff7"/>
         <property key="poweroptions.powerenable" value="true"/>
+        <property key="programmerToGoFilePath"
+                  value="/Data/Projects/Electronics/Interfaces/TmpUsb/firmware/src/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
@@ -348,6 +358,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-fff7"/>
         <property key="poweroptions.powerenable" value="true"/>
+        <property key="programmerToGoFilePath"
+                  value="/Data/Projects/Electronics/Interfaces/TmpUsb/firmware/src/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>

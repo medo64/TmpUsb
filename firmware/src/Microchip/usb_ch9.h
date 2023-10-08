@@ -1,37 +1,50 @@
-//DOM-IGNORE-BEGIN
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
-Software License Agreement
+Copyright 2015 Microchip Technology Inc. (www.microchip.com)
 
-The software supplied herewith by Microchip Technology Incorporated
-(the "Company") for its PICmicro(R) Microcontroller is intended and
-supplied to you, the Company's customer, for use solely and
-exclusively on Microchip PICmicro Microcontroller products. The
-software is owned by the Company and/or its supplier, and is
-protected under applicable copyright laws. All rights are reserved.
-Any use in violation of the foregoing restrictions may subject the
-user to criminal sanctions under applicable laws, as well as to
-civil liability for the breach of the terms and conditions of this
-license.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
-WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
-TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
-IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+    http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+To request to license the code under the MLA license (www.microchip.com/mla_license),
+please contact mla_licensing@microchip.com
 *******************************************************************************/
 //DOM-IGNORE-END
 
-//DOM-IGNORE-BEGIN
+
+/*******************************************************************************
+ Module for Microchip USB Library
+
+  Company:
+    Microchip Technology Inc.
+
+  File Name:
+    usb_ch9.h
+
+  Summary:
+    Defines types associated with chapter 9 of the USB specification.
+
+  Description:
+    Defines types associated with chapter 9 of the USB specification.
+*******************************************************************************/
+
 #ifndef _USB_CH9_H_
 #define _USB_CH9_H_
-//DOM-IGNORE-END
 
 #include <stdint.h>
 
 #if defined(__XC8)
-    #define __attribute__(a)
+    #define PACKED
+#else
+    #define PACKED __attribute__((packed))
 #endif
 
 // *****************************************************************************
@@ -53,11 +66,9 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 // *****************************************************************************
 /* USB Device Descriptor Structure
 
-This struct defines the structure of a USB Device Descriptor.  Note that this
-structure may need to be packed, or even accessed as uint8_ts, to properly access
-the correct fields when used on some device architectures.
+This struct defines the structure of a USB Device Descriptor.
 */
-typedef struct __attribute__ ((packed)) _USB_DEVICE_DESCRIPTOR
+typedef struct PACKED _USB_DEVICE_DESCRIPTOR
 {
     uint8_t bLength;               // Length of this descriptor.
     uint8_t bDescriptorType;       // DEVICE descriptor type (USB_DESCRIPTOR_DEVICE).
@@ -79,11 +90,9 @@ typedef struct __attribute__ ((packed)) _USB_DEVICE_DESCRIPTOR
 // *****************************************************************************
 /* USB Configuration Descriptor Structure
 
-This struct defines the structure of a USB Configuration Descriptor.  Note that this
-structure may need to be packed, or even accessed as uint8_ts, to properly access
-the correct fields when used on some device architectures.
+This struct defines the structure of a USB Configuration Descriptor.
 */
-typedef struct __attribute__ ((packed)) _USB_CONFIGURATION_DESCRIPTOR
+typedef struct PACKED _USB_CONFIGURATION_DESCRIPTOR
 {
     uint8_t bLength;               // Length of this descriptor.
     uint8_t bDescriptorType;       // CONFIGURATION descriptor type (USB_DESCRIPTOR_CONFIGURATION).
@@ -104,11 +113,9 @@ typedef struct __attribute__ ((packed)) _USB_CONFIGURATION_DESCRIPTOR
 // *****************************************************************************
 /* USB Interface Descriptor Structure
 
-This struct defines the structure of a USB Interface Descriptor.  Note that this
-structure may need to be packed, or even accessed as uint8_ts, to properly access
-the correct fields when used on some device architectures.
+This struct defines the structure of a USB Interface Descriptor.
 */
-typedef struct __attribute__ ((packed)) _USB_INTERFACE_DESCRIPTOR
+typedef struct PACKED _USB_INTERFACE_DESCRIPTOR
 {
     uint8_t bLength;               // Length of this descriptor.
     uint8_t bDescriptorType;       // INTERFACE descriptor type (USB_DESCRIPTOR_INTERFACE).
@@ -125,11 +132,9 @@ typedef struct __attribute__ ((packed)) _USB_INTERFACE_DESCRIPTOR
 // *****************************************************************************
 /* USB Endpoint Descriptor Structure
 
-This struct defines the structure of a USB Endpoint Descriptor.  Note that this
-structure may need to be packed, or even accessed as uint8_ts, to properly access
-the correct fields when used on some device architectures.
+This struct defines the structure of a USB Endpoint Descriptor.
 */
-typedef struct __attribute__ ((packed)) _USB_ENDPOINT_DESCRIPTOR
+typedef struct PACKED _USB_ENDPOINT_DESCRIPTOR
 {
     uint8_t bLength;               // Length of this descriptor.
     uint8_t bDescriptorType;       // ENDPOINT descriptor type (USB_DESCRIPTOR_ENDPOINT).
@@ -155,7 +160,7 @@ typedef struct __attribute__ ((packed)) _USB_ENDPOINT_DESCRIPTOR
 #define EP_ATTR_BULK        (2<<0)  // Endpoint used for bulk transfers
 #define EP_ATTR_INTR        (3<<0)  // Endpoint used for interrupt transfers
 
-// Section: Synchronization Types (for isochronous enpoints)
+// Section: Synchronization Types (for isochronous endpoints)
 #define EP_ATTR_NO_SYNC     (0<<2)  // No Synchronization
 #define EP_ATTR_ASYNC       (1<<2)  // Asynchronous
 #define EP_ATTR_ADAPT       (2<<2)  // Adaptive synchronization
@@ -176,7 +181,7 @@ typedef struct __attribute__ ((packed)) _USB_ENDPOINT_DESCRIPTOR
 #define EP_SM_PKT_BULK_FS   8       // Small full-speed bulk packet
 
 /* Descriptor IDs
-The descriptor ID type defines the information required by the HOST during a 
+The descriptor ID type defines the information required by the HOST during a
 GET_DESCRIPTOR request
 */
 typedef struct
@@ -194,7 +199,7 @@ This struct defines the structure of a USB OTG Descriptor.  Note that this
 structure may need to be packed, or even accessed as uint8_ts, to properly access
 the correct fields when used on some device architectures.
 */
-typedef struct __attribute__ ((packed)) _USB_OTG_DESCRIPTOR
+typedef struct PACKED _USB_OTG_DESCRIPTOR
 {
     uint8_t bLength;               // Length of this descriptor.
     uint8_t bDescriptorType;       // OTG descriptor type (USB_DESCRIPTOR_OTG).
@@ -207,7 +212,7 @@ typedef struct __attribute__ ((packed)) _USB_OTG_DESCRIPTOR
 // ******************************************************************
 // This structure describes the USB string descriptor.  The string
 // descriptor provides user-readable information about various aspects of
-// the device.  The first string desriptor (string descriptor zero (0)),
+// the device.  The first string descriptor (string descriptor zero (0)),
 // provides a list of the number of languages supported by the set of
 // string descriptors for this device instead of an actual string.
 //
@@ -218,7 +223,7 @@ typedef struct __attribute__ ((packed)) _USB_OTG_DESCRIPTOR
 // array of unicode characters making up the string, must be allocated
 // immediately following this header with no padding between them.
 
-typedef struct __attribute__ ((packed)) _USB_STRING_DSC
+typedef struct PACKED _USB_STRING_DSC
 {
     uint8_t   bLength;             // Size of this descriptor
     uint8_t   bDescriptorType;     // Type, USB_DSC_STRING
@@ -237,7 +242,7 @@ typedef struct __attribute__ ((packed)) _USB_STRING_DSC
 // If so, it may need to implement the the device qualifier and other
 // speed descriptors.
 
-typedef struct __attribute__ ((packed)) _USB_DEVICE_QUALIFIER_DESCRIPTOR
+typedef struct PACKED _USB_DEVICE_QUALIFIER_DESCRIPTOR
 {
     uint8_t bLength;               // Size of this descriptor
     uint8_t bType;                 // Type, always USB_DESCRIPTOR_DEVICE_QUALIFIER
@@ -255,15 +260,15 @@ typedef struct __attribute__ ((packed)) _USB_DEVICE_QUALIFIER_DESCRIPTOR
 // Section: USB Setup Packet Structure
 // ******************************************************************
 // This structure describes the data contained in a USB standard device
-// request's setup packet.  It is the data packet sent from the host to
+// request setup packet.  It is the data packet sent from the host to
 // the device to control and configure the device.
 //
 // Note: Refer to the USB 2.0 specification for additional details on the
 // usage of the setup packet and standard device requests.
-typedef union __attribute__ ((packed))
+typedef union PACKED
 {
     /** Standard Device Requests ***********************************/
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         uint8_t bmRequestType; //from table 9-2 of USB2.0 spec
         uint8_t bRequest; //from table 9-2 of USB2.0 spec
@@ -271,7 +276,7 @@ typedef union __attribute__ ((packed))
         uint16_t wIndex; //from table 9-2 of USB2.0 spec
         uint16_t wLength; //from table 9-2 of USB2.0 spec
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -308,7 +313,7 @@ typedef union __attribute__ ((packed))
             } byte;
         } W_Length;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned Recipient:5;   //Device,Interface,Endpoint,Other
         unsigned RequestType:2; //Standard,Class,Vendor,Reserved
@@ -321,7 +326,7 @@ typedef union __attribute__ ((packed))
         unsigned :8;
         unsigned :8;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         union                           // offset   description
         {                               // ------   ------------------------
@@ -334,7 +339,7 @@ typedef union __attribute__ ((packed))
             };
         }requestInfo;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -344,7 +349,7 @@ typedef union __attribute__ ((packed))
         unsigned :8;
         unsigned :8;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -355,7 +360,7 @@ typedef union __attribute__ ((packed))
         unsigned :8;
         unsigned :8;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -366,7 +371,7 @@ typedef union __attribute__ ((packed))
         unsigned :8;
         unsigned :8;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -377,7 +382,7 @@ typedef union __attribute__ ((packed))
         unsigned :8;
         unsigned :8;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -388,7 +393,7 @@ typedef union __attribute__ ((packed))
         unsigned :8;
         unsigned :8;
     };
-    struct __attribute__ ((packed))
+    struct PACKED
     {
         unsigned :8;
         unsigned :8;
@@ -518,7 +523,7 @@ typedef union __attribute__ ((packed))
 /********************************************************************
 USB Endpoint Definitions
 USB Standard EP Address Format: DIR:X:X:X:EP3:EP2:EP1:EP0
-This is used in the descriptors. 
+This is used in the descriptors.
 ********************************************************************/
 #define _EP_IN      0x80
 #define _EP_OUT     0x00

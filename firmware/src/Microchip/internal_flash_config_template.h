@@ -1,3 +1,4 @@
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
 Copyright 2016 Microchip Technology Inc. (www.microchip.com)
 
@@ -16,6 +17,11 @@ limitations under the License.
 To request to license the code under the MLA license (www.microchip.com/mla_license), 
 please contact mla_licensing@microchip.com
 *******************************************************************************/
+//DOM-IGNORE-END
 
-#include "usb_config.h"
-#include "fileio_config.h"
+// Macro maps to a user function that will determine if the system parameters are valid for a self write
+//  for the processor on the board.  Returns true if the write can continue and false if it should not.
+#define DRV_FILEIO_INTERNAL_FLASH_CONFIG_UNLOCK_VERIFICATION_FUNCTION() true
+
+
+

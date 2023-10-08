@@ -1,25 +1,21 @@
-//DOM-IGNORE-BEGIN
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
-Software License Agreement
+Copyright 2015 Microchip Technology Inc. (www.microchip.com)
 
-The software supplied herewith by Microchip Technology Incorporated
-(the "Company") for its PICmicro(R) Microcontroller is intended and
-supplied to you, the Company's customer, for use solely and
-exclusively on Microchip PICmicro Microcontroller products. The
-software is owned by the Company and/or its supplier, and is
-protected under applicable copyright laws. All rights are reserved.
-Any use in violation of the foregoing restrictions may subject the
-user to criminal sanctions under applicable laws, as well as to
-civil liability for the breach of the terms and conditions of this
-license.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
-WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
-TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
-IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+    http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+To request to license the code under the MLA license (www.microchip.com/mla_license),
+please contact mla_licensing@microchip.com
 *******************************************************************************/
 //DOM-IGNORE-END
 
@@ -29,6 +25,12 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 /** I N C L U D E S **********************************************************/
 #include <stdint.h>
 #include "fileio.h"
+
+#if defined(__XC8)
+#define PACKED 
+#else
+#define PACKED __attribute__((packed))
+#endif
 
 /** D E F I N I T I O N S ****************************************************/
 
@@ -77,14 +79,14 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
     #define MSD_DATA_OUT                        0x02
     //MSD_SEND_CSW is when the device is waiting to send the CSW (returned by MSDTasks())
     #define MSD_SEND_CSW                        0x03
-    
+
     //States of the MSDProcessCommand state machine
     #define MSD_COMMAND_WAIT                    0xFF
     #define MSD_COMMAND_ERROR                   0xFE
     #define MSD_COMMAND_RESPONSE                0xFD
     #define MSD_COMMAND_RESPONSE_SEND           0xFC
     #define MSD_COMMAND_STALL                   0xFB
-    
+
     /* SCSI Transparent Command Set Sub-class code */
     #define MSD_INQUIRY                     	0x12
     #define MSD_READ_FORMAT_CAPACITY         	0x23
@@ -97,7 +99,7 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
     #define MSD_TEST_UNIT_READY             	0x00
     #define MSD_VERIFY                         	0x2f
     #define MSD_STOP_START                     	0x1b
-    
+
     #define MSD_READ10_WAIT                     0x00
     #define MSD_READ10_BLOCK                    0x01
     #define MSD_READ10_SECTOR                   0x02
@@ -107,14 +109,14 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
     #define MSD_READ10_XMITING_DATA             0x06
     #define MSD_READ10_AWAITING_COMPLETION      0x07
     #define MSD_READ10_ERROR                    0xFF
-    
+
     #define MSD_WRITE10_WAIT                    0x00
     #define MSD_WRITE10_BLOCK                   0x01
     #define MSD_WRITE10_SECTOR                  0x02
     #define MSD_WRITE10_RX_SECTOR               0x03
     #define MSD_WRITE10_RX_PACKET               0x04
 
-//Define MSD_USE_BLOCKING in order to block the code in an 
+//Define MSD_USE_BLOCKING in order to block the code in an
 //attempt to get better throughput.
 //#define MSD_USE_BLOCKING
 
@@ -128,7 +130,7 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 //MSDErrorHandler() definitions, see section 6.7 of BOT specifications revision 1.0
 //Note: We re-use values for some of the cases.  This is because the error handling
-//behavior is the same for some of the different test case numbes.
+//behavior is the same for some of the different test case numbers.
 #define MSD_ERROR_CASE_NO_ERROR         0x00
 #define MSD_ERROR_CASE_2                 0x01
 #define	MSD_ERROR_CASE_3                 0x01
@@ -169,7 +171,7 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 //------------------------------------------------------------------------------
 //ASC/ASCQ Codes for Sense Data (only those that we plan to use):
-//The ASC/ASCQ code expand on the information provided in the sense key error 
+//The ASC/ASCQ code expand on the information provided in the sense key error
 //code, and provide the host with more details about the specific issue/status.
 //------------------------------------------------------------------------------
 //For use with sense key Illegal request for a command not supported
@@ -226,7 +228,7 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 /** S T R U C T U R E S ******************************************************/
 /********************** ******************************************************/
- 
+
 typedef struct _USB_MSD_CBW         //31 bytes total Command Block Wrapper
 {
     uint32_t dCBWSignature;            // 55 53 42 43h
@@ -270,7 +272,7 @@ typedef union
 typedef union
 {
     uint8_t v[2];
-    struct __attribute__((__packed__))
+    struct PACKED
     {
         uint8_t LB;
         uint8_t HB;
@@ -301,7 +303,7 @@ typedef struct {                    // Read Capacity 10
 	uint32_t LBA;                // Logical Block Address
 	uint16_t Reserved2;
 	uint8_t PMI;                // Partial medium Indicator b0 only
-	uint8_t Control; 
+	uint8_t Control;
 } ReadCapacityCB;
 
 typedef struct {                    // Request Sense 0x03
@@ -355,36 +357,36 @@ typedef struct {                    // STOP_START 0x1b
 
 typedef struct _USB_MSD_CSW	        // Command Status Wrapper
 {
-	uint32_t dCSWSignature;            // 55 53 42 53h Signature of a CSW packet
-	uint32_t dCSWTag;                    // echo the dCBWTag of the CBW packet
-	uint32_t dCSWDataResidue;            // difference in data expected (dCBWDataTransferLength) and actual amount processed/sent
-	uint8_t bCSWStatus;                // 00h Command Passed, 01h Command Failed, 02h Phase Error, rest obsolete/reserved
+    uint32_t dCSWSignature;            // 55 53 42 53h Signature of a CSW packet
+    uint32_t dCSWTag;                    // echo the dCBWTag of the CBW packet
+    uint32_t dCSWDataResidue;            // difference in data expected (dCBWDataTransferLength) and actual amount processed/sent
+    uint8_t bCSWStatus;                // 00h Command Passed, 01h Command Failed, 02h Phase Error, rest obsolete/reserved
 } USB_MSD_CSW;
 
-typedef struct 
+typedef struct
 {
- 	uint8_t Peripheral;                     // Peripheral_Qualifier:3; Peripheral_DevType:5;
-	uint8_t Removble;                        // removable medium bit7 = 0 means non removable, rest reserved
-	uint8_t Version;                        // version
-	uint8_t Response_Data_Format;        // b7,b6 Obsolete, b5 Access control co-ordinator, b4 hierarchical addressing support
+    uint8_t Peripheral;                 // Peripheral_Qualifier:3; Peripheral_DevType:5;
+    uint8_t Removble;                   // removable medium bit7 = 0 means non removable, rest reserved
+    uint8_t Version;                    // version
+    uint8_t Response_Data_Format;       // b7,b6 Obsolete, b5 Access control co-ordinator, b4 hierarchical addressing support
                                         // b3:0 response data format 2 indicates response is in format defined by spec
-	uint8_t AdditionalLength;                // length in bytes of remaining in standard inquiry data
-	uint8_t Sccstp;                         // b7 SCCS, b6 ACC, b5-b4 TGPS, b3 3PC, b2-b1 Reserved, b0 Protected
-	uint8_t bqueetc;                        // b7 bque, b6- EncServ, b5-VS, b4-MultiP, b3-MChngr, b2-b1 Obsolete, b0-Addr16
-    uint8_t CmdQue;                        // b7-b6 Obsolete, b5-WBUS, b4-Sync, b3-Linked, b2 Obsolete,b1 Cmdque, b0-VS
-	char vendorID[8];
-	char productID[16];
-	char productRev[4];
+    uint8_t AdditionalLength;           // length in bytes of remaining in standard inquiry data
+    uint8_t Sccstp;                     // b7 SCCS, b6 ACC, b5-b4 TGPS, b3 3PC, b2-b1 Reserved, b0 Protected
+    uint8_t bqueetc;                    // b7 bque, b6- EncServ, b5-VS, b4-MultiP, b3-MChngr, b2-b1 Obsolete, b0-Addr16
+    uint8_t CmdQue;                     // b7-b6 Obsolete, b5-WBUS, b4-Sync, b3-Linked, b2 Obsolete,b1 Cmdque, b0-VS
+    char vendorID[8];
+    char productID[16];
+    char productRev[4];
 } InquiryResponse;      //36 bytes total
 
 typedef struct {
-	uint8_t ModeDataLen;
-	uint8_t MediumType;
-	unsigned Resv:4;
-	unsigned DPOFUA:1;                    // 0 indicates DPO and FUA bits not supported
-	unsigned notused:2;
-	unsigned WP:1;                        // 0 indicates not write protected
-	uint8_t BlockDscLen;                    // Block Descriptor Length
+    uint8_t ModeDataLen;
+    uint8_t MediumType;
+    unsigned Resv:4;
+    unsigned DPOFUA:1;                    // 0 indicates DPO and FUA bits not supported
+    unsigned notused:2;
+    unsigned WP:1;                        // 0 indicates not write protected
+    uint8_t BlockDscLen;                    // Block Descriptor Length
 } tModeParamHdr;
 
 /* Short LBA mode block descriptor (see Page 1009, SBC-2) */
@@ -419,12 +421,12 @@ typedef union
 } USB_MSD_CMD_SPECIFIC_INFO;
 
 /* Fixed format if Desc bit of request sense cbw is 0 */
-typedef union __attribute__((packed)){
+typedef union PACKED{
 	struct
     {
         uint8_t _byte[18];
     };
-	struct __attribute__((packed)){
+	struct PACKED{
     	unsigned ResponseCode:7;            // b6-b0 is Response Code Fixed or descriptor format
     	unsigned VALID:1;                    // Set to 1 to indicate information field is a valid value
 
@@ -441,12 +443,12 @@ typedef union __attribute__((packed)){
         uint8_t InformationB2;                    // device type or command specific (SPC-33.1.18)
         uint8_t InformationB3;                    // device type or command specific (SPC-33.1.18)
     	uint8_t AddSenseLen;                    // number of additional sense bytes that follow <=244
-    	USB_MSD_CMD_SPECIFIC_INFO CmdSpecificInfo;                // depends on command on which exception occured
+    	USB_MSD_CMD_SPECIFIC_INFO CmdSpecificInfo;                // depends on command on which exception occurred
     	uint8_t ASC;                            // additional sense code
     	uint8_t ASCQ;                            // additional sense code qualifier Section 4.5.2.1 SPC-3
     	uint8_t FRUC;                            // Field Replaceable Unit Code 4.5.2.5 SPC-3
 
-    	uint8_t SenseKeySpecific[3];            // msb is SKSV sense-key specific valied field set=> valid SKS
+    	uint8_t SenseKeySpecific[3];            // msb is SKSV sense-key specific valid field set=> valid SKS
                                             // 18-n additional sense bytes can be defined later
                                             // 18 Bytes Request Sense Fixed Format
     };
@@ -461,7 +463,7 @@ typedef union __attribute__((packed)){
     LUN_FUNCTIONS is a structure of function pointers that tells the stack
     where to find each of the physical layer functions it is looking for.
     This structure needs to be defined for any project for PIC24F or PIC32.
-    
+
     Typical Usage:
     <code>
         LUN_FUNCTIONS LUN[MAX_LUN + 1] =
@@ -477,7 +479,7 @@ typedef union __attribute__((packed)){
             }
         };
     </code>
-    
+
     In the above code we are passing the address of the SDSPI functions to
     the corresponding member of the LUN_FUNCTIONS structure. In the above
     case we have created an array of LUN_FUNCTIONS structures so that it is
@@ -486,15 +488,15 @@ typedef union __attribute__((packed)){
     Please take caution to insure that each function is in the the correct
     location in the structure. Incorrect alignment will cause the USB stack
     to call the incorrect function for a given command.
-    
+
     See the MDD File System Library for additional information about the
     available physical media, their requirements, and how to use their
-    associated functions.                                                  
+    associated functions.
   **************************************************************************/
 typedef struct
 {
     // Function pointer to the MediaInitialize() function of the physical media
-    //  being used. 
+    //  being used.
     FILEIO_MEDIA_INFORMATION* (*MediaInitialize)(void * config);
     // Function pointer to the ReadCapacity() function of the physical media
     //  being used.
@@ -516,11 +518,13 @@ typedef struct
     uint8_t  (*SectorWrite)(void * config, uint32_t sector_addr, uint8_t* buffer, uint8_t allowWriteToZero);
     // Pointer to a media-specific parameter structure
     void * mediaParameters;
+    // Function pointer to the async write tasks function of the physical media being used.
+    uint8_t  (*AsyncWriteTasks)(void* config, void* pAsyncIO);
+    // Function pointer to the async read tasks function of the physical media being used.
+    uint8_t  (*AsyncReadTasks)(void* config, void* pAsyncIO);
 } LUN_FUNCTIONS;
 
 /** Section: Externs *********************************************************/
-extern USB_HANDLE USBMSDOutHandle;  
-extern USB_HANDLE USBMSDInHandle;
 extern volatile USB_MSD_CBW msd_cbw;
 extern volatile USB_MSD_CSW msd_csw;
 extern volatile char msd_buffer[512];
@@ -538,32 +542,32 @@ void USBMSDInit(void);
 
 /**************************************************************************
     Function: bool MSDWasLastCBWValid(void)
-    
+
     Summary:
-        Returns the BOOLean status of the most recently received command block 
+        Returns the BOOLean status of the most recently received command block
         wrapper (CBW).  If the last CBW passed the MSD "is valid" tests, then
         this function will return true.  If the last received CBW was
         not valid, then the return value will be false.
-    
+
     Description:
-        Returns the BOOLean status of the most recently received command block 
+        Returns the BOOLean status of the most recently received command block
         wrapper (CBW).  If the last CBW passed the "is valid" tests, then
         this function will return true.  If the last received CBW was
         not valid, then the return value will be false.  This function would
-        typically be used following a host initiated clear endpoint halt 
+        typically be used following a host initiated clear endpoint halt
         operation on an MSD bulk IN or OUT endpoint.  In this case, the firmware
         needs to check if the last received CBW was valid, in order to know
         if the firmware should re-stall the endpoint following the clear halt.
         This is necessary to fully comply with the MSD BOT error case handling
-        related specifications, which dicate that the MSD device must 
+        related specifications, which dictate that the MSD device must
         persistently STALL the bulk endpoints when a non-valid CBW is received.
-        The host must issue an MSD reset command over EP0, prior to clear 
-        endpoint halt, in order to clear the stall condition in this special 
+        The host must issue an MSD reset command over EP0, prior to clear
+        endpoint halt, in order to clear the stall condition in this special
         scenario.
-            
+
     Parameters:
         None
-    
+
     Return Values:
         bool:  true - if last received CBW was valid
                false - if the last received CBW was not valid
@@ -571,7 +575,7 @@ void USBMSDInit(void);
     Remarks:
         None
 
-                    
+
   **************************************************************************/
 #define MSDWasLastCBWValid() (MSDCBWValid)
 
@@ -579,46 +583,72 @@ void USBMSDInit(void);
 /**************************************************************************
     Function:
     void LUNSoftDetach(uint8_t LUN)
-    
+
     Summary:
-    
+
     Description:
-    
+
     Parameters:
         LUN - logical unit number to detach
-    
+
     Return Values:
         None
 
     Remarks:
         Once a soft detached is initiated a soft attached, LUNSoftAttach(),
         on the same LUN must be performed before the device will re-attach
-                    
+
   **************************************************************************/
 #define LUNSoftDetach(LUN) SoftDetach[LUN]=true;
 
 /**************************************************************************
     Function:
     void LUNSoftAttach(uint8_t LUN)
-    
+
     Summary:
-    
+
     Description:
-    
+
     Parameters:
         LUN - logical unit number to detach
-    
+
     Return Values:
         None
 
     Remarks:
         Once a soft detached is initiated a soft attached, LUNSoftAttach(),
         on the same LUN must be performed before the device will re-attach
-                    
+
   **************************************************************************/
 #define LUNSoftAttach(LUN) SoftDetach[LUN]=false;
 
+/******************************************************************************
+ 	Function:
+ 		void MSDTransferTerminated(USB_HANDLE handle)
 
+ 	Description:
+        Check if the host recently did a clear endpoint halt on the MSD OUT endpoint.
+        In this case, we want to re-arm the MSD OUT endpoint, so we are prepared
+        to receive the next CBW that the host might want to send.
+        Note: If however the STALL was due to a CBW not valid condition,
+        then we are required to have a persistent STALL, where it cannot
+        be cleared (until MSD reset recovery takes place).  See MSD BOT
+        specs v1.0, section 6.6.1.
+ 	PreCondition:
+        A transfer was terminated.  This should be called from the transfer
+        terminated event handler.
+
+ 	Parameters:
+        USB_HANDLE handle - the handle of the transfer that was terminated.
+
+ 	Return Values:
+ 		None
+
+ 	Remarks:
+ 		None
+
+  *****************************************************************************/
+void MSDTransferTerminated(USB_HANDLE handle);
 
 
 #endif

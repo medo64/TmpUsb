@@ -1,76 +1,70 @@
-/******************************************************************************
- Software License Agreement:
+// DOM-IGNORE-BEGIN
+/*******************************************************************************
+Copyright 2015 Microchip Technology Inc. (www.microchip.com)
 
- The software supplied herewith by Microchip Technology Incorporated
- (the "Company") for its PICmicro(r) Microcontroller is intended and
- supplied to you, the Company's customer, for use solely and
- exclusively on Microchip PICmicro Microcontroller products. The
- software is owned by the Company and/or its supplier, and is
- protected under applicable copyright laws. All rights are reserved.
- Any use in violation of the foregoing restrictions may subject the
- user to criminal sanctions under applicable laws, as well as to
- civil liability for the breach of the terms and conditions of this
- license.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
- THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
- WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
- TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
- IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
- CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
-********************************************************************/
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+To request to license the code under the MLA license (www.microchip.com/mla_license),
+please contact mla_licensing@microchip.com
+*******************************************************************************/
+//DOM-IGNORE-END
+
+
+/*******************************************************************************
+ Module for Microchip USB Library
+
+  Company:
+    Microchip Technology Inc.
+
+  File Name:
+    usb.h
+
+  Summary:
+    This header file exposes the core library APIs and definitions for the USB
+    library.
+
+  Description:
+    This header file exposes the core library APIs and definitions for the USB
+    library.  The user is responsible for also including the header file for
+    the specific driver they will be using.
+*******************************************************************************/
 
 #ifndef _USB_H_
 #define _USB_H_
-//DOM-IGNORE-END
 
-#if __XC16_VERSION__ == 1020
-#error XC16 v1.20 is not compatible with this firmware, please use a later version of the XC16 compiler.
-#endif
+#include "usb_config.h"
 
-#if __XC8_VERSION == 1300
-#error XC8 v1.30 is not compatible with this firmware, please use either XC8 v1.21 or a later version of the XC8 compiler.
-#endif
-
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: All necessary USB Library headers
-// *****************************************************************************
-// *****************************************************************************
-
-#include "system.h"
-#include "system_config.h"          // Must be defined by the application
-
-#include <usb_common.h>         // Common USB library definitions
-#include <usb_ch9.h>            // USB device framework definitions
+#include "usb_common.h"         // Common USB library definitions
+#include "usb_ch9.h"            // USB device framework definitions
 
 #if defined( USB_SUPPORT_DEVICE )
-    #include <usb_device.h>     // USB Device abstraction layer interface
+    #include "usb_device.h"     // USB Device abstraction layer interface
 #endif
 
 #if defined( USB_SUPPORT_HOST )
-    #include <usb/usb_host.h>       // USB Host abstraction layer interface
+    #include "usb_host.h"       // USB Host abstraction layer interface
 #endif
 
-#if defined ( USB_SUPPORT_OTG )
-    #include <usb/usb_otg.h>
-#endif
+#include "usb_hal.h"            // Hardware Abstraction Layer interface
 
-#include <usb_hal.h>            // Hardware Abstraction Layer interface
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: MCHPFSUSB Firmware Version
-// *****************************************************************************
-// *****************************************************************************
-
-#define USB_MAJOR_VER   2       // Firmware version, major release number.
-#define USB_MINOR_VER   10      // Firmware version, minor release number.
-#define USB_DOT_VER     0       // Firmware version, dot release number.
+/* USB Library version number.  This can be used to verify in an application
+   specific version of the library is being used.
+ */
+#define USB_MAJOR_VER   2        // Firmware version, major release number.
+#define USB_MINOR_VER   18       // Firmware version, minor release number.
+#define USB_DOT_VER     0        // Firmware version, dot release number.
 
 #endif // _USB_H_
-/*************************************************************************
- * EOF
- */
+
+
 

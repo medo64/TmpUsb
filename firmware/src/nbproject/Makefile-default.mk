@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Microchip/usb_descriptors.c Microchip/app_device_msd.c Microchip/files.c Microchip/usb_device.c Microchip/usb_device_msd.c Microchip/internal_flash.c app.c config.c io.c timing.c settings.c
+SOURCEFILES_QUOTED_IF_SPACED=Microchip/app_device_msd.c Microchip/files.c Microchip/internal_flash.c Microchip/usb_descriptors.c Microchip/usb_device.c Microchip/usb_device_msd.c app.c config.c io.c timing.c settings.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Microchip/usb_descriptors.p1 ${OBJECTDIR}/Microchip/app_device_msd.p1 ${OBJECTDIR}/Microchip/files.p1 ${OBJECTDIR}/Microchip/usb_device.p1 ${OBJECTDIR}/Microchip/usb_device_msd.p1 ${OBJECTDIR}/Microchip/internal_flash.p1 ${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/Microchip/usb_descriptors.p1.d ${OBJECTDIR}/Microchip/app_device_msd.p1.d ${OBJECTDIR}/Microchip/files.p1.d ${OBJECTDIR}/Microchip/usb_device.p1.d ${OBJECTDIR}/Microchip/usb_device_msd.p1.d ${OBJECTDIR}/Microchip/internal_flash.p1.d ${OBJECTDIR}/app.p1.d ${OBJECTDIR}/config.p1.d ${OBJECTDIR}/io.p1.d ${OBJECTDIR}/timing.p1.d ${OBJECTDIR}/settings.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Microchip/app_device_msd.p1 ${OBJECTDIR}/Microchip/files.p1 ${OBJECTDIR}/Microchip/internal_flash.p1 ${OBJECTDIR}/Microchip/usb_descriptors.p1 ${OBJECTDIR}/Microchip/usb_device.p1 ${OBJECTDIR}/Microchip/usb_device_msd.p1 ${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/Microchip/app_device_msd.p1.d ${OBJECTDIR}/Microchip/files.p1.d ${OBJECTDIR}/Microchip/internal_flash.p1.d ${OBJECTDIR}/Microchip/usb_descriptors.p1.d ${OBJECTDIR}/Microchip/usb_device.p1.d ${OBJECTDIR}/Microchip/usb_device_msd.p1.d ${OBJECTDIR}/app.p1.d ${OBJECTDIR}/config.p1.d ${OBJECTDIR}/io.p1.d ${OBJECTDIR}/timing.p1.d ${OBJECTDIR}/settings.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Microchip/usb_descriptors.p1 ${OBJECTDIR}/Microchip/app_device_msd.p1 ${OBJECTDIR}/Microchip/files.p1 ${OBJECTDIR}/Microchip/usb_device.p1 ${OBJECTDIR}/Microchip/usb_device_msd.p1 ${OBJECTDIR}/Microchip/internal_flash.p1 ${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
+OBJECTFILES=${OBJECTDIR}/Microchip/app_device_msd.p1 ${OBJECTDIR}/Microchip/files.p1 ${OBJECTDIR}/Microchip/internal_flash.p1 ${OBJECTDIR}/Microchip/usb_descriptors.p1 ${OBJECTDIR}/Microchip/usb_device.p1 ${OBJECTDIR}/Microchip/usb_device_msd.p1 ${OBJECTDIR}/app.p1 ${OBJECTDIR}/config.p1 ${OBJECTDIR}/io.p1 ${OBJECTDIR}/timing.p1 ${OBJECTDIR}/settings.p1
 
 # Source Files
-SOURCEFILES=Microchip/usb_descriptors.c Microchip/app_device_msd.c Microchip/files.c Microchip/usb_device.c Microchip/usb_device_msd.c Microchip/internal_flash.c app.c config.c io.c timing.c settings.c
+SOURCEFILES=Microchip/app_device_msd.c Microchip/files.c Microchip/internal_flash.c Microchip/usb_descriptors.c Microchip/usb_device.c Microchip/usb_device_msd.c app.c config.c io.c timing.c settings.c
 
 
 
@@ -108,14 +108,6 @@ MP_PROCESSOR_OPTION=18F26J50
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/Microchip/usb_descriptors.p1: Microchip/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}/Microchip" 
-	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/usb_descriptors.p1 Microchip/usb_descriptors.c 
-	@-${MV} ${OBJECTDIR}/Microchip/usb_descriptors.d ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
 ${OBJECTDIR}/Microchip/app_device_msd.p1: Microchip/app_device_msd.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/Microchip" 
 	@${RM} ${OBJECTDIR}/Microchip/app_device_msd.p1.d 
@@ -132,6 +124,22 @@ ${OBJECTDIR}/Microchip/files.p1: Microchip/files.c  nbproject/Makefile-${CND_CON
 	@-${MV} ${OBJECTDIR}/Microchip/files.d ${OBJECTDIR}/Microchip/files.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Microchip/files.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
+${OBJECTDIR}/Microchip/internal_flash.p1: Microchip/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}/Microchip" 
+	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/internal_flash.p1 Microchip/internal_flash.c 
+	@-${MV} ${OBJECTDIR}/Microchip/internal_flash.d ${OBJECTDIR}/Microchip/internal_flash.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/usb_descriptors.p1: Microchip/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}/Microchip" 
+	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/usb_descriptors.p1 Microchip/usb_descriptors.c 
+	@-${MV} ${OBJECTDIR}/Microchip/usb_descriptors.d ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 ${OBJECTDIR}/Microchip/usb_device.p1: Microchip/usb_device.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/Microchip" 
 	@${RM} ${OBJECTDIR}/Microchip/usb_device.p1.d 
@@ -147,14 +155,6 @@ ${OBJECTDIR}/Microchip/usb_device_msd.p1: Microchip/usb_device_msd.c  nbproject/
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/usb_device_msd.p1 Microchip/usb_device_msd.c 
 	@-${MV} ${OBJECTDIR}/Microchip/usb_device_msd.d ${OBJECTDIR}/Microchip/usb_device_msd.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Microchip/usb_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/internal_flash.p1: Microchip/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}/Microchip" 
-	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/internal_flash.p1 Microchip/internal_flash.c 
-	@-${MV} ${OBJECTDIR}/Microchip/internal_flash.d ${OBJECTDIR}/Microchip/internal_flash.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/app.p1: app.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
@@ -197,14 +197,6 @@ ${OBJECTDIR}/settings.p1: settings.c  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} ${OBJECTDIR}/settings.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 else
-${OBJECTDIR}/Microchip/usb_descriptors.p1: Microchip/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}/Microchip" 
-	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/usb_descriptors.p1 Microchip/usb_descriptors.c 
-	@-${MV} ${OBJECTDIR}/Microchip/usb_descriptors.d ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
 ${OBJECTDIR}/Microchip/app_device_msd.p1: Microchip/app_device_msd.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/Microchip" 
 	@${RM} ${OBJECTDIR}/Microchip/app_device_msd.p1.d 
@@ -221,6 +213,22 @@ ${OBJECTDIR}/Microchip/files.p1: Microchip/files.c  nbproject/Makefile-${CND_CON
 	@-${MV} ${OBJECTDIR}/Microchip/files.d ${OBJECTDIR}/Microchip/files.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Microchip/files.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
+${OBJECTDIR}/Microchip/internal_flash.p1: Microchip/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}/Microchip" 
+	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/internal_flash.p1 Microchip/internal_flash.c 
+	@-${MV} ${OBJECTDIR}/Microchip/internal_flash.d ${OBJECTDIR}/Microchip/internal_flash.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Microchip/usb_descriptors.p1: Microchip/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}/Microchip" 
+	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
+	@${RM} ${OBJECTDIR}/Microchip/usb_descriptors.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/usb_descriptors.p1 Microchip/usb_descriptors.c 
+	@-${MV} ${OBJECTDIR}/Microchip/usb_descriptors.d ${OBJECTDIR}/Microchip/usb_descriptors.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Microchip/usb_descriptors.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 ${OBJECTDIR}/Microchip/usb_device.p1: Microchip/usb_device.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/Microchip" 
 	@${RM} ${OBJECTDIR}/Microchip/usb_device.p1.d 
@@ -236,14 +244,6 @@ ${OBJECTDIR}/Microchip/usb_device_msd.p1: Microchip/usb_device_msd.c  nbproject/
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/usb_device_msd.p1 Microchip/usb_device_msd.c 
 	@-${MV} ${OBJECTDIR}/Microchip/usb_device_msd.d ${OBJECTDIR}/Microchip/usb_device_msd.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Microchip/usb_device_msd.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Microchip/internal_flash.p1: Microchip/internal_flash.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}/Microchip" 
-	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1.d 
-	@${RM} ${OBJECTDIR}/Microchip/internal_flash.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/Microchip/internal_flash.p1 Microchip/internal_flash.c 
-	@-${MV} ${OBJECTDIR}/Microchip/internal_flash.d ${OBJECTDIR}/Microchip/internal_flash.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Microchip/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/app.p1: app.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
@@ -302,13 +302,13 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: link
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${DISTDIR}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    Microchip/rm18f26j50_g.lkr
+${DISTDIR}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} ${DISTDIR} 
 	${MP_CC} $(MP_EXTRA_LD_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -Wl,-Map=${DISTDIR}/src.${IMAGE_TYPE}.map  -D__DEBUG=1  -mdebugger=none  -DXPRJ_default=$(CND_CONF)  -Wl,--defsym=__MPLAB_BUILD=1   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto        $(COMPARISON_BUILD) -Wl,--memorysummary,${DISTDIR}/memoryfile.xml -o ${DISTDIR}/src.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
 	@${RM} ${DISTDIR}/src.${IMAGE_TYPE}.hex 
 	
 else
-${DISTDIR}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   Microchip/rm18f26j50_g.lkr
+${DISTDIR}/src.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} ${DISTDIR} 
 	${MP_CC} $(MP_EXTRA_LD_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -Wl,-Map=${DISTDIR}/src.${IMAGE_TYPE}.map  -DXPRJ_default=$(CND_CONF)  -Wl,--defsym=__MPLAB_BUILD=1   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O1 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"Microchip" -mwarn=0 -Wa,-a -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits -std=c90 -gdwarf-3 -mstack=compiled:auto:auto:auto     $(COMPARISON_BUILD) -Wl,--memorysummary,${DISTDIR}/memoryfile.xml -o ${DISTDIR}/src.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
 	
