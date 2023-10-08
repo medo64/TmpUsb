@@ -2,7 +2,7 @@
 #define	FAT12_H
 
 #include "fileio_config.h"
-#include "driver/fileio/internal_flash.h"
+#include "internal_flash.h"
 
 
 #define MEDIA_PARTITION_SIZE    DRV_FILEIO_INTERNAL_FLASH_PARTITION_SIZE

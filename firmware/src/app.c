@@ -5,17 +5,13 @@
 #include "app_device_msd.h"
 #include "usb_device_msd.h"
 
-
 #include "config.h"
 #include "fat12.h"
 #include "io.h"
 #include "settings.h"
 #include "timing.h"
 
-
-
 void main(void) {
-    crc8a(0, 0);
     unsigned short timingCharge = timing_getCharge();
 
     settings_init();
@@ -264,28 +260,7 @@ bool USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, uint16_t size
             //2.  Re-arm the endpoint if desired (typically would be the case for OUT
             //      endpoints).
 
-            //Check if the host recently did a clear endpoint halt on the MSD OUT endpoint.
-            //In this case, we want to re-arm the MSD OUT endpoint, so we are prepared
-            //to receive the next CBW that the host might want to send.
-            //Note: If however the STALL was due to a CBW not valid condition,
-            //then we are required to have a persistent STALL, where it cannot
-            //be cleared (until MSD reset recovery takes place).  See MSD BOT
-            //specs v1.0, section 6.6.1.
-            if(MSDWasLastCBWValid() == false)
-            {
-                //Need to re-stall the endpoints, for persistent STALL behavior.
-                USBStallEndpoint(MSD_DATA_IN_EP, IN_TO_HOST);
-                USBStallEndpoint(MSD_DATA_OUT_EP, OUT_FROM_HOST);
-            }
-            else
-            {
-                //Check if the host cleared halt on the bulk out endpoint.  In this
-                //case, we should re-arm the endpoint, so we can receive the next CBW.
-                if((USB_HANDLE)pdata == USBGetNextHandle(MSD_DATA_OUT_EP, OUT_FROM_HOST))
-                {
-                    USBMSDOutHandle = USBRxOnePacket(MSD_DATA_OUT_EP, (uint8_t*)&msd_cbw, MSD_OUT_EP_SIZE);
-                }
-            }
+            MSDTransferTerminated(pdata);
             break;
 
         default:
