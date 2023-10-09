@@ -399,15 +399,11 @@
     }
   },
   "libraries": {
-    "pinned_footprint_libs": [
-      "-- Recently Used --",
-      "Med64-THD",
-      "Medo64-SMD"
-    ],
+    "pinned_footprint_libs": [],
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "TmpUsb'A.kicad_pro",
+    "filename": "TmpUsb'H2.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -519,11 +515,6 @@
     "subpart_first_id": 65,
     "subpart_id_separator": 0
   },
-  "sheets": [
-    [
-      "7e726e8e-aac8-4518-adb0-f940a1045e8c",
-      ""
-    ]
-  ],
+  "sheets": [],
   "text_variables": {}
 }
