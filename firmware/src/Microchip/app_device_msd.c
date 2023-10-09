@@ -63,12 +63,12 @@ const InquiryResponse inq_resp = {
 	0x00,		// bque=1 and cmdque=0,indicates simple queueing 00 is obsolete,
 			// but as in case of other device, we are just using 00
 	0x00,		// 00 obsolete, 0x80 for basic task queueing
-	{'J','M','e','d','v','e','d',' '
+	{'M','e','d','o','6','4'
     },
 	// this is the T10 assigned Vendor ID
-	{'T','m','p','U','s','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '
+	{'T','m','p','U','s','b',
     },
-	{'1','.','0','0'
+	{'1','.','0','1'
     }
 };
 
