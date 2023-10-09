@@ -1,23 +1,35 @@
-// DOM-IGNORE-BEGIN
-/*******************************************************************************
-Copyright 2015 Microchip Technology Inc. (www.microchip.com)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-To request to license the code under the MLA license (www.microchip.com/mla_license), 
-please contact mla_licensing@microchip.com
-*******************************************************************************/
-//DOM-IGNORE-END
+/******************************************************************************
+*
+*                        Microchip File I/O Library
+*
+******************************************************************************
+* FileName:           fileio.h
+* Dependencies:       system_config.h, system.h
+* Processor:          PIC24/dsPIC30/dsPIC33
+* Compiler:           XC16
+* Company:            Microchip Technology, Inc.
+*
+* Software License Agreement
+*
+* The software supplied herewith by Microchip Technology Incorporated
+* (the "Company") for its PICmicro(R) Microcontroller is intended and
+* supplied to you, the Company's customer, for use solely and
+* exclusively on Microchip PICmicro Microcontroller products. The
+* software is owned by the Company and/or its supplier, and is
+* protected under applicable copyright laws. All rights are reserved.
+* Any use in violation of the foregoing restrictions may subject the
+* user to criminal sanctions under applicable laws, as well as to
+* civil liability for the breach of the terms and conditions of this
+* license.
+*
+* THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+* TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+* PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+* IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+* CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+*
+********************************************************************/
 
 
 #ifndef  _FILEIO_DOT_H
@@ -26,11 +38,16 @@ please contact mla_licensing@microchip.com
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "fileio_config.h"
+#include "system_config.h"
 #include "system.h"
 
-#include "fileio_media.h"
+#if __XC16_VERSION__ == 1020
+#error XC16 v1.20 is not compatible with this firmware, please use a later version of the XC16 compiler.
+#endif
 
+#if __XC8_VERSION == 1300
+#error XC8 v1.30 is not compatible with this firmware, please use either XC8 v1.21 or a later version of the XC8 compiler.
+#endif
 
 /*******************************************************************/
 /*                     Structures and defines                     */
@@ -177,6 +194,33 @@ typedef enum
     FILEIO_GET_PROPERTIES_CLUSTER_FAILURE,
     FILEIO_GET_PROPERTIES_STILL_WORKING = 0xFF
 } FILEIO_DRIVE_ERRORS;
+
+// Enumeration to define media error types
+typedef enum
+{
+    MEDIA_NO_ERROR,                     // No errors
+    MEDIA_DEVICE_NOT_PRESENT,           // The requested device is not present
+    MEDIA_CANNOT_INITIALIZE             // Cannot initialize media
+} FILEIO_MEDIA_ERRORS;
+
+// Media information flags.  The driver's MediaInitialize function will return a pointer to one of these structures.
+typedef struct
+{
+    FILEIO_MEDIA_ERRORS errorCode;              // The status of the intialization FILEIO_MEDIA_ERRORS
+    // Flags
+    union
+    {
+        uint8_t    value;
+        struct
+        {
+            uint8_t    sectorSize  : 1;         // The sector size parameter is valid.
+            uint8_t    maxLUN      : 1;         // The max LUN parameter is valid.
+        }   bits;
+    } validityFlags;
+
+    uint16_t    sectorSize;                     // The sector size of the target device.
+    uint8_t    maxLUN;                          // The maximum Logical Unit Number of the device.
+} FILEIO_MEDIA_INFORMATION;
 
 /***************************************************************************
     Function:
@@ -404,9 +448,9 @@ typedef union
 {
     struct
     {
-        unsigned day : 5;           // Day (1-31)
-        unsigned month : 4;         // Month (1-12)
-        unsigned year : 7;          // Year (number of years since 1980)
+        uint16_t day : 5;           // Day (1-31)
+        uint16_t month : 4;         // Month (1-12)
+        uint16_t year : 7;          // Year (number of years since 1980)
     } bitfield;
     uint16_t value;
 } FILEIO_DATE;
@@ -416,9 +460,9 @@ typedef union
 {
     struct
     {
-        unsigned secondsDiv2 : 5;   // (Seconds / 2) ( 1-30)
-        unsigned minutes : 6;       // Minutes ( 1-60)
-        unsigned hours : 5;         // Hours (1-24)
+        uint16_t secondsDiv2 : 5;   // (Seconds / 2) ( 1-30)
+        uint16_t minutes : 6;       // Minutes ( 1-60)
+        uint16_t hours : 5;         // Hours (1-24)
     } bitfield;
     uint16_t value;
 } FILEIO_TIME;

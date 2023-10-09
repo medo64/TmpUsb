@@ -1,22 +1,34 @@
-// DOM-IGNORE-BEGIN
-/*******************************************************************************
-Copyright 2015 Microchip Technology Inc. (www.microchip.com)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-To request to license the code under the MLA license (www.microchip.com/mla_license), 
-please contact mla_licensing@microchip.com
-*******************************************************************************/
+/******************************************************************************
+ 
+                Microchip Memory Disk Drive File System
+ 
+ *****************************************************************************
+  FileName:        Internal Flash.c
+  Dependencies:    See includes section.
+  Processor:       PIC18/PIC24/dsPIC33 microcontrollers
+  Compiler:        Microchip XC8, XC16
+  Company:         Microchip Technology, Inc.
+ 
+  Software License Agreement
+ 
+  The software supplied herewith by Microchip Technology Incorporated
+  (the "Company") for its PIC(R) Microcontroller is intended and
+  supplied to you, the Company's customer, for use solely and
+  exclusively on Microchip PIC Microcontroller products. The
+  software is owned by the Company and/or its supplier, and is
+  protected under applicable copyright laws. All rights are reserved.
+  Any use in violation of the foregoing restrictions may subject the
+  user to criminal sanctions under applicable laws, as well as to
+  civil liability for the breach of the terms and conditions of this
+  license.
+ 
+  THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+  WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+  TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+  PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+  IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+  CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+********************************************************************/
 //DOM-IGNORE-END
 
 #include "string.h"
@@ -26,6 +38,9 @@ please contact mla_licensing@microchip.com
 
 #include <stdint.h>
 #include <stdbool.h>
+
+#include "../io.h"
+
 
 /******************************************************************************
  * Global Variables
@@ -485,6 +500,8 @@ uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uin
 #else   //else must be PIC18 or PIC32 device
 uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uint8_t* buffer, uint8_t allowWriteToZero)
 {
+    io_led_active();
+
     #if !defined(DRV_FILEIO_CONFIG_INTERNAL_FLASH_WRITE_PROTECT)
         const uint8_t* dest;
         bool foundDifference;
@@ -609,13 +626,13 @@ uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uin
                         //Write the data
                         #if defined(__XC8)
                             TABLAT = *p++;
-                            #if defined(__CLANG__)
-                                asm("tblwtpostinc");
-                            #else
-                                #asm 
-                                    tblwtpostinc 
-                                #endasm
-                            #endif
+                            #asm
+                                tblwtpostinc
+                            #endasm
+                            sectorCounter++;
+                        #elif defined(__18CXX)
+                            TABLAT = *p++;
+                            _asm tblwtpostinc _endasm
                             sectorCounter++;
                         #endif
 
@@ -629,18 +646,22 @@ uint8_t FILEIO_InternalFlash_SectorWrite(void* config, uint32_t sector_addr, uin
                     //Now commit/write the block of data from the programming latches into the flash memory
                     #if defined(__XC8)
                         // Start the write process: for PIC18, first need to reposition tblptr back into memory block that we want to write to.
-                        #if defined(__CLANG__)
-                        asm("tblrdpostdec");
-                        #else
-                            #asm 
-                                tblrdpostdec 
-                            #endasm
-                        #endif
+                        #asm 
+                            tblrdpostdec 
+                        #endasm
 
                         // Write flash memory, enable write control.
                         EECON1 = 0x84;
                         UnlockAndActivate(NVM_UNLOCK_KEY);
                         TBLPTR++;                    
+                    #elif defined(__18CXX)
+                        // Start the write process: for PIC18, first need to reposition tblptr back into memory block that we want to write to.
+                         _asm tblrdpostdec _endasm
+
+                        // Write flash memory, enable write control.
+                        EECON1 = 0x84;
+                        UnlockAndActivate(NVM_UNLOCK_KEY);
+                        TBLPTR++;
                     #endif
                 }//while(i-- > 0)
             }//if(foundDifference == true)
@@ -672,24 +693,23 @@ void EraseBlock(const uint8_t* dest)
 }
 
 
-
-#ifndef DRV_FILEIO_INTERNAL_FLASH_CONFIG_UNLOCK_VERIFICATION_FUNCTION
-    #error "User must define the DRV_FILEIO_INTERNAL_FLASH_CONFIG_UNLOCK_VERIFICATION_FUNCTION macro in the fileio_config.h file.  Click this message for more details in comments."
-    /* The DRV_FILEIO_INTERNAL_FLASH_CONFIG_UNLOCK_VERIFICATION_FUNCTION macro
-     * is used to verify that the system is in a condition where a self write 
-     * is valid.  This could include checks for system voltage levels, clocking
-     * vs voltage, address checking for write locations, etc.  The prototype of
-     * the function that this micro should point to is the following:
-     *   bool functionName(void);
-     * The functions should return true if the self write is allowed and false
-     * if the self write is not allowed. 
-     */
+//------------------------------------------------------------------------------
+#if defined(__XC16__)
+    #pragma message "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
+#else
+    //#warning "Double click this message and read inline code comments.  For production designs, recommend adding application specific robustness features here."
 #endif
-
-//[JM: Changed function definition] 
-bool DRV_FILEIO_INTERNAL_FLASH_CONFIG_UNLOCK_VERIFICATION_FUNCTION(void) { return false; }
-    
-
+//Function: void UnlockAndActivate(uint8_t UnlockKey)
+//Description: Activates and initiates a flash memory self erase or program 
+//operation.  Useful for writing to the MSD drive volume.
+//Note: Self erase/writes to flash memory could potentially corrupt the
+//firmware of the application, if the unlock sequence is ever executed
+//unintentionally, or if the table pointer is pointing to an invalid
+//range (not inside the MSD volume range).  Therefore, in order to ensure
+//a fully reliable design that is suitable for mass production, it is strongly
+//recommended to implement several robustness checks prior to actually
+//performing any self erase/program unlock sequence.  See additional inline 
+//code comments.
 //------------------------------------------------------------------------------
 void UnlockAndActivate(uint8_t UnlockKey)
 {
@@ -697,10 +717,50 @@ void UnlockAndActivate(uint8_t UnlockKey)
         uint8_t InterruptEnableSave;
     #endif
       
-    if(DRV_FILEIO_INTERNAL_FLASH_CONFIG_UNLOCK_VERIFICATION_FUNCTION() == false)
-    {
-        return;
-    }
+    //Should verify that the voltage on Vdd/Vddcore is high enough to meet
+    //the datasheet minimum voltage vs. frequency graph for the device.
+    //If the microcontroller is "overclocked" (ex: by running at maximum rated
+    //frequency, but then not suppling enough voltage to meet the datasheet
+    //voltage vs. frequency graph), errant code execution could occur.  It is
+    //therefore strongly recommended to check the voltage prior to performing a 
+    //flash self erase/write unlock sequence.  If the voltage is too low to meet
+    //the voltage vs. frequency graph in the datasheet, the firmware should not 
+    //inititate a self erase/program operation, and instead it should either:
+    //1.  Clock switch to a lower frequency that does meet the voltage/frequency graph.  Or,
+    //2.  Put the microcontroller to Sleep mode.
+    
+    //The method used to measure Vdd and/or Vddcore will depend upon the 
+    //microcontroller model and the module features available in the device, but
+    //several options are available on many of the microcontrollers, ex:
+    //1.  HLVD module
+    //2.  WDTCON<LVDSTAT> indicator bit
+    //3.  Perform ADC operation, with the VBG channel selected, using Vdd/Vss as 
+    //      references to the ADC.  Then perform math operations to calculate the Vdd.
+    //      On some micros, the ADC can also measure the Vddcore voltage, allowing
+    //      the firmware to calculate the absolute Vddcore voltage, if it has already
+    //      calculated and knows the ADC reference voltage.
+    //4.  Use integrated general purpose comparator(s) to sense Vdd/Vddcore voltage
+    //      is above proper threshold.
+    //5.  If the micrcontroller implements a user adjustable BOR circuit, enable
+    //      it and set the trip point high enough to avoid overclocking altogether.
+    
+    //Example psuedo code.  Exact implementation will be application specific.
+    //Please implement appropriate code that best meets your application requirements.
+    //if(GetVddcoreVoltage() < MIN_ALLOWED_VOLTAGE)
+    //{
+    //    ClockSwitchToSafeFrequencyForGivenVoltage();    //Or even better, go to sleep mode.
+    //    return;       
+    //}    
+
+
+    //Should also verify the TBLPTR is pointing to a valid range (part of the MSD
+    //volume, and not a part of the application firmware space).
+    //Example code for PIC18 (commented out since the actual address range is 
+    //application specific):
+    //if((TBLPTR > MSD_VOLUME_MAX_ADDRESS) || (TBLPTR < MSD_VOLUME_START_ADDRESS)) 
+    //{
+    //    return;
+    //}  
     
     //Verify the UnlockKey is the correct value, to make sure this function is 
     //getting executed intentionally, from a calling function that knew it

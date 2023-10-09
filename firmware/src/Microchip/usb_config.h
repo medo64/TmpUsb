@@ -1,21 +1,33 @@
-/*******************************************************************************
-Copyright 2016 Microchip Technology Inc. (www.microchip.com)
+/********************************************************************
+ Software License Agreement:
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ The software supplied herewith by Microchip Technology Incorporated
+ (the "Company") for its PIC(R) Microcontroller is intended and
+ supplied to you, the Company's customer, for use solely and
+ exclusively on Microchip PIC Microcontroller products. The
+ software is owned by the Company and/or its supplier, and is
+ protected under applicable copyright laws. All rights are reserved.
+ Any use in violation of the foregoing restrictions may subject the
+ user to criminal sanctions under applicable laws, as well as to
+ civil liability for the breach of the terms and conditions of this
+ license.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+********************************************************************
+ File Description:
 
-To request to license the code under the MLA license (www.microchip.com/mla_license), 
-please contact mla_licensing@microchip.com
-*******************************************************************************/
+ Change History:
+  Rev   Date         Description
+  1.0   11/19/2004   Initial release
+  2.1   02/26/2007   Updated for simplicity and to use common
+                     coding style
+ *******************************************************************/
 
 /*********************************************************************
  * Descriptor specific type definitions are defined in: usbd.h
@@ -46,37 +58,15 @@ please contact mla_licensing@microchip.com
 #define USB_USER_CONFIG_DESCRIPTOR USB_CD_Ptr
 #define USB_USER_CONFIG_DESCRIPTOR_INCLUDE extern const uint8_t *const USB_CD_Ptr[]
 
-//------------------------------------------------------------------------------
-//Select an endpoint ping-pong bufferring mode.  Some microcontrollers only
-//support certain modes.  For most applications, it is recommended to use either 
-//the USB_PING_PONG__FULL_PING_PONG or USB_PING_PONG__EP0_OUT_ONLY options.  
-//The other settings are supported on some devices, but they are not 
-//recommended, as they offer inferior control transfer timing performance.  
-//See inline code comments in usb_device.c for additional details.
-//Enabling ping pong bufferring on an endpoint generally increases firmware
-//overhead somewhat, but when both buffers are used simultaneously in the 
-//firmware, can offer better sustained bandwidth, especially for OUT endpoints.
-//------------------------------------------------------
-//#define USB_PING_PONG_MODE USB_PING_PONG__NO_PING_PONG    //Not recommended
-#define USB_PING_PONG_MODE USB_PING_PONG__FULL_PING_PONG    //A good all around setting
-//#define USB_PING_PONG_MODE USB_PING_PONG__EP0_OUT_ONLY    //Another good setting
-//#define USB_PING_PONG_MODE USB_PING_PONG__ALL_BUT_EP0	    //Not recommended
-//------------------------------------------------------------------------------
+//Make sure only one of the below "#define USB_PING_PONG_MODE"
+//is uncommented.
+//#define USB_PING_PONG_MODE USB_PING_PONG__NO_PING_PONG
+#define USB_PING_PONG_MODE USB_PING_PONG__FULL_PING_PONG
+//#define USB_PING_PONG_MODE USB_PING_PONG__EP0_OUT_ONLY
+//#define USB_PING_PONG_MODE USB_PING_PONG__ALL_BUT_EP0		//NOTE: This mode is not supported in PIC18F4550 family rev A3 devices
 
-
-//------------------------------------------------------------------------------
-//Select a USB stack operating mode.  In the USB_INTERRUPT mode, the USB stack
-//main task handler gets called only when necessary as an interrupt handler.
-//This can potentially minimize CPU utilization, but adds context saving
-//and restoring overhead associated with interrupts, which can potentially 
-//decrease performance.
-//When the USB_POLLING mode is selected, the USB stack main task handler
-//(ex: USBDeviceTasks()) must be called periodically by the application firmware
-//at a minimum rate as described in the inline code comments in usb_device.c.
-//------------------------------------------------------
 #define USB_POLLING
-//#define USB_INTERRUPT
-//------------------------------------------------------------------------------
+//TMPUSB : #define USB_INTERRUPT
 
 /* Parameter definitions are defined in usb_device.h */
 #define USB_PULLUP_OPTION USB_PULLUP_ENABLE
@@ -89,7 +79,7 @@ please contact mla_licensing@microchip.com
 //#define USB_TRANSCEIVER_OPTION USB_EXTERNAL_TRANSCEIVER
 
 #define USB_SPEED_OPTION USB_FULL_SPEED
-//#define USB_SPEED_OPTION USB_LOW_SPEED //(this mode is only supported on some microcontrollers)
+//#define USB_SPEED_OPTION USB_LOW_SPEED //(not valid option for PIC24F devices)
 
 //------------------------------------------------------------------------------------------------------------------
 //Option to enable auto-arming of the status stage of control transfers, if no
@@ -97,10 +87,10 @@ please contact mla_licensing@microchip.com
 //If progress is made (any successful transactions completing on EP0 IN or OUT)
 //the timeout counter gets reset to the USB_STATUS_STAGE_TIMEOUT value.
 //
-//During normal control transfer processing, the USB stack or the application
+//During normal control transfer processing, the USB stack or the application 
 //firmware will call USBCtrlEPAllowStatusStage() as soon as the firmware is finished
-//processing the control transfer.  Therefore, the status stage completes as
-//quickly as is physically possible.  The USB_ENABLE_STATUS_STAGE_TIMEOUTS
+//processing the control transfer.  Therefore, the status stage completes as 
+//quickly as is physically possible.  The USB_ENABLE_STATUS_STAGE_TIMEOUTS 
 //feature, and the USB_STATUS_STAGE_TIMEOUT value are only relevant, when:
 //1.  The application uses the USBDeferStatusStage() API function, but never calls
 //      USBCtrlEPAllowStatusStage().  Or:
@@ -112,12 +102,12 @@ please contact mla_licensing@microchip.com
 //and it never uses host to device control transfers with data stage, then
 //it is not required to enable the USB_ENABLE_STATUS_STAGE_TIMEOUTS feature.
 
-#define USB_ENABLE_STATUS_STAGE_TIMEOUTS    //Comment this out to disable this feature.
+#define USB_ENABLE_STATUS_STAGE_TIMEOUTS    //Comment this out to disable this feature.  
 
 //Section 9.2.6 of the USB 2.0 specifications indicate that:
-//1.  Control transfers with no data stage: Status stage must complete within
+//1.  Control transfers with no data stage: Status stage must complete within 
 //      50ms of the start of the control transfer.
-//2.  Control transfers with (IN) data stage: Status stage must complete within
+//2.  Control transfers with (IN) data stage: Status stage must complete within 
 //      50ms of sending the last IN data packet in fullfilment of the data stage.
 //3.  Control transfers with (OUT) data stage: No specific status stage timing
 //      requirement.  However, the total time of the entire control transfer (ex:
@@ -138,20 +128,17 @@ please contact mla_licensing@microchip.com
 
 #define USB_NUM_STRING_DESCRIPTORS 4    //Include the lang ID codes string 0 in this count
 
-/*******************************************************************
- * Event disable options                                           
- *   Enable a definition to suppress a specific event.  By default 
- *   all events are sent.                                          
- *******************************************************************/
-//#define USB_DISABLE_SUSPEND_HANDLER
-//#define USB_DISABLE_WAKEUP_FROM_SUSPEND_HANDLER
-//#define USB_DISABLE_SOF_HANDLER
-//#define USB_DISABLE_TRANSFER_TERMINATED_HANDLER
-//#define USB_DISABLE_ERROR_HANDLER 
-//#define USB_DISABLE_NONSTANDARD_EP0_REQUEST_HANDLER 
-//#define USB_DISABLE_SET_DESCRIPTOR_HANDLER 
-//#define USB_DISABLE_SET_CONFIGURATION_HANDLER
-//#define USB_DISABLE_TRANSFER_COMPLETE_HANDLER 
+//#define USB_INTERRUPT_LEGACY_CALLBACKS
+#define USB_ENABLE_ALL_HANDLERS
+//#define USB_ENABLE_SUSPEND_HANDLER
+//#define USB_ENABLE_WAKEUP_FROM_SUSPEND_HANDLER
+//#define USB_ENABLE_SOF_HANDLER
+//#define USB_ENABLE_ERROR_HANDLER
+//#define USB_ENABLE_OTHER_REQUEST_HANDLER
+//#define USB_ENABLE_SET_DESCRIPTOR_HANDLER
+//#define USB_ENABLE_INIT_EP_HANDLER
+//#define USB_ENABLE_EP0_DATA_HANDLER
+//#define USB_ENABLE_TRANSFER_COMPLETE_HANDLER
 
 
 /** DEVICE CLASS USAGE *********************************************/

@@ -1,25 +1,39 @@
-// DOM-IGNORE-BEGIN
-/*******************************************************************************
-Copyright 2015 Microchip Technology Inc. (www.microchip.com)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-To request to license the code under the MLA license (www.microchip.com/mla_license),
-please contact mla_licensing@microchip.com
-*******************************************************************************/
-//DOM-IGNORE-END
-
-#include "usb_config.h"
+/********************************************************************
+  File Information:
+    FileName:     	usb_device_local.h
+    Dependencies:	See INCLUDES section
+    Processor:		PIC18,PIC24, PIC32 and dsPIC33E USB Microcontrollers
+    Hardware:		The code is natively intended to be used on the following
+    				hardware platforms: PICDEM� FS USB Demo Board, 
+    				PIC18F87J50 FS USB Plug-In Module, or
+    				Explorer 16 + compatible USB PIM.  The firmware may be
+    				modified for use on other USB platforms by editing the
+    				HardwareProfile.h file.
+    Complier:  	    Microchip C18 (for PIC18),C30 (for PIC24 and dsPIC33E)
+                    and C32 (for PIC32)
+    Company:		Microchip Technology, Inc.
+    
+    Software License Agreement:
+    
+    The software supplied herewith by Microchip Technology Incorporated
+    (the �Company�) for its PIC� Microcontroller is intended and
+    supplied to you, the Company�s customer, for use solely and
+    exclusively on Microchip PIC Microcontroller products. The
+    software is owned by the Company and/or its supplier, and is
+    protected under applicable copyright laws. All rights are reserved.
+    Any use in violation of the foregoing restrictions may subject the
+    user to criminal sanctions under applicable laws, as well as to
+    civil liability for the breach of the terms and conditions of this
+    license.
+    
+    THIS SOFTWARE IS PROVIDED IN AN �AS IS� CONDITION. NO WARRANTIES,
+    WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+    TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+    PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+    IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+    CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+********************************************************************/
+#include "system_config.h"
 
 /* Short Packet States - Used by Control Transfer Read  - CTRL_TRF_TX */
 #define SHORT_PKT_NOT_USED  0
@@ -365,60 +379,60 @@ typedef union
     decrease CPU utiliazation.
 ********************************************************************/
 #if defined USB_DISABLE_SUSPEND_HANDLER
-    #define USB_SUSPEND_HANDLER(event,pointer,size)
-
-    #warning "Disabling the suspend handler is not recommended.  Proper suspend handling is required to create a compliant USB device."
+    #define USB_SUSPEND_HANDLER(event,pointer,size) 
+    
+    #warning "Disabling the suspend handler is not recommended.  Proper suspend handling is required to create a compliant USB device."                
 #else
-    #define USB_SUSPEND_HANDLER(event,pointer,size)             USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_SUSPEND_HANDLER(event,pointer,size)             USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 
 #if defined USB_DISABLE_WAKEUP_FROM_SUSPEND_HANDLER
-    #define USB_WAKEUP_FROM_SUSPEND_HANDLER(event,pointer,size)
+    #define USB_WAKEUP_FROM_SUSPEND_HANDLER(event,pointer,size) 
 
-    #warning "Disabling the wake from suspend handler is not recommended.  Proper suspend handling is required to create a compliant USB device."
+    #warning "Disabling the wake from suspend handler is not recommended.  Proper suspend handling is required to create a compliant USB device."                
 #else
-    #define USB_WAKEUP_FROM_SUSPEND_HANDLER(event,pointer,size) USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)   
+    #define USB_WAKEUP_FROM_SUSPEND_HANDLER(event,pointer,size) USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)   
 #endif
 
 #if defined USB_DISABLE_SOF_HANDLER
-    #define USB_SOF_HANDLER(event,pointer,size)
+    #define USB_SOF_HANDLER(event,pointer,size)                
 #else
-    #define USB_SOF_HANDLER(event,pointer,size)                 USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_SOF_HANDLER(event,pointer,size)                 USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 
 #if defined USB_DISABLE_TRANSFER_TERMINATED_HANDLER
-    #define USB_TRANSFER_TERMINATED_HANDLER(event,pointer,size)
+    #define USB_TRANSFER_TERMINATED_HANDLER(event,pointer,size)                
 #else
-    #define USB_TRANSFER_TERMINATED_HANDLER(event,pointer,size)                 USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_TRANSFER_TERMINATED_HANDLER(event,pointer,size)                 USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 
-#if defined USB_DISABLE_ERROR_HANDLER
-    #define USB_ERROR_HANDLER(event,pointer,size)
+#if defined USB_DISABLE_ERROR_HANDLER 
+    #define USB_ERROR_HANDLER(event,pointer,size)             
 #else
-    #define USB_ERROR_HANDLER(event,pointer,size)               USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_ERROR_HANDLER(event,pointer,size)               USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 
-#if defined USB_DISABLE_NONSTANDARD_EP0_REQUEST_HANDLER
-    #define USB_NONSTANDARD_EP0_REQUEST_HANDLER(event,pointer,size)
+#if defined USB_DISABLE_NONSTANDARD_EP0_REQUEST_HANDLER 
+    #define USB_NONSTANDARD_EP0_REQUEST_HANDLER(event,pointer,size)                 
 #else
-    #define USB_NONSTANDARD_EP0_REQUEST_HANDLER(event,pointer,size)       USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_NONSTANDARD_EP0_REQUEST_HANDLER(event,pointer,size)       USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 
-#if defined USB_DISABLE_SET_DESCRIPTOR_HANDLER
-    #define USB_SET_DESCRIPTOR_HANDLER(event,pointer,size)
+#if defined USB_DISABLE_SET_DESCRIPTOR_HANDLER 
+    #define USB_SET_DESCRIPTOR_HANDLER(event,pointer,size)                
 #else
-    #define USB_SET_DESCRIPTOR_HANDLER(event,pointer,size)      USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size) 
+    #define USB_SET_DESCRIPTOR_HANDLER(event,pointer,size)      USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size) 
 #endif
 
 #if defined USB_DISABLE_SET_CONFIGURATION_HANDLER
-    #define USB_SET_CONFIGURATION_HANDLER(event,pointer,size)
+    #define USB_SET_CONFIGURATION_HANDLER(event,pointer,size)                
 #else
-    #define USB_SET_CONFIGURATION_HANDLER(event,pointer,size)             USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_SET_CONFIGURATION_HANDLER(event,pointer,size)             USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 
-#if defined USB_DISABLE_TRANSFER_COMPLETE_HANDLER
-    #define USB_TRANSFER_COMPLETE_HANDLER(event,pointer,size)
+#if defined USB_DISABLE_TRANSFER_COMPLETE_HANDLER 
+    #define USB_TRANSFER_COMPLETE_HANDLER(event,pointer,size)               
 #else
-    #define USB_TRANSFER_COMPLETE_HANDLER(event,pointer,size)    USER_USB_CALLBACK_EVENT_HANDLER((USB_EVENT)event,pointer,size)
+    #define USB_TRANSFER_COMPLETE_HANDLER(event,pointer,size)    USER_USB_CALLBACK_EVENT_HANDLER(event,pointer,size)
 #endif
 

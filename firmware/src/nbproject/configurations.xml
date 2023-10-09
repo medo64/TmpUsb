@@ -21,7 +21,6 @@
         <itemPath>Microchip/usb_device_msd.h</itemPath>
         <itemPath>Microchip/usb_hal.h</itemPath>
         <itemPath>Microchip/usb_hal_pic18f.h</itemPath>
-        <itemPath>Microchip/internal_flash_config_template.h</itemPath>
         <itemPath>Microchip/fileio_media.h</itemPath>
       </logicalFolder>
       <itemPath>config.h</itemPath>
@@ -43,11 +42,11 @@
                    projectFiles="true">
       <logicalFolder name="f3" displayName="Microchip" projectFiles="true">
         <itemPath>Microchip/app_device_msd.c</itemPath>
-        <itemPath>Microchip/files.c</itemPath>
         <itemPath>Microchip/internal_flash.c</itemPath>
         <itemPath>Microchip/usb_descriptors.c</itemPath>
         <itemPath>Microchip/usb_device.c</itemPath>
         <itemPath>Microchip/usb_device_msd.c</itemPath>
+        <itemPath>Microchip/files.c</itemPath>
       </logicalFolder>
       <itemPath>app.c</itemPath>
       <itemPath>config.c</itemPath>
@@ -74,7 +73,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>pk4hybrid</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.41</languageToolchainVersion>
+        <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <packs>

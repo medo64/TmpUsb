@@ -1,21 +1,25 @@
-// DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
-Copyright 2015 Microchip Technology Inc. (www.microchip.com)
+Software License Agreement
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+The software supplied herewith by Microchip Technology Incorporated
+(the "Company") for its PICmicro(R) Microcontroller is intended and
+supplied to you, the Company's customer, for use solely and
+exclusively on Microchip PICmicro Microcontroller products. The
+software is owned by the Company and/or its supplier, and is
+protected under applicable copyright laws. All rights are reserved.
+Any use in violation of the foregoing restrictions may subject the
+user to criminal sanctions under applicable laws, as well as to
+civil liability for the breach of the terms and conditions of this
+license.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
+IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-To request to license the code under the MLA license (www.microchip.com/mla_license),
-please contact mla_licensing@microchip.com
 *******************************************************************************/
 //DOM-IGNORE-END
 
@@ -47,7 +51,8 @@ please contact mla_licensing@microchip.com
 
 #include <string.h>
 
-#include "usb_config.h"
+#include "system.h"
+#include "system_config.h"
 
 #ifdef __cplusplus  // Provide C++ Compatability
     extern "C" {
@@ -58,9 +63,8 @@ please contact mla_licensing@microchip.com
 // Section: Constants
 // *****************************************************************************
 // *****************************************************************************
-#define USB_HAL_VBUSTristate()                  //No dedicated VBUS pin on these devices.
 
-//----- USBEnableEndpoint() input definitions ----------------------------------
+//----- USBEnableEndpoint() input defintions ----------------------------------
 #define USB_HANDSHAKE_ENABLED   0x10
 #define USB_HANDSHAKE_DISABLED  0x00
 
@@ -75,7 +79,7 @@ please contact mla_licensing@microchip.com
 
 #define USB_STALL_ENDPOINT      0x01
 
-//----- usb_config.h input definitions -----------------------------------------
+//----- usb_config.h input defintions -----------------------------------------
 #define USB_PULLUP_ENABLE 0x10
 #define USB_PULLUP_DISABLED 0x00
 
@@ -218,28 +222,17 @@ please contact mla_licensing@microchip.com
     #define CTRL_TRF_SETUP_ADDRESS (USB_BDT_ADDRESS+(BDT_NUM_ENTRIES*4))
     #define CTRL_TRF_DATA_ADDRESS (CTRL_TRF_SETUP_ADDRESS + USB_EP0_BUFF_SIZE)
 
-    #if(__XC8_VERSION < 2000)
-        #define BDT_BASE_ADDR_TAG   @USB_BDT_ADDRESS
-        #define CTRL_TRF_SETUP_ADDR_TAG @CTRL_TRF_SETUP_ADDRESS
-        #define CTRL_TRF_DATA_ADDR_TAG @CTRL_TRF_DATA_ADDRESS
-    #else
-        #define BDT_BASE_ADDR_TAG   __at(USB_BDT_ADDRESS)
-        #define CTRL_TRF_SETUP_ADDR_TAG __at(CTRL_TRF_SETUP_ADDRESS)
-        #define CTRL_TRF_DATA_ADDR_TAG __at(CTRL_TRF_DATA_ADDRESS)
-    #endif
+    #define BDT_BASE_ADDR_TAG   @USB_BDT_ADDRESS
+    #define CTRL_TRF_SETUP_ADDR_TAG @CTRL_TRF_SETUP_ADDRESS
+    #define CTRL_TRF_DATA_ADDR_TAG @CTRL_TRF_DATA_ADDRESS
 
     #if defined(USB_USE_MSD)
         //MSD application specific USB endpoint buffer placement macros (so they
         //get linked to a USB module accessible portion of RAM)
         #define MSD_CBW_ADDRESS (CTRL_TRF_DATA_ADDRESS + USB_EP0_BUFF_SIZE)
         #define MSD_CSW_ADDRESS (MSD_CBW_ADDRESS + MSD_OUT_EP_SIZE)
-        #if(__XC8_VERSION < 2000)
-            #define MSD_CBW_ADDR_TAG    @MSD_CBW_ADDRESS
-            #define MSD_CSW_ADDR_TAG    @MSD_CSW_ADDRESS
-        #else
-            #define MSD_CBW_ADDR_TAG    __at(MSD_CBW_ADDRESS)
-            #define MSD_CSW_ADDR_TAG    __at(MSD_CSW_ADDRESS)
-        #endif
+        #define MSD_CBW_ADDR_TAG    @MSD_CBW_ADDRESS
+        #define MSD_CSW_ADDR_TAG    @MSD_CSW_ADDRESS
     #endif
 #else
     #define BDT_BASE_ADDR_TAG   __attribute__ ((aligned (512)))
@@ -249,8 +242,8 @@ please contact mla_licensing@microchip.com
     #define MSD_CSW_ADDR_TAG
 #endif
 
-//----- Deprecated definitions - will be removed at some point of time----------
-//--------- Deprecated in v2.2
+//----- Depricated defintions - will be removed at some point of time----------
+//--------- Depricated in v2.2
 #define _LS         0x00            // Use Low-Speed USB Mode
 #define _FS         0x04            // Use Full-Speed USB Mode
 #define _TRINT      0x00            // Use internal transceiver
@@ -263,7 +256,7 @@ please contact mla_licensing@microchip.com
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-
+        
 // Buffer Descriptor Status Register layout.
 typedef union _BD_STAT
 {
@@ -344,7 +337,7 @@ typedef union _POINTER
         //byte bUpper;
     };
     uint16_t _word;                         // bLow & bHigh
-
+    
     //pFunc _pFunc;                       // Usage: ptr.pFunc(); Init: ptr.pFunc = &<Function>;
 
     uint8_t* bRam;                         // Ram byte pointer: 2 bytes pointer pointing
@@ -379,21 +372,21 @@ typedef union _POINTER
         #define USBMaskInterrupts() {PIE3bits.USBIE = 0;}
         #define USBUnmaskInterrupts() {PIE3bits.USBIE = 1;}
     #else
-        #define USBMaskInterrupts()
-        #define USBUnmaskInterrupts()
+        #define USBMaskInterrupts() 
+        #define USBUnmaskInterrupts() 
     #endif
-
+    
     #define USBInterruptFlag PIR3bits.USBIF
-
+    
     //STALLIE, IDLEIE, TRNIE, and URSTIE are all enabled by default and are required
     #if defined(USB_INTERRUPT)
         #define USBEnableInterrupts() {RCONbits.IPEN = 1;IPR3bits.USBIP = 1;PIE3bits.USBIE = 1;INTCONbits.GIEH = 1;}
     #else
         #define USBEnableInterrupts()
     #endif
-
+    
     #define USBDisableInterrupts() {PIE3bits.USBIE = 0;}
-
+    
     #define SetConfigurationOptions()   {\
                                             U1CNFG1 = USB_PULLUP_OPTION | USB_TRANSCEIVER_OPTION | USB_SPEED_OPTION | USB_PING_PONG_MODE;\
                                             U1EIE = 0x9F;\
@@ -409,26 +402,26 @@ typedef union _POINTER
         #define USBMaskInterrupts() {PIE2bits.USBIE = 0;}
         #define USBUnmaskInterrupts() {PIE2bits.USBIE = 1;}
     #else
-        #define USBMaskInterrupts()
-        #define USBUnmaskInterrupts()
+        #define USBMaskInterrupts() 
+        #define USBUnmaskInterrupts() 
     #endif
-
+    
     #define USBInterruptFlag PIR2bits.USBIF
-
+    
     //STALLIE, IDLEIE, TRNIE, and URSTIE are all enabled by default and are required
     #if defined(USB_INTERRUPT)
         #define USBEnableInterrupts() {PIE2bits.USBIE = 1;INTCONbits.PEIE = 1;INTCONbits.GIE = 1;}
     #else
         #define USBEnableInterrupts()
     #endif
-
+    
     #define USBDisableInterrupts() {PIE2bits.USBIE = 0;}
-
+    
     #define SetConfigurationOptions()   {\
                                             U1CNFG1 = USB_PULLUP_OPTION | USB_TRANSCEIVER_OPTION | USB_SPEED_OPTION | USB_PING_PONG_MODE;\
                                             U1EIE = 0x9F;\
                                             UIE = 0x39 | USB_SOF_INTERRUPT | USB_ERROR_INTERRUPT;\
-                                        }
+                                        }  
 #else
 //------------------------------------------------------------------------------
 //This section is for all other PIC18 USB microcontrollers
@@ -438,26 +431,26 @@ typedef union _POINTER
         #define USBMaskInterrupts() {PIE2bits.USBIE = 0;}
         #define USBUnmaskInterrupts() {PIE2bits.USBIE = 1;}
     #else
-        #define USBMaskInterrupts()
-        #define USBUnmaskInterrupts()
+        #define USBMaskInterrupts() 
+        #define USBUnmaskInterrupts() 
     #endif
-
+    
     #define USBInterruptFlag PIR2bits.USBIF
-
+    
     //STALLIE, IDLEIE, TRNIE, and URSTIE are all enabled by default and are required
     #if defined(USB_INTERRUPT)
         #define USBEnableInterrupts() {RCONbits.IPEN = 1;IPR2bits.USBIP = 1;PIE2bits.USBIE = 1;INTCONbits.GIEH = 1;}
     #else
         #define USBEnableInterrupts()
     #endif
-
+    
     #define USBDisableInterrupts() {PIE2bits.USBIE = 0;}
-
+    
     #define SetConfigurationOptions()   {\
                                             U1CNFG1 = USB_PULLUP_OPTION | USB_TRANSCEIVER_OPTION | USB_SPEED_OPTION | USB_PING_PONG_MODE;\
                                             U1EIE = 0x9F;\
                                             UIE = 0x39 | USB_SOF_INTERRUPT | USB_ERROR_INTERRUPT;\
-                                        }
+                                        }  
 #endif //end of #if defined(__18F45K50) || defined(__18F25K50)...
 //------------------------------------------------------------------------------
 
@@ -465,63 +458,63 @@ typedef union _POINTER
 /****************************************************************
     Function:
         void USBPowerModule(void)
-
+        
     Description:
         This macro is used to power up the USB module if required<br>
         PIC18: defines as nothing<br>
         PIC24: defines as U1PWRCbits.USBPWR = 1;<br>
-
+        
     Parameters:
         None
-
+        
     Return Values:
         None
-
+        
     Remarks:
         None
-
+        
   ****************************************************************/
 #define USBPowerModule()
 
 /****************************************************************
     Function:
         void USBModuleDisable(void)
-
+        
     Description:
         This macro is used to disable the USB module
-
+        
     Parameters:
         None
-
+        
     Return Values:
         None
-
+        
     Remarks:
         None
-
+        
   ****************************************************************/
 #define USBModuleDisable() {\
     UCON = 0;\
     UIE = 0;\
     USBDeviceState = DETACHED_STATE;\
-}
+}    
 
 /****************************************************************
     Function:
         USBSetBDTAddress(addr)
-
+        
     Description:
         This macro is used to power up the USB module if required
-
+        
     Parameters:
         None
-
+        
     Return Values:
         None
-
+        
     Remarks:
         None
-
+        
   ****************************************************************/
 #define USBSetBDTAddress(addr)
 
@@ -530,8 +523,8 @@ typedef union _POINTER
  *
  * PreCondition:    None
  *
- * Input:
- *   register - the register mnemonic for the register holding the interrupt
+ * Input:           
+ *   register - the register mnemonic for the register holding the interrupt 
  				flag to be cleared
  *   uint8_t if_and_flag_mask - an AND mask for the interrupt flag that will be
  				cleared
@@ -542,52 +535,52 @@ typedef union _POINTER
  *
  * Overview:        Clears the specified USB interrupt flag.
  *
- * Note:
+ * Note:            
  *******************************************************************/
-#define USBClearInterruptFlag(reg_name, if_and_flag_mask)	(reg_name &= if_and_flag_mask)
+#define USBClearInterruptFlag(reg_name, if_and_flag_mask)	(reg_name &= if_and_flag_mask)	
 
 /********************************************************************
     Function:
         void USBClearInterruptRegister(uint16_t reg)
-
+        
     Summary:
         Clears the specified interrupt register
-
+        
     PreCondition:
         None
-
+        
     Parameters:
         uint16_t reg - the register name that needs to be cleared
-
+        
     Return Values:
         None
-
+        
     Remarks:
         None
-
+ 
  *******************************************************************/
 #define USBClearInterruptRegister(reg) {reg = 0;}
 
 /********************************************************************
     Function:
         void DisableNonZeroEndpoints(UINT8 last_ep_num)
-
+        
     Summary:
         Clears the control registers for the specified non-zero endpoints
-
+        
     PreCondition:
         None
-
+        
     Parameters:
         UINT8 last_ep_num - the last endpoint number to clear.  This
         number should include all endpoints used in any configuration.
-
+        
     Return Values:
         None
-
+        
     Remarks:
         None
-
+ 
  *******************************************************************/
 #define DisableNonZeroEndpoints(last_ep_num) memset((void*)&U1EP1,0x00,(last_ep_num));
 
