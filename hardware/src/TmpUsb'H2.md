@@ -24,5 +24,3 @@
 |  1 | R 100K 0.125W (0805)             | R4      | RMCF0805JT100KCT-ND        |
 |  1 | U PIC18F26J50-I/SS (SSOP-28)     | U1      | PIC18F26J50-I/SS-ND        |
 |  1 | VR MCP1700 (SOT-23)              | VR1     | MCP1700T3302ETTCT-ND       |
-
-1/2" heat-shrink tubing, 30mm
