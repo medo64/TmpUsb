@@ -16,9 +16,9 @@
 |  2 | C 10uF /10V X5R (0805)           | C5 C6   | 478-5167-6-ND              |
 |  2 | D Schottky 30V 800mA (SOD323)    | D1-D2   | CUS08F30H3FCT-ND           |
 |  1 | DS LED (0805)                    | DS1     | 475-1415-1-ND              |
-|  1 | J JST PH 2mm (2w)                | J1      | 455-1705-ND                |
 |  1 | L Ferrite 40Ohm (0805)           | L1      | 445-2201-1-ND              |
-|  1 | P USB 2x5 plug, horizontal       | P1      | A106395-ND                 |
+|  1 | J USB 2x5 plug, horizontal       | J1      | A106395-ND                 |
+|  1 | J AMP 292133-3 (3w)              | J2      | A100945-ND                 |
 |  2 | R 1K 0.125W (0805)               | R1 R2   | RMCF0805FT1K00CT-ND        |
 |  1 | R 10K 0.125W (0805)              | R3      | RMCF0805JT10K0CT-ND        |
 |  1 | R 100K 0.125W (0805)             | R4      | RMCF0805JT100KCT-ND        |

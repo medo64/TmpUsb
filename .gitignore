@@ -13,6 +13,7 @@ hardware/bin/**
 hardware/datasheets/**
 hardware/dist/**
 hardware/src/*-backups/
+hardware/src/*.kicad_pcb.lck
 hardware/src/*.kicad_prl
 hardware/src/fp-info-cache
 
