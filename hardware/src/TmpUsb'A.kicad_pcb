@@ -1653,7 +1653,7 @@
 		(at 26.4 29.9 90)
 		(descr "SOT95P240X110-3N")
 		(property "Reference" "VR1"
-			(at 0 -2.4 90)
+			(at 2.05 0 180)
 			(layer "F.SilkS")
 			(uuid "1d35a9b9-ac41-42e2-b5b0-39442aad4391")
 			(effects

@@ -1885,7 +1885,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 2.4 -0.1 -90)
+			(at 2.3 -0.1 90)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "38021986-83ab-4780-a1a5-b37258b19e16")
